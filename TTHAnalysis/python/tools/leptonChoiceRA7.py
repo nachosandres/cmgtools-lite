@@ -67,15 +67,6 @@ class LeptonChoiceRA7:
     def __call__(self, event):
 
         self.ev = event
-        if not (self.ev.run == 1 and self.ev.lumi == 1 and self.ev.evt == 88): return {}
-        #if not (self.ev.run == 260627 and self.ev.lumi == 646 and self.ev.evt == 1175094241): return {}
-        #if not (self.ev.run == 257751 and self.ev.lumi == 358 and self.ev.evt == 537567601): return {}
-        #if not (self.ev.run == 257751 and self.ev.lumi == 241 and self.ev.evt == 359985861): return {}
-        ##if not (self.ev.run == 260576 and self.ev.lumi == 308 and self.ev.evt == 633626958): return {}
-        #if not (self.ev.run == 254907 and self.ev.lumi == 30 and self.ev.evt == 47123740): return {}
-        #if not (self.ev.run == 258742 and self.ev.lumi == 468 and self.ev.evt == 850131291): return {}
-        #if not (self.ev.run == 1 and self.ev.lumi == 2 and self.ev.evt == 599): return {}
-        #if not (self.ev.run == 257613 and self.ev.lumi == 18 and self.ev.evt == 28910203): return {}
         self.checkEvent(event)
         self.collectObjects(event)
         self.resetMemory()
@@ -153,30 +144,18 @@ class LeptonChoiceRA7:
     ## _______________________________________________________________
     def categorizeEvent(self, event):
 
-        print "telling.."
-        print self.triples
-        print self.passTrigger()
-        print len(self.jets30)
-        print len(self.bJets30)
-        print self.met[0]
-        print self.ht
-
-
         self.fillVtxWeight(event, 0)
 
         if not self.triples: return
 
         #if len(self.trueTriples) < 1: return
 
-        printed = False
+        #printed = False
         for t in xrange(len(self.triples)):
 
             i1 = self.leps.index(self.triples[t][0])
             i2 = self.leps.index(self.triples[t][1])
             i3 = self.leps.index(self.triples[t][2])
-            #i1 = self.leps.index(self.trueTriples[t][0])
-            #i2 = self.leps.index(self.trueTriples[t][1])
-            #i3 = self.leps.index(self.trueTriples[t][2])
 
             #self.fillTriggerSF(event, t, i1, i2, i3) # flat uncertainty for now
 
@@ -190,30 +169,30 @@ class LeptonChoiceRA7:
             self.fillJetQuantities(t, i1, i2, i3)
             self.fillAppWeights(t, i1, i2, i3)  
 
+            # debugging and synching
             #if not printed and len(self.trueTriples) >=1 and self.passTrigger() and \
-            if not printed and self.passTrigger() and \
-                (len(self.jets30) >= 2 and len(self.bJets30) >= 0 and  50 <= self.met[0] and  60 <= self.ht): 
-                #vtxWeight*btagMediumSF_Mini*triggerSF_Loop*leptonSF_Loop
-                #weight = self.ev.vtxWeight*self.ev.btagMediumSF_Mini*self.ret["leptonSF"][t]
-                ll = []
-                for i in range(len(self.trueTriples)):
-                    for l in self.trueTriples[i]:
-                        if not l in ll: ll.append(l)
-                nels = sum([1 if abs(l.pdgId) == 11 else 0 for l in ll])
-                nmus = sum([1 if abs(l.pdgId) == 13 else 0 for l in ll])
-                appWeight = 0.
-                for t in xrange(len(self.triples)): 
-                    appWeight += self.ret["appWeight"][t]
-                lepsf = 1.
-                for l in ll: 
-                    idx = 0 if abs(l.pdgId) == 13 else 1
-                    lepsf *= self.readHistos(self.leptonScaleFactorHistosFull[idx], var, l.pt, abs(l.eta))
-                #print "%d %d %d %d %d %d %d %d %3.3f %3.3f %d" % (self.ev.run, self.ev.lumi, self.ev.evt, nmus, nels, 0, len(self.jets30), len(self.bJets30), self.met[0], self.ht, self.ret["isOnZ"])
-                #print "%d %d %d %d %d %d %d %d %3.3f %3.3f %1.5f %1.5f %d %d %1.5f" % (self.ev.run, self.ev.lumi, self.ev.evt, nmus, nels, 0, len(self.jets30), len(self.bJets30), self.met[0], self.ht, self.ev.btagMediumSF_Mini, lepsf, self.ret["isOnZ"], (not self.ret["hasTTT"]), appWeight)
-                print "%d %d %d %d %d %d %d %d %3.3f %3.3f %1.5f %1.5f %1.5f %1.5f %d %d %1.5f" % (self.ev.run, self.ev.lumi, self.ev.evt, nmus, nels, 0, len(self.jets30), len(self.bJets30), self.met[0], self.ht, self.ev.genWeight, self.ret["vtxWeight"], self.ev.btagMediumSF_Mini, lepsf, self.ret["isOnZ"], (len(self.trueTriples) < len(self.triples)), appWeight)
-                #print "%d %d %d %d %d %d %d %d %3.3f %3.3f %1.5f %1.5f %1.5f %1.5f %d" % (self.ev.run, self.ev.lumi, self.ev.evt, nmus, nels, 0, len(self.jets30), len(self.bJets30), self.met[0], self.ht, self.ev.genWeight, self.ev.vtxWeight, self.ev.btagMediumSF_Mini, self.ret["leptonSF"][t], self.ret["isOnZ"])
-
-                printed = True
+            #if not printed and self.passTrigger() and \
+            #    (len(self.jets30) >= 2 and len(self.bJets30) >= 0 and  50 <= self.met[0] and  60 <= self.ht): 
+            #    #vtxWeight*btagMediumSF_Mini*triggerSF_Loop*leptonSF_Loop
+            #    #weight = self.ev.vtxWeight*self.ev.btagMediumSF_Mini*self.ret["leptonSF"][t]
+            #    ll = []
+            #    for i in range(len(self.trueTriples)):
+            #        for l in self.trueTriples[i]:
+            #            if not l in ll: ll.append(l)
+            #    nels = sum([1 if abs(l.pdgId) == 11 else 0 for l in ll])
+            #    nmus = sum([1 if abs(l.pdgId) == 13 else 0 for l in ll])
+            #    appWeight = 0.
+            #    for t in xrange(len(self.triples)): 
+            #        appWeight += self.ret["appWeight"][t]
+            #    lepsf = 1.
+            #    for l in ll: 
+            #        idx = 0 if abs(l.pdgId) == 13 else 1
+            #        lepsf *= self.readHistos(self.leptonScaleFactorHistosFull[idx], var, l.pt, abs(l.eta))
+            #    #print "%d %d %d %d %d %d %d %d %3.3f %3.3f %d" % (self.ev.run, self.ev.lumi, self.ev.evt, nmus, nels, 0, len(self.jets30), len(self.bJets30), self.met[0], self.ht, self.ret["isOnZ"])
+            #    #print "%d %d %d %d %d %d %d %d %3.3f %3.3f %1.5f %1.5f %d %d %1.5f" % (self.ev.run, self.ev.lumi, self.ev.evt, nmus, nels, 0, len(self.jets30), len(self.bJets30), self.met[0], self.ht, self.ev.btagMediumSF_Mini, lepsf, self.ret["isOnZ"], (not self.ret["hasTTT"]), appWeight)
+            #    print "%d %d %d %d %d %d %d %d %3.3f %3.3f %1.5f %1.5f %1.5f %1.5f %d %d %1.5f" % (self.ev.run, self.ev.lumi, self.ev.evt, nmus, nels, 0, len(self.jets30), len(self.bJets30), self.met[0], self.ht, self.ev.genWeight, self.ret["vtxWeight"], self.ev.btagMediumSF_Mini, lepsf, self.ret["isOnZ"], (len(self.trueTriples) < len(self.triples)), appWeight)
+            #    #print "%d %d %d %d %d %d %d %d %3.3f %3.3f %1.5f %1.5f %1.5f %1.5f %d" % (self.ev.run, self.ev.lumi, self.ev.evt, nmus, nels, 0, len(self.jets30), len(self.bJets30), self.met[0], self.ht, self.ev.genWeight, self.ev.vtxWeight, self.ev.btagMediumSF_Mini, self.ret["leptonSF"][t], self.ret["isOnZ"])
+            #    printed = True
 
 
     ## checkEvent
@@ -233,7 +212,7 @@ class LeptonChoiceRA7:
         self.lepsl      = [self.leps[il] for il in getattr   (event, "iL"  + self.inputlabel)]
         self.lepst      = [self.leps[il] for il in getattr   (event, "iT"  + self.inputlabel)]
         self.lepsfv     = [self.leps[il] for il in getattr   (event, "iFV" + self.inputlabel) \
-                                      if not il in getattr(event, "iTV" + self.inputlabel)]
+                                      if not il in getattr   (event, "iTV" + self.inputlabel)]
         self.lepstv     = [self.leps[il] for il in getattr   (event, "iTV" + self.inputlabel)]
 
         self.jets30     = [j for j in Collection(event, "JetSel" + self.inputlabel, "nJetSel" + self.inputlabel) if j.pt      > 30.  ]
@@ -277,16 +256,6 @@ class LeptonChoiceRA7:
         self.ret["nTriples"] = len(self.triples)
         if self.ret["nTriples"] > 20: raise RuntimeError,'Too many lepton pairs'
 
-    def passTrigger(self):
-        if self.ev.HLT_BIT_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_v   == 1: return True
-        if self.ev.HLT_BIT_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_v     == 1: return True
-        if self.ev.HLT_BIT_HLT_DoubleMu8_Mass8_PFHT300_v                     == 1: return True
-        if self.ev.HLT_BIT_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v       == 1: return True
-        if self.ev.HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v  == 1: return True
-        if self.ev.HLT_BIT_HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v == 1: return True
-        if self.ev.HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v             == 1: return True
-        if self.ev.HLT_BIT_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v           == 1: return True
-        return False
 
 
     ## collectTriplesFakes
@@ -298,30 +267,22 @@ class LeptonChoiceRA7:
         ## made of tight leptons and fakes
 
         self.trueTriples = []
-        print self.lepstv
-        print self.lepsfv
-        print "searching for TTT"
         self.triples, self.fakes = self.findTriples([], self.lepstv, self.lepstv, self.lepstv, bypassMV=False)
 
         if self.triples:
             self.ret["hasTTT"] = True
             self.trueTriples   = self.triples
         else:
-            print "TTF"
             tr1f, f1 = self.findTriples(self.triples, self.lepstv, self.lepstv, self.lepsfv, bypassMV=False, nF=1)
-            self.triples += tr1f
-            print "TFF"
             tr2f, f2 = self.findTriples(self.triples, self.lepstv, self.lepsfv, self.lepsfv, bypassMV=False, nF=2)
-            self.triples += tr2f
-            print "FFF"
             tr3f, f3 = self.findTriples(self.triples, self.lepsfv, self.lepsfv, self.lepsfv, bypassMV=False, nF=3)
-            self.triples += tr3f
 
             if tr1f: self.ret["hasTTF"] = True
             if tr2f: self.ret["hasTFF"] = True
             if tr3f: self.ret["hasFFF"] = True
 
-            self.fakes       = f1 + f2 + f3
+            self.triples = tr1f + tr2f + tr3f
+            self.fakes   = f1   + f2   + f3
 
 
     ## collectTriplesFlips
@@ -329,6 +290,7 @@ class LeptonChoiceRA7:
     def collectTriplesFlips(self, byflav, bypassMV):
 
         print "do stuff"
+        #FIXME
         #    choice = self.findPairs(lepstv,lepstv,byflav=True,bypassMV=False,choose_SS_else_OS=True)
         #    if choice:
         #        ret["hasTT"]=True
@@ -345,6 +307,7 @@ class LeptonChoiceRA7:
     def collectTriplesWZ(self, byflav, bypassMV):
 
         print "do more stuff"
+        #FIXME
         #    choice = self.findPairs(lepst,lepst,byflav=True,bypassMV=True,choose_SS_else_OS=True)
         #    if choice:
         #        ret["hasTT"]=True
@@ -377,17 +340,10 @@ class LeptonChoiceRA7:
             for var in self.systs["FR"]:
                 fk = filter(None, self.fakes[t])
                 nF = len(fk)
+
                 if nF == 1:
                     self.ret["appWeight" + self.systs["FR"][var]][t] =   self.getFakeTransfer(fk[0], var)
-                    #prev = 1.0
-                    #if varFR not in _probs: _probs[varFR]=[]
-                    #for x in _probs[varFR]:
-                    #    prev *= (1-x)
-                    #prob = self.FRprob(leps[i2],ht,varFR)
-                    #transf = self.FRtransfer_fromprob(prob)
-                    #_probs[varFR].append(prob)
-                    #ret["appWeight"+systsFR[varFR]][npair] = prev * transf
-                    #ret["whoIsFake"][npair] = 2 if leps[i1].conePt>=leps[i2].conePt else 1
+
                 elif nF == 2:
                     self.ret["appWeight" + self.systs["FR"][var]][t] = - self.getFakeTransfer(fk[0], var) \
                                                                        * self.getFakeTransfer(fk[1], var)
@@ -400,15 +356,16 @@ class LeptonChoiceRA7:
     ## fillAppWeightsFlips
     ## _______________________________________________________________
     def fillAppWeightsFlips(self, t):
+        print "do stuff"
+        #FIXME
         #ret["appWeight"][npair] = self.flipRate(leps[i1])+self.flipRate(leps[i2])
-        print "what?"
 
 
     ## fillAppWeightsWZ
     ## _______________________________________________________________
     def fillAppWeightsWZ(self, t):
-        ## TBD
-        print "TBD"
+        print "do stuff"
+        #FIXME
 
 
     ## fillJetQuantities
@@ -435,6 +392,7 @@ class LeptonChoiceRA7:
             idxs = 0 if abs(self.leps[idx].pdgId) == 13 else 1
             lepsf[i] *= self.readHistos(self.leptonScaleFactorHistosFull[idxs], var, self.leps[idx].pt, abs(self.leps[idx].eta))
 
+            #FIXME: fast sim lepton SF not yet included
             #if self.isFastSim:
             #    sf    = self.readHistos(self.leptonScaleFactorHistosFast[idxs], var, self.leps[idx].pt,  abs(self.leps[idx].eta), event.nVert)
             #    sferr = 0 # error ignored for now
@@ -485,8 +443,6 @@ class LeptonChoiceRA7:
     ## fillVtxWeight
     ## _______________________________________________________________
     def fillVtxWeight(self, event, var = 0):
-        print event.nTrueInt
-        print self.puWeights
         if event.isData: return
         nvtx = int(getattr(event,"nTrueInt"))
         self.ret["vtxWeight"] = self.puWeights[var][nvtx] if nvtx < len(self.puWeights[var]) else 1
@@ -552,9 +508,6 @@ class LeptonChoiceRA7:
             elif nF == 3: fk_raw.append((p[0], p[1], p[2])); pt_raw.append((p[0].conePt, p[1].conePt, p[2].conePt))
             else        : fk_raw.append((None, None, None)); pt_raw.append((p[0].pt    , p[1].pt    , p[2].pt    ))
 
-        print tr_raw
-        print fk_raw
-        print pt_raw
 
         ## sort them by pT (first one always the hardest)
         for i, l in enumerate(tr_raw):
@@ -566,24 +519,14 @@ class LeptonChoiceRA7:
                 fk_sorted.append((fk_raw[i][ls[0][1]], fk_raw[i][ls[1][1]], fk_raw[i][ls[2][1]]))
                 pt_sorted.append((p        [ls[0][1]], p        [ls[1][1]], p        [ls[2][1]]))
 
-        print tr_sorted
-        print fk_sorted
-        print pt_sorted
-        print "trying"
 
         ## selection: only keep the good ones
         for i,(l1, l2, l3) in enumerate(tr_sorted):
-            #print "start"
             if (l1, l2, l3) in already: continue # fake-not-tight!
-            #print "pass 1"
             if not bypassMV and not passTripleMllVeto(l1, l2, l3, 0, 12, True): continue
-            #print "pass 2"
             if pt_sorted[i][0] > 20 and pt_sorted[i][1] > 15 and pt_sorted[i][2] > 10:
-                #print "pass 3"
                 triples.append((l1, l2, l3))
                 fakes  .append(fk_sorted[i])
-
-        print triples
 
         if len(triples):
              return triples, fakes
@@ -594,13 +537,7 @@ class LeptonChoiceRA7:
     ## _______________________________________________________________
     def getFakeRate(self, lep, var = 0): 
         idx = 0 if abs(lep.pdgId) == 13 else 1
-        print "reading FR for " + str(lep.conePt) + " : " + str(abs(lep.eta)) 
-        print self.readHistos(self.fakeRatioMap[idx], var, lep.conePt, abs(lep.eta))
         return self.readHistos(self.fakeRatioMap[idx], var, lep.conePt, abs(lep.eta))
-        #h = self.fake_map_el[var] if abs(lep.pdgId) == 11 else self.fake_map_mu[var]
-        #ptbin  = max(1, min(h.GetNbinsX(), h.GetXaxis().FindBin(    lep.conePt )))
-        #etabin = max(1, min(h.GetNbinsY(), h.GetYaxis().FindBin(abs(lep.eta   ))))
-        #return h.GetBinContent(ptbin, etabin)
 
 
     ## getFakeTransfer
@@ -617,12 +554,6 @@ class LeptonChoiceRA7:
         idx = 0 if abs(lep.pdgId) == 13 else 1
         sf = 3.6 if (lep.eta < -1.5 and lep.eta > -2) else 1.15
         return sf * self.readHistos(self.flipRatioMap[idx], var, lep.conePt, abs(lep.eta))
-        #h = self.flip_map_el
-        #ptbin  = max(1, min(h.GetNbinsX(), h.GetXaxis().FindBin(    lep.conePt )))
-        #etabin = max(1, min(h.GetNbinsY(), h.GetYaxis().FindBin(abs(lep.eta   ))))
-        #res = h.GetBinContent(ptbin, etabin)
-        #sf = 3.6 if (lep.eta < -1.5 and lep.eta > -2) else 1.15
-        #return res*sf
 
 
     ## isOnZ
@@ -635,9 +566,6 @@ class LeptonChoiceRA7:
                 break
         mll, ii1, ii2 = self.bestZ1TL(leps, leps)
         if abs(mll - 91) < 15:
-            #for i,l in enumerate(leps):
-            #    if i == ii1 or i == ii2: continue
-            #    
             return True
         return False
 
@@ -796,6 +724,19 @@ class LeptonChoiceRA7:
         if not self.apply:
             print 'WARNING: running leptonChoiceRA7 in pure tagging mode (no weights applied)'
 
+
+    ## for debugging only
+    ## _______________________________________________________________
+    def passTrigger(self):
+        if self.ev.HLT_BIT_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_v   == 1: return True
+        if self.ev.HLT_BIT_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_v     == 1: return True
+        if self.ev.HLT_BIT_HLT_DoubleMu8_Mass8_PFHT300_v                     == 1: return True
+        if self.ev.HLT_BIT_HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v       == 1: return True
+        if self.ev.HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v  == 1: return True
+        if self.ev.HLT_BIT_HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v == 1: return True
+        if self.ev.HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v             == 1: return True
+        if self.ev.HLT_BIT_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v           == 1: return True
+        return False
 
 
 

@@ -22,7 +22,6 @@ class LeptonJetReCleaner:
     def __init__(self,label,looseLeptonSel,cleaningLeptonSel,FOLeptonSel,tightLeptonSel,cleanJet,selectJet,CSVbtagFileName=None,EFFbtagFileName=None,CSVbtagFileNameFastSim=None,isFastSim=False, jetPt=40, bJetPt=25, doVeto="RA5"):
         self.corr = "RA7" if doVeto=="RA7" else "RA5"
         self.label = "" if (label in ["",None]) else ("_"+label)
-        #self.label = self.label + "_RA5"
         self.looseLeptonSel = looseLeptonSel
         self.cleaningLeptonSel = cleaningLeptonSel # applied on top of looseLeptonSel
         self.FOLeptonSel = FOLeptonSel # applied on top of looseLeptonSel
@@ -81,23 +80,16 @@ class LeptonJetReCleaner:
         ret['i'+lab] = [];
         ret['i'+lab+'V'] = [];
         for lep in leps:
-            #if self.ev.lumi == 1  and self.ev.evt == 308: print "looping on " + str(lep)
             if (selection(lep) if ht<0 else selection(lep,ht)):
-                    #if self.ev.lumi == 1  and self.ev.evt == 308: print "has passed the selection"
                     ret['i'+lab].append(refcollection.index(lep))
-        #print ret['i'+lab]
         ret['nLep'+labext] = len(ret['i'+lab])
         ret['LepGood_is'+labext] = [(1 if i in ret['i'+lab] else 0) for i in xrange(len(refcollection))]
         lepspass = [ refcollection[il] for il in ret['i'+lab]  ]
-        #print lepspass
         if lepsforveto==None: lepsforveto = lepspass # if lepsforveto==None, veto selected leptons among themselves
         for lep in lepspass:
-            #print "testing veto for " + str(lep) + " with " + str(lepsforveto)
             if (not doVetoZ  or passMllTLVeto(lep, lepsforveto, 76, 106, True)) and \
                (not doVetoLM or passMllTLVeto(lep, lepsforveto,  0,  12, True)):
-                #if self.ev.lumi == 1  and self.ev.evt == 308: print "has passed the veto"
                 ret['i'+lab+'V'].append(refcollection.index(lep))
-        #print ret['i'+lab+'V']
         ret['nLep'+labext+'Veto'] = len(ret['i'+lab+'V'])
         ret['LepGood_is'+labext+'Veto'] = [(1 if i in ret['i'+lab+'V'] else 0) for i in xrange(len(refcollection))]
         lepspassveto = [ refcollection[il] for il in ret['i'+lab+'V']  ]
@@ -283,8 +275,6 @@ class LeptonJetReCleaner:
     def __call__(self,event):
         self.ev = event
         fullret = {}
-        #if not (self.ev.lumi == 54 and self.ev.evt == 17610):
-        #    return fullret
         leps = [l for l in Collection(event,"LepGood","nLepGood")]
         if self.corr == "RA7": 
             for lep in leps: lep.conept = coneptRA7(lep.pt,lep.miniRelIso,lep.jetPtRatiov2,lep.jetPtRelv2,lep.pdgId,2)
@@ -309,9 +299,6 @@ class LeptonJetReCleaner:
         ret, lepsl, lepslv = self.fillCollWithVeto(ret,leps,leps,'L','Loose',self.looseLeptonSel,None,-1,self.doVeto)
         lepsc = []; lepscv = [];
         ret, lepsc, lepscv = self.fillCollWithVeto(ret,leps,lepsl,'C','Cleaning',self.cleaningLeptonSel,lepsl,-1,self.doVeto)
-        #if event.lumi == 1  and event.evt == 88:
-        #    print len(lepsl)
-        #    print len(lepslv)
 
         cleanjets={}
         cleanBjets={}
@@ -322,7 +309,6 @@ class LeptonJetReCleaner:
 
         for var in self.systsBTAG: ret["btagMediumSF"+self.systsBTAG[var]]=self.btagMediumScaleFactor(event,cleanBjets[0],cleanjets[0],var) if self.do_btagSF else 1.0
 
-
         # calculate FOs and tight leptons using the cleaned HT
         veto = lepsl; doZ = True; doLMf = True; doLMt = True
         if self.doVeto == "RA7": veto = None; doZ = False; doLMf = False; doLMt = True
@@ -330,8 +316,6 @@ class LeptonJetReCleaner:
         ret, lepsf, lepsfv = self.fillCollWithVeto(ret,leps,lepsl,'F','FO'   , self.FOLeptonSel   ,veto,ret["htJet"+self.jetPt+"j"],doZ,doLMf)
         lepst = []; lepstv = [];
         ret, lepst, lepstv = self.fillCollWithVeto(ret,leps,lepsl,'T','Tight', self.tightLeptonSel,veto,ret["htJet"+self.jetPt+"j"],doZ,doLMt)
-        #if event.lumi == 1  and event.evt == 88:
-        #    print len(lepstv)
 
         ### attach labels and return
         fullret["nLepGood"]=len(leps)
@@ -428,13 +412,9 @@ def _susy2lss_lepId_inSituTighterFO(lep):
     return True
 
 def _susy2lss_lepId_IPcuts(lep):
-    #print "testing ip"
     if not lep.sip3d<4: return False
-    #print "passed sip"
     if not (abs(lep.dxy)<0.05): return False
-    #print "passed dxy"
     if not (abs(lep.dz)<0.1): return False
-    #print "passed dz"
     return True
 
 def _susy2lss_lepId_CB(lep):

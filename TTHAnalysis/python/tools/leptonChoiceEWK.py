@@ -178,36 +178,7 @@ class LeptonChoiceEWK:
 
         #if len(self.trueTriples) < 1: return
 
-
-        ## ---- 
-        ##m  = self.ret["mll"   + self.systs["JEC"][0]]
-        ##mT = self.ret["mTmin" + self.systs["JEC"][0]]
-
-        ###if not self.triples: print self.ret["SR" + self.systs["JEC"][0]]
-        ###if not self.ret["SR" + self.systs["JEC"][0]] == 0: return
-
-        ##if not self.testMt(120, 160): return
-        ###if not (m < 75 and 160 <= mT and 200 <= self.met[var]) and not (event.lumi == 1004 and event.evt == 332091): return
-
-        ##i1 = self.ret["i1_mll"  + self.systs["JEC"][0]]
-        ##i2 = self.ret["i2_mll"  + self.systs["JEC"][0]]
-        ##i3 = self.ret["i_mTmin" + self.systs["JEC"][0]]
-
-        ##if 120 <= mT < 160: print "YEEEEEHAAAAA"
-
-        ##print "%3.3f %d %1.3f %1.3f %1.3f %3.3f" % (self.leps[i1].pt, self.leps[i1].pdgId, self.leps[i1].eta, self.leps[i1].phi, self.leps[i1].miniRelIso, self.mtW(self.leps[i1].pt, self.leps[i1].phi, 0)) 
-        ##print "%3.3f %d %1.3f %1.3f %1.3f %3.3f" % (self.leps[i2].pt, self.leps[i2].pdgId, self.leps[i2].eta, self.leps[i2].phi, self.leps[i2].miniRelIso, self.mtW(self.leps[i2].pt, self.leps[i2].phi, 0)) 
-        ##print "%3.3f %d %1.3f %1.3f %1.3f %3.3f" % (self.leps[i3].pt, self.leps[i3].pdgId, self.leps[i3].eta, self.leps[i3].phi, self.leps[i3].miniRelIso, self.mtW(self.leps[i3].pt, self.leps[i3].phi, 0)) 
-        ##print "%3.3f %1.3f %3.3f" % (self.met[0], self.metphi[0], (1-cos(self.leps[i3].phi - self.metphi[0])))
-
-        ##print "%d %d %d > %d %d > %3.3f %3.3f > %3.3f %3.3f > %d > %d %d %d > %d > %d" % (event.run, event.lumi, event.evt, len(self.jets30), len(self.bJets30), self.met[0], self.ht, m, mT, self.ret["isOnZ"], i1, i2, i3, (not self.ret["hasTTT"]), self.ret["SR" + self.systs["JEC"][0]])
-        ##return 
-        ## ---- 
-
-
-
-
-        printed = False
+        #printed = False
         for t in xrange(len(self.triples)):
 
             i1 = self.triples[t][0].trIdx
@@ -217,13 +188,6 @@ class LeptonChoiceEWK:
             t2 = self.triples[t][1].isTau
             t3 = self.triples[t][2].isTau
 
-            #i1 = self.leps.index(self.triples[t][0])
-            #i2 = self.leps.index(self.triples[t][1])
-            #i3 = self.leps.index(self.triples[t][2])
-            #i1 = self.leps.index(self.trueTriples[t][0])
-            #i2 = self.leps.index(self.trueTriples[t][1])
-            #i3 = self.leps.index(self.trueTriples[t][2])
-
             #self.fillTriggerSF(event, t, i1, i2, i3) # flat uncertainty for now
 
             for var in self.systs["LEPSF"]:
@@ -232,30 +196,30 @@ class LeptonChoiceEWK:
             self.fillJetQuantities(t, i1, i2, i3, t1, t2, t3)
             self.fillAppWeights(t, i1, i2, i3, t1, t2, t3)  
 
-            ####if not printed and len(self.trueTriples) >=1 and self.passTrigger() and \
-            ###if not printed and self.passTrigger() and \
-            ###    (len(self.jets30) >= 2 and len(self.bJets30) >= 0 and  50 <= self.met[0] and  60 <= self.ht): 
-            ###    #vtxWeight*btagMediumSF_Mini*triggerSF_Loop*leptonSF_Loop
-            ###    #weight = self.ev.vtxWeight*self.ev.btagMediumSF_Mini*self.ret["leptonSF"][t]
-            ###    ll = []
-            ###    for i in range(len(self.trueTriples)):
-            ###        for l in self.trueTriples[i]:
-            ###            if not l in ll: ll.append(l)
-            ###    nels = sum([1 if abs(l.pdgId) == 11 else 0 for l in ll])
-            ###    nmus = sum([1 if abs(l.pdgId) == 13 else 0 for l in ll])
-            ###    appWeight = 0.
-            ###    for t in xrange(len(self.triples)): 
-            ###        appWeight += self.ret["appWeight"][t]
-            ###    lepsf = 1.
-            ###    for l in ll: 
-            ###        idx = 0 if abs(l.pdgId) == 13 else 1
-            ###        lepsf *= self.readHistos(self.leptonScaleFactorHistosFull[idx], var, l.pt, abs(l.eta))
-            ###    #print "%d %d %d %d %d %d %d %d %3.3f %3.3f %d" % (self.ev.run, self.ev.lumi, self.ev.evt, nmus, nels, 0, len(self.jets30), len(self.bJets30), self.met[0], self.ht, self.ret["isOnZ"])
-            ###    #print "%d %d %d %d %d %d %d %d %3.3f %3.3f %1.5f %1.5f %d %d %1.5f" % (self.ev.run, self.ev.lumi, self.ev.evt, nmus, nels, 0, len(self.jets30), len(self.bJets30), self.met[0], self.ht, self.ev.btagMediumSF_Mini, lepsf, self.ret["isOnZ"], (not self.ret["hasTTT"]), appWeight)
-            ###    print "%d %d %d %d %d %d %d %d %3.3f %3.3f %1.5f %1.5f %1.5f %1.5f %d %d %1.5f" % (self.ev.run, self.ev.lumi, self.ev.evt, nmus, nels, 0, len(self.jets30), len(self.bJets30), self.met[0], self.ht, self.ev.genWeight, self.ret["vtxWeight"], self.ev.btagMediumSF_Mini, lepsf, self.ret["isOnZ"], (len(self.trueTriples) < len(self.triples)), appWeight)
-            ###    #print "%d %d %d %d %d %d %d %d %3.3f %3.3f %1.5f %1.5f %1.5f %1.5f %d" % (self.ev.run, self.ev.lumi, self.ev.evt, nmus, nels, 0, len(self.jets30), len(self.bJets30), self.met[0], self.ht, self.ev.genWeight, self.ev.vtxWeight, self.ev.btagMediumSF_Mini, self.ret["leptonSF"][t], self.ret["isOnZ"])
-
-            ###    printed = True
+            ## debugging and synching
+            #if not printed and len(self.trueTriples) >=1 and self.passTrigger() and \
+            #if not printed and self.passTrigger() and \
+            #    (len(self.jets30) >= 2 and len(self.bJets30) >= 0 and  50 <= self.met[0] and  60 <= self.ht): 
+            #    #vtxWeight*btagMediumSF_Mini*triggerSF_Loop*leptonSF_Loop
+            #    #weight = self.ev.vtxWeight*self.ev.btagMediumSF_Mini*self.ret["leptonSF"][t]
+            #    ll = []
+            #    for i in range(len(self.trueTriples)):
+            #        for l in self.trueTriples[i]:
+            #            if not l in ll: ll.append(l)
+            #    nels = sum([1 if abs(l.pdgId) == 11 else 0 for l in ll])
+            #    nmus = sum([1 if abs(l.pdgId) == 13 else 0 for l in ll])
+            #    appWeight = 0.
+            #    for t in xrange(len(self.triples)): 
+            #        appWeight += self.ret["appWeight"][t]
+            #    lepsf = 1.
+            #    for l in ll: 
+            #        idx = 0 if abs(l.pdgId) == 13 else 1
+            #        lepsf *= self.readHistos(self.leptonScaleFactorHistosFull[idx], var, l.pt, abs(l.eta))
+            #    #print "%d %d %d %d %d %d %d %d %3.3f %3.3f %d" % (self.ev.run, self.ev.lumi, self.ev.evt, nmus, nels, 0, len(self.jets30), len(self.bJets30), self.met[0], self.ht, self.ret["isOnZ"])
+            #    #print "%d %d %d %d %d %d %d %d %3.3f %3.3f %1.5f %1.5f %d %d %1.5f" % (self.ev.run, self.ev.lumi, self.ev.evt, nmus, nels, 0, len(self.jets30), len(self.bJets30), self.met[0], self.ht, self.ev.btagMediumSF_Mini, lepsf, self.ret["isOnZ"], (not self.ret["hasTTT"]), appWeight)
+            #    print "%d %d %d %d %d %d %d %d %3.3f %3.3f %1.5f %1.5f %1.5f %1.5f %d %d %1.5f" % (self.ev.run, self.ev.lumi, self.ev.evt, nmus, nels, 0, len(self.jets30), len(self.bJets30), self.met[0], self.ht, self.ev.genWeight, self.ret["vtxWeight"], self.ev.btagMediumSF_Mini, lepsf, self.ret["isOnZ"], (len(self.trueTriples) < len(self.triples)), appWeight)
+            #    #print "%d %d %d %d %d %d %d %d %3.3f %3.3f %1.5f %1.5f %1.5f %1.5f %d" % (self.ev.run, self.ev.lumi, self.ev.evt, nmus, nels, 0, len(self.jets30), len(self.bJets30), self.met[0], self.ht, self.ev.genWeight, self.ev.vtxWeight, self.ev.btagMediumSF_Mini, self.ret["leptonSF"][t], self.ret["isOnZ"])
+            #    printed = True
 
 
     ## checkEvent
@@ -368,6 +332,7 @@ class LeptonChoiceEWK:
     def collectTriplesFlips(self, byflav, bypassMV):
 
         print "do stuff"
+        #FIXME
         #    choice = self.findPairs(lepstv,lepstv,byflav=True,bypassMV=False,choose_SS_else_OS=True)
         #    if choice:
         #        ret["hasTT"]=True
@@ -394,17 +359,9 @@ class LeptonChoiceEWK:
         if self.triples:
             self.ret["hasTTT"] = True
             self.trueTriples   = self.triples
+
+        #FIXME: fake taus not included yet
         #else:
-        #    ## this wants to be updated! 
-        #    tr2f, f2 = self.findTriples(self.triples, self.taust, self.lepstv, self.lepsfv, bypassMV=False, nF=1)
-        #    tr3f, f3 = self.findTriples(self.triples, self.taust, self.lepsfv, self.lepsfv, bypassMV=False, nF=2)
-
-        #    if tr2f: self.ret["hasTTF"] = True
-        #    if tr3f: self.ret["hasTFF"] = True
-
-        #    self.triples     = tr2f + tr3f
-        #    self.fakes       = f2 + f3
-
         #    #tr1f, f1 = self.findTriples(self.triples, self.lepstv, self.lepstv, self.tausf, bypassMV=False, nF=1)
         #    #tr2f, f2 = self.findTriples(self.triples, self.lepstv, self.lepsfv, self.tausf, bypassMV=False, nF=2)
         #    #tr3f, f3 = self.findTriples(self.triples, self.lepsfv, self.lepsfv, self.tausf, bypassMV=False, nF=3)
@@ -422,6 +379,7 @@ class LeptonChoiceEWK:
     def collectTriplesWZ(self, byflav, bypassMV):
 
         print "do more stuff"
+        #FIXME
         #    choice = self.findPairs(lepst,lepst,byflav=True,bypassMV=True,choose_SS_else_OS=True)
         #    if choice:
         #        ret["hasTT"]=True
@@ -454,17 +412,10 @@ class LeptonChoiceEWK:
             for var in self.systs["FR"]:
                 fk = filter(None, self.fakes[t])
                 nF = len(fk)
+
                 if nF == 1:
                     self.ret["appWeight" + self.systs["FR"][var]][t] =   self.getFakeTransfer(fk[0], var)
-                    #prev = 1.0
-                    #if varFR not in _probs: _probs[varFR]=[]
-                    #for x in _probs[varFR]:
-                    #    prev *= (1-x)
-                    #prob = self.FRprob(leps[i2],ht,varFR)
-                    #transf = self.FRtransfer_fromprob(prob)
-                    #_probs[varFR].append(prob)
-                    #ret["appWeight"+systsFR[varFR]][npair] = prev * transf
-                    #ret["whoIsFake"][npair] = 2 if leps[i1].conePt>=leps[i2].conePt else 1
+
                 elif nF == 2:
                     self.ret["appWeight" + self.systs["FR"][var]][t] = - self.getFakeTransfer(fk[0], var) \
                                                                        * self.getFakeTransfer(fk[1], var)
@@ -477,15 +428,16 @@ class LeptonChoiceEWK:
     ## fillAppWeightsFlips
     ## _______________________________________________________________
     def fillAppWeightsFlips(self, t):
+        print "do stuff"
+        #FIXME
         #ret["appWeight"][npair] = self.flipRate(leps[i1])+self.flipRate(leps[i2])
-        print "what?"
 
 
     ## fillAppWeightsWZ
     ## _______________________________________________________________
     def fillAppWeightsWZ(self, t):
-        ## TBD
-        print "TBD"
+        print "do stuff"
+        #FIXME
 
 
     ## fillJetQuantities
@@ -513,6 +465,7 @@ class LeptonChoiceEWK:
             idxs = 0 if abs(self.leps[idx].pdgId) == 13 else 1
             lepsf[i] *= self.readHistos(self.leptonScaleFactorHistosFull[idxs], var, self.leps[idx].pt, abs(self.leps[idx].eta))
 
+            #FIXME: fast sim lepton SF not yet included
             #if self.isFastSim:
             #    sf    = self.readHistos(self.leptonScaleFactorHistosFast[idxs], var, self.leps[idx].pt,  abs(self.leps[idx].eta), event.nVert)
             #    sferr = 0 # error ignored for now
@@ -529,7 +482,6 @@ class LeptonChoiceEWK:
 
         m , i1_mll , i2_mll, t1_mll, t2_mll, os = self.mll   (var)
         mT, i_mTmin, t_mTmin                    = self.findmt(i1_mll, i2_mll, t1_mll, t2_mll, var)
-        #mT, i_mTmin                             = self.mTmin(self.lepstv, self.lepsfv, var, [i1_mll, i2_mll])
 
         self.ret["mll"     + self.systs["JEC"][var]] = m
         self.ret["i1_mll"  + self.systs["JEC"][var]] = i1_mll
@@ -552,21 +504,8 @@ class LeptonChoiceEWK:
     ## _______________________________________________________________
     def fillSR(self, var = ""):
 
-        # BR number = w
-        # w = 0, 1000, 2000 = not in BR, with OSOF pair, with OSSF pair
-
-        # SR number = wxyz
-        # w = 0, 1000, 2000 = not in BR, with OSOF pair, with OSSF pair
-        # x = bin in mll (0-75/75-105/105-inf for OSSF, 0-100/100-inf for OSOF)
-        # y = bin in mT (0-120/120-160/160-inf)
-        # z = bin in MET (50-100/100-150/150-200/200-inf)
-        # e.g. SR 2221 is OSSF, 75 < mll < 105, 120 < mT < 160, 100 < MET < 150
-
         BR = self.findBR(var)
         SR = self.findSR(var, BR)
-
-        #BR = self.findBR(var, 0)
-        #SR = self.findSR(var, 0)
 
         self.ret["BR" + self.systs["JEC"][var]] = BR
         self.ret["SR" + self.systs["JEC"][var]] = SR
@@ -595,22 +534,19 @@ class LeptonChoiceEWK:
 
     ## findBR
     ## _______________________________________________________________
-    def findBR(self, var, offset = 0):
-        # BR number = w
-        # w = 0, 1000, 2000 = not in BR, with OSOF pair, with OSSF pair
+    def findBR(self, var):
+        # BR number = 0, 1, 2 = not in BR, with OSOF pair, with OSSF pair
 
-        BR = 1
         ossf = self.ret["hasOSSF" + self.systs["JEC"][var]]
         osof = self.ret["hasOSOF" + self.systs["JEC"][var]]
         met  = self.met[var]
 
         if met < 50        : return 0
         if ossf + osof == 0: return 0
+        if osof            : return 1
+        if ossf            : return 2
 
-        if ossf              : BR *= 2000 
-        if osof              : BR *= 1000 
-
-        return BR
+        return 0
 
 
     ## findmt
@@ -626,7 +562,6 @@ class LeptonChoiceEWK:
                 idxs.remove((i1, t1))
                 idxs.remove((i2, t2))
                 buffer.append((self.mtW(self.findObj(idxs[0][0], idxs[0][1]).pt, self.findObj(idxs[0][0], idxs[0][1]).phi, var), idxs[0][0], idxs[0][1]))
-                #buffer.append((self.mtW(self.leps[idxs[0]].pt, self.leps[idxs[0]].phi, var), idxs[0][0], idxs[0][1]))
         if len(buffer):
             buffer.sort()
             return buffer[0]
@@ -642,7 +577,7 @@ class LeptonChoiceEWK:
 
     ## findSR
     ## _______________________________________________________________
-    def findSR(self, var, BR, offset = 0):
+    def findSR(self, var, BR):
 
         SR = 0
 
@@ -654,8 +589,7 @@ class LeptonChoiceEWK:
 
         if BR == 0: return 0
 
-
-        ## semi-new binning
+        # OSSF category
         if   ossf and        m <  75 and        mT < 120 and  50 <= met < 100: SR =  1
         elif ossf and        m <  75 and        mT < 120 and 100 <= met < 150: SR =  2
         elif ossf and        m <  75 and        mT < 120 and 150 <= met < 200: SR =  3
@@ -692,6 +626,8 @@ class LeptonChoiceEWK:
         elif ossf and 105 <= m       and 160 <= mT       and 100 <= met < 150: SR = 34
         elif ossf and 105 <= m       and 160 <= mT       and 150 <= met < 200: SR = 35
         elif ossf and 105 <= m       and 160 <= mT       and 200 <= met      : SR = 36
+
+        # OSOF category
         elif osof and        m < 100 and        mT < 120 and  50 <= met < 100: SR = 37
         elif osof and        m < 100 and        mT < 120 and 100 <= met < 150: SR = 38
         elif osof and        m < 100 and        mT < 120 and 150 <= met < 200: SR = 39
@@ -718,76 +654,6 @@ class LeptonChoiceEWK:
         elif osof and 100 <= m       and 160 <= mT       and 200 <= met      : SR = 60
 
         return SR        
-
-        ## new binning
-        ## SR number = wxyz
-        ## w = 0, 1000, 2000 = not in BR, with OSOF pair, with OSSF pair
-        ## x = bin in mll (0-75/75-105/105-inf for OSSF, 0-100/100-inf for OSOF)
-        ## y = bin in mT (0-120/120-160/160-inf)
-        ## z = bin in MET (50-100/100-150/150-200/200-inf)
-        ## e.g. SR 2221 is OSSF, 75 < mll < 105, 120 < mT < 160, 100 < MET < 150
-        ##if   50  < met < 100: SR  = 1
-        ##elif 100 < met < 150: SR  = 2
-        ##elif 150 < met < 200: SR  = 3
-        ##elif 200 < met      : SR  = 4
-
-        ##if     0 < mT  < 120: SR += 10
-        ##elif 120 < mT  < 160: SR += 20
-        ##elif 160 < mT       : SR += 30
-
-        ##if ossf: 
-        ##    if     0 < m <  75: SR += 2100
-        ##    elif  75 < m < 105: SR += 2200
-        ##    elif 105 < m      : SR += 2300
-        ##if osof:
-        ##    if     0 < m < 100: SR += 1100
-        ##    elif 100 < m      : SR += 1200
-
-        ##return SR
-
-        ## old binning
-        #SR = -1
-        #m  = self.ret["mll"   + self.systs["JEC"][var]]
-        #mT = self.ret["mTmin" + self.systs["JEC"][var]]
-
-        #if          m <  75 and        mT < 120 and  50 <= self.met[var] < 100: SR =  1
-        #elif        m <  75 and        mT < 120 and 100 <= self.met[var] < 150: SR =  2
-        #elif        m <  75 and        mT < 120 and 150 <= self.met[var] < 200: SR =  3
-        #elif        m <  75 and        mT < 120 and 200 <= self.met[var]      : SR =  4
-        #elif        m <  75 and 120 <= mT < 160 and  50 <= self.met[var] < 100: SR =  5
-        #elif        m <  75 and 120 <= mT < 160 and 100 <= self.met[var] < 150: SR =  6
-        #elif        m <  75 and 120 <= mT < 160 and 150 <= self.met[var] < 200: SR =  7
-        #elif        m <  75 and 120 <= mT < 160 and 200 <= self.met[var]      : SR =  8
-        #elif        m <  75 and 160 <= mT       and  50 <= self.met[var] < 100: SR =  9
-        #elif        m <  75 and 160 <= mT       and 100 <= self.met[var] < 150: SR = 10
-        #elif        m <  75 and 160 <= mT       and 150 <= self.met[var] < 200: SR = 11
-        #elif        m <  75 and 160 <= mT       and 200 <= self.met[var]      : SR = 12
-        #elif  75 <= m < 105 and        mT < 120 and  50 <= self.met[var] < 100: SR = 13
-        #elif  75 <= m < 105 and        mT < 120 and 100 <= self.met[var] < 150: SR = 14
-        #elif  75 <= m < 105 and        mT < 120 and 150 <= self.met[var] < 200: SR = 15
-        #elif  75 <= m < 105 and        mT < 120 and 200 <= self.met[var]      : SR = 16
-        #elif  75 <= m < 105 and 120 <= mT < 160 and  50 <= self.met[var] < 100: SR = 17
-        #elif  75 <= m < 105 and 120 <= mT < 160 and 100 <= self.met[var] < 150: SR = 18
-        #elif  75 <= m < 105 and 120 <= mT < 160 and 150 <= self.met[var] < 200: SR = 19
-        #elif  75 <= m < 105 and 120 <= mT < 160 and 200 <= self.met[var]      : SR = 20
-        #elif  75 <= m < 105 and 160 <= mT       and  50 <= self.met[var] < 100: SR = 21
-        #elif  75 <= m < 105 and 160 <= mT       and 100 <= self.met[var] < 150: SR = 22
-        #elif  75 <= m < 105 and 160 <= mT       and 150 <= self.met[var] < 200: SR = 23
-        #elif  75 <= m < 105 and 160 <= mT       and 200 <= self.met[var]      : SR = 24
-        #elif 105 <= m       and        mT < 120 and  50 <= self.met[var] < 100: SR = 25
-        #elif 105 <= m       and        mT < 120 and 100 <= self.met[var] < 150: SR = 26
-        #elif 105 <= m       and        mT < 120 and 150 <= self.met[var] < 200: SR = 27
-        #elif 105 <= m       and        mT < 120 and 200 <= self.met[var]      : SR = 28
-        #elif 105 <= m       and 120 <= mT < 160 and  50 <= self.met[var] < 100: SR = 29
-        #elif 105 <= m       and 120 <= mT < 160 and 100 <= self.met[var] < 150: SR = 30
-        #elif 105 <= m       and 120 <= mT < 160 and 150 <= self.met[var] < 200: SR = 31
-        #elif 105 <= m       and 120 <= mT < 160 and 200 <= self.met[var]      : SR = 32
-        #elif 105 <= m       and 160 <= mT       and  50 <= self.met[var] < 100: SR = 33
-        #elif 105 <= m       and 160 <= mT       and 100 <= self.met[var] < 150: SR = 34
-        #elif 105 <= m       and 160 <= mT       and 150 <= self.met[var] < 200: SR = 35
-        #elif 105 <= m       and 160 <= mT       and 200 <= self.met[var]      : SR = 36
-
-        return SR + offset
 
 
     ## findTriples
