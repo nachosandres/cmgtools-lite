@@ -1,0 +1,7 @@
+muon denominator    : abs(LepGood_pdgId) == 13
+pT > 5              : LepGood_pt > 5
+abs(eta) < 2.4      : abs(LepGood_eta) < 2.4
+miniRelIso < 0.4    : LepGood_miniRelIso < 0.4
+IP cuts             : abs(LepGood_dxy) < 0.05 && abs(LepGood_dz) < 0.1 && LepGood_sip3d < 4
+Muon ID medium WP   : LepGood_mediumMuonId > 0
+multi-isolation     : multiIso_singleWP(LepGood_miniRelIso,LepGood_jetPtRatiov2,LepGood_jetPtRelv2,1) > 0

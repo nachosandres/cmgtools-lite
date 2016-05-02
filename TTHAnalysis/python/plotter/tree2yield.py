@@ -46,13 +46,13 @@ class PlotSpec:
         return self.logs.iteritems()
 
 class TreeToYield:
-    def __init__(self,root,options,scaleFactor=1.0,name=None,cname=None,settings={},treename=None):
+    def __init__(self,root,options,scaleFactor=1.0,name=None,cname=None,settings={},objname=None):
         self._name  = name  if name != None else root
         self._cname = cname if cname != None else self._name
         self._fname = root
         self._isInit = False
         self._options = options
-        self._treename = treename if treename else options.tree
+        self._objname = objname if objname else options.objname
         self._weight  = (options.weight and 'data' not in self._name and '2012' not in self._name and '2011' not in self._name )
         self._isdata = 'data' in self._name
         self._weightString  = options.weightString if not self._isdata else "1"
@@ -136,9 +136,10 @@ class TreeToYield:
             #self._tfile = ROOT.TFile.Open(self._fname+"?readaheadsz=0") #worse than 65k
         else:
             self._tfile = ROOT.TFile.Open(self._fname)
+
         if not self._tfile: raise RuntimeError, "Cannot open %s\n" % self._fname
-        t = self._tfile.Get(self._treename)
-        if not t: raise RuntimeError, "Cannot find tree %s in file %s\n" % (self._treename, self._fname)
+        t = self._tfile.Get(self._objname)
+        if not t: raise RuntimeError, "Cannot find tree %s in file %s\n" % (self._objname, self._fname)
         self._tree  = t
         #self._tree.SetCacheSize(10*1000*1000)
         if "root://" in self._fname: self._tree.SetCacheSize()
@@ -153,6 +154,13 @@ class TreeToYield:
 #            print 'Adding friend',tf_tree,tf_file
             tf = self._tree.AddFriend(tf_tree, tf_file.format(name=self._name, cname=self._cname, P=getattr(self._options,'path',''))),
             self._friends.append(tf)
+        for tf_tree,tf_file,tf_new in self._options.friendTreesRename[:]:
+            tff = ROOT.TFile.Open(tf_file.format(name=self._name, cname=self._cname, P=getattr(self._options,'path','')))
+            ttf = tff.Get(tf_tree)
+            ttf.SetDirectory(0)
+            tf = self._tree.AddFriend(ttf, tf_new)
+            self._friends.append(tf)
+            tff.Close()
         self._isInit = True
 
     def getTree(self):
@@ -283,6 +291,7 @@ class TreeToYield:
         if not self._isInit: self._init()
         if self._weight:
             if self._isdata: cut = "(%s)     *(%s)*(%s)" % (self._weightString,                    self._scaleFactor, self.adaptExpr(cut,cut=True))
+            #else:            cut =                "(%s)" % (self.adaptExpr(cut,cut=True))
             else:            cut = "(%s)*(%s)*(%s)*(%s)" % (self._weightString,self._options.lumi, self._scaleFactor, self.adaptExpr(cut,cut=True))
         else:
             cut = self.adaptExpr(cut,cut=True)
@@ -290,8 +299,8 @@ class TreeToYield:
         if self._options.doS2V:
             cut  = scalarToVector(cut)
             expr = scalarToVector(expr)
-#        print cut
-#        print expr
+        #print cut
+        #print expr
         if ROOT.gROOT.FindObject("dummy") != None: ROOT.gROOT.FindObject("dummy").Delete()
         histo = None
         canKeys = False
@@ -353,6 +362,7 @@ class TreeToYield:
         drawOpt = "goff"
         if profile1D or profile2D: drawOpt += " PROF";
         self._tree.Draw("%s>>%s" % (expr,"dummy"), cut, drawOpt, self._options.maxEntries)
+
         if canKeys and histo.GetEntries() > 0 and histo.GetEntries() < self.getOption('KeysPdfMinN',100) and not self._isdata and self.getOption("KeysPdf",False):
             #print "Histogram for %s/%s has %d entries, so will use KeysPdf " % (self._cname, self._name, histo.GetEntries())
             if "/TH1Keys_cc.so" not in ROOT.gSystem.GetLibraries(): 
@@ -415,9 +425,10 @@ def addTreeToYieldOptions(parser):
     parser.add_option("-R", "--replace-cut", dest="cutsToReplace", action="append", default=[], nargs=3, help="Cuts to invert (regexp of old cut name, new name, new cut); can specify multiple times.") 
     parser.add_option("-A", "--add-cut",     dest="cutsToAdd",     action="append", default=[], nargs=3, help="Cuts to insert (regexp of cut name after which this cut should go, new name, new cut); can specify multiple times.") 
     parser.add_option("-N", "--n-minus-one", dest="nMinusOne", action="store_true", help="Compute n-minus-one yields and plots")
-    parser.add_option("-t", "--tree",          dest="tree", default='ttHLepTreeProducerTTH', help="Pattern for tree name");
+    parser.add_option("--obj", "--objname",    dest="objname", default='tree', help="Pattern for the name of the TTree inside the file");
     parser.add_option("-G", "--no-fractions",  dest="fractions",action="store_false", default=True, help="Don't print the fractions");
     parser.add_option("-F", "--add-friend",    dest="friendTrees",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename). Can use {name}, {cname} patterns in the treename") 
+    parser.add_option("--FR", "--add-friend-rename",    dest="friendTreesRename",  action="append", default=[], nargs=3, help="Add a friend tree (treename, filename, newname). Can use {name}, {cname} patterns in the treename") 
     parser.add_option("--Fs", "--add-friend-simple",    dest="friendTreesSimple",  action="append", default=[], nargs=1, help="Add friends in a directory. The rootfile must be called evVarFriend_{cname}.root and tree must be called 't' in a subdir 'sf' inside the rootfile.") 
     parser.add_option("--FMC", "--add-friend-mc",    dest="friendTreesMC",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename) to MC only. Can use {name}, {cname} patterns in the treename") 
     parser.add_option("--FD", "--add-friend-data",    dest="friendTreesData",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename) to data trees only. Can use {name}, {cname} patterns in the treename") 

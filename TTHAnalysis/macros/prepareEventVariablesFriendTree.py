@@ -9,8 +9,10 @@ from CMGTools.TTHAnalysis.tools.eventVars_2lss import EventVars2LSS
 MODULES.append( ('ttH2lss', lambda : EventVars2LSS()) )
 from CMGTools.TTHAnalysis.tools.susyVars_2lssInc import SusyVars2LSSInc 
 MODULES.append( ('susy2lss', lambda : SusyVars2LSSInc()) )
-from CMGTools.TTHAnalysis.tools.leptonJetReCleaner import LeptonJetReCleaner,_susy2lss_lepId_CB,_susy2lss_lepId_CBloose,_susy2lss_multiIso,_tthlep_lepId,_susy2lss_idEmu_cuts,_susy2lss_idIsoEmu_cuts,_susy2lss_lepId_loosestFO,_susy2lss_lepId_tighterFO,_susy2lss_lepId_IPcuts,_susy2lss_lepConePt1015,_susy2lss_lepId_inSituLoosestFO,_susy2lss_lepId_inSituTighterFO,_susy2lss_multiIso_relaxedForInSituApp
+from CMGTools.TTHAnalysis.tools.leptonJetReCleaner import LeptonJetReCleaner,_susy2lss_lepId_CB,_susy2lss_lepId_CBloose,_susy2lss_multiIso,_susy3l_multiIso,_tthlep_lepId,_susy2lss_idEmu_cuts,_susy2lss_idIsoEmu_cuts,_susy2lss_lepId_loosestFO,_susy3l_lepId_loosestFO,_susy2lss_lepId_tighterFO,_susy2lss_lepId_IPcuts,_susy2lss_lepConePt1015,_susy2lss_lepId_inSituLoosestFO,_susy2lss_lepId_inSituTighterFO,_susy2lss_multiIso_relaxedForInSituApp,_susy3l_lepId_CB
 from CMGTools.TTHAnalysis.tools.leptonChoiceRA5 import LeptonChoiceRA5
+from CMGTools.TTHAnalysis.tools.leptonChoiceRA7 import LeptonChoiceRA7
+from CMGTools.TTHAnalysis.tools.leptonChoiceEWK import LeptonChoiceEWK
 ##--- TTH instances
 #MODULES.append( ('leptonJetReCleanerTTH', lambda : LeptonJetReCleaner("I03Sip8", 
 #                lambda lep : lep.relIso03 < 0.5 and lep.sip3d < 8 and _tthlep_lepId(lep), 
@@ -23,13 +25,14 @@ from CMGTools.TTHAnalysis.tools.leptonChoiceRA5 import LeptonChoiceRA5
 
 isFastSim = False
 
-utility_files_dir= "/afs/cern.ch/work/p/peruzzi/ra5trees/cms_utility_files"
+#utility_files_dir= "/afs/cern.ch/work/p/peruzzi/ra5trees/cms_utility_files"
+utility_files_dir= "/shome/cheidegg/o/cms_utility_files"
 btagSF = utility_files_dir+"/CSVv2_25ns.csv"
 btagEFF = utility_files_dir+"/btageff__ttbar_powheg_pythia8_25ns.root"
 btagSF_FastSim = utility_files_dir+"/CSV_13TEV_Combined_20_11_2015_FullSim_FastSim.csv"
 
 #--- Susy multilep instances
-MODULES.append( ('leptonJetReCleanerSusyQCD', lambda : LeptonJetReCleaner("Mini", 
+MODULES.append( ('leptonJetReCleanerSusyRA5', lambda : LeptonJetReCleaner("Mini", 
                    lambda lep : lep.miniRelIso < 0.4 and _susy2lss_lepId_CBloose(lep), 
                    lambda lep : lep.pt>10 and _susy2lss_lepId_loosestFO(lep) and _susy2lss_lepId_IPcuts(lep), # cuts applied on top of loose
                    lambda lep,ht : lep.pt>10 and _susy2lss_lepConePt1015(lep) and _susy2lss_lepId_IPcuts(lep) and (_susy2lss_lepId_loosestFO(lep) if ht>300 else _susy2lss_lepId_tighterFO(lep)), # cuts applied on top of loose
@@ -37,7 +40,49 @@ MODULES.append( ('leptonJetReCleanerSusyQCD', lambda : LeptonJetReCleaner("Mini"
                    cleanJet = lambda lep,jet,dr : dr<0.4,
                    selectJet = lambda jet: abs(jet.eta)<2.4,
                    isFastSim = isFastSim,
+                   jetPt = 40,
+                   bJetPt = 25,
                    CSVbtagFileName = btagSF, EFFbtagFileName = btagEFF, CSVbtagFileNameFastSim = btagSF_FastSim ) ))
+
+## RA7 lepton collections: looser multiIso, no tightCharge, no iso Emulation
+MODULES.append( ('leptonJetReCleanerSusyRA7', lambda : LeptonJetReCleaner("Mini", 
+                   lambda lep : lep.miniRelIso < 0.4 and _susy2lss_lepId_CBloose(lep), 
+                   lambda lep : _susy3l_lepId_loosestFO(lep) and _susy2lss_lepId_IPcuts(lep), # cuts applied on top of loose
+                   lambda lep,ht : _susy2lss_lepId_IPcuts(lep) and _susy3l_lepId_loosestFO(lep), # cuts applied on top of loose
+                   lambda lep,ht : _susy3l_multiIso(lep) and _susy3l_lepId_CB(lep), # cuts applied on top of loose
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<2.4,
+                   isFastSim = isFastSim,
+                   jetPt = 30,
+                   bJetPt = 30,
+                   doVeto = "RA7",
+                   CSVbtagFileName = btagSF, EFFbtagFileName = btagEFF, CSVbtagFileNameFastSim = btagSF_FastSim ) ))
+
+#MODULES.append( ('leptonJetReCleanerSusyRA7', lambda : LeptonJetReCleaner("Mini", 
+#                   lambda lep : lep.miniRelIso < 0.4 and _susy2lss_lepId_CBloose(lep), 
+#                   lambda lep : lep.pt>10 and _susy3l_lepId_loosestFO(lep) and _susy2lss_lepId_IPcuts(lep), # cuts applied on top of loose
+#                   lambda lep,ht : lep.pt>10 and _susy2lss_lepId_IPcuts(lep) and _susy3l_lepId_loosestFO(lep), # cuts applied on top of loose
+#                   lambda lep,ht : lep.pt>10 and _susy3l_multiIso(lep) and _susy3l_lepId_CB(lep), # cuts applied on top of loose
+#                   cleanJet = lambda lep,jet,dr : dr<0.4,
+#                   selectJet = lambda jet: abs(jet.eta)<2.4,
+#                   isFastSim = isFastSim,
+#                   jetPt = 30,
+#                   bJetPt = 30,
+#                   doVeto = "RA7",
+#                   CSVbtagFileName = btagSF, EFFbtagFileName = btagEFF, CSVbtagFileNameFastSim = btagSF_FastSim ) ))
+
+#MODULES.append( ('leptonJetReCleanerSusyRA7mva', lambda : LeptonJetReCleaner("Mini", 
+#                   lambda lep : lep.miniRelIso < 0.4 and _susy2lss_lepId_CBloose(lep), 
+#                   lambda lep : lep.pt>10 and _susy3l_lepId_loosestFO(lep) and _susy2lss_lepId_IPcuts(lep), # cuts applied on top of loose
+#                   lambda lep,ht : lep.pt>10 and _susy2lss_lepId_IPcuts(lep) and _susy3l_lepId_loosestFO(lep), # cuts applied on top of loose
+#                   lambda lep,ht : lep.mvaTTHMoriond16>0.75 and lep.sip3d<8 and (abs(lep.pdgId)==11 or lep.mediumMuonId>0),
+#                   cleanJet = lambda lep,jet,dr : dr<0.4,
+#                   selectJet = lambda jet: abs(jet.eta)<2.4,
+#                   isFastSim = isFastSim,
+#                   jetPt = 30,
+#                   bJetPt = 30,
+#                   doVeto = "RA7",
+#                   CSVbtagFileName = btagSF, EFFbtagFileName = btagEFF, CSVbtagFileNameFastSim = btagSF_FastSim ) ))
 
 #MODULES.append( ('leptonJetReCleanerSusyInSitu', lambda : LeptonJetReCleaner("MiniInSitu", 
 #                lambda lep : lep.miniRelIso < 0.4 and _susy2lss_lepId_CBloose(lep), 
@@ -49,11 +94,37 @@ MODULES.append( ('leptonJetReCleanerSusyQCD', lambda : LeptonJetReCleaner("Mini"
 #                isMC = True, # SET TO THE RIGHT THING
 #                CSVbtagFileName = btagSF, EFFbtagFileName = btagEFF ) ))
 
+# RA5 stuff
 #FRname=utility_files_dir+"/FakeRatesUCSXMethod_301115_withEWKsyst_v6.root"
-FRname="hardcodedUCSx"
+#FRname="hardcodedUCSx"
+FRname="/afs/cern.ch/work/c/cheidegg/scratch/2016-02-26_RA7syncHeppy/FR_RA7_Jan16.root"
 FS_lepSF=[utility_files_dir+"/sf_mu_mediumID_multi.root",utility_files_dir+"/sf_el_tight_IDEmu_ISOEMu_ra5.root"]
 
+# RA7 stuff
+# syntax: <filepath>::<histogram>[::<upvar>::<downvar>]
+# objects are always lists, first entry is muons, second is electrons
+# entries themselves can be lists if there are more than 1 histogram per flavor
+
+RA7_FRname     = [[utility_files_dir + "/ra7_FR_Jan16.root::FRMuPtCorr_UCSX_non::FRMuPtCorr_UCSX_HI_non::FRMuPtCorr_UCSX_LO_non"],
+                  [utility_files_dir + "/ra7_FR_Jan16.root::FRElPtCorr_UCSX_non::FRElPtCorr_UCSX_HI_non::FRElPtCorr_UCSX_LO_non"]]
+RA7_full_lepSF = [[utility_files_dir+"/ra7_lepsf_fullsim/muons/TnP_MuonID_NUM_MediumID_DENOM_generalTracks_VAR_map_pt_eta.root::pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_tag_combRelIsoPF04dBeta_bin0_&_tag_pt_bin0_&_tag_IsoMu20_pass",
+                   utility_files_dir+"/ra7_lepsf_fullsim/muons/TnP_MuonID_NUM_TightIP2D_DENOM_LooseID_VAR_map_pt_eta.root::pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_tag_combRelIsoPF04dBeta_bin0_&_tag_pt_bin0_&_PF_pass_&_tag_IsoMu20_pass",
+                   utility_files_dir+"/ra7_lepsf_fullsim/muons/TnP_MuonID_NUM_TightIP3D_DENOM_LooseID_VAR_map_pt_eta.root::pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_tag_combRelIsoPF04dBeta_bin0_&_tag_pt_bin0_&_PF_pass_&_tag_IsoMu20_pass",
+                   utility_files_dir+"/ra7_lepsf_fullsim/muons/TnP_MuonID_NUM_MultiIsoMedium_DENOM_MediumID_VAR_map_pt_eta.root::pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_tag_combRelIsoPF04dBeta_bin0_&_tag_pt_bin0_&_Medium_pass_&_tag_IsoMu20_pass"],
+                  [utility_files_dir+"/ra7_lepsf_fullsim/electrons/kinematicBinSFele.root::MVATight_and_IDEmu_and_TightIP2D_and_TightIP3D",
+                   utility_files_dir+"/ra7_lepsf_fullsim/electrons/kinematicBinSFele.root::MultiIsoTight_vs_AbsEta"]]
+RA7_fast_lepSF = [[utility_files_dir+"/ra7_lepsf_fastsim/muons/sf_mu_mediumID.root::histo3D", 
+                   utility_files_dir+"/ra7_lepsf_fastsim/muons/sf_mu_tightIP2D.root::histo3D",
+                   utility_files_dir+"/ra7_lepsf_fastsim/muons/sf_mu_tightIP3D.root::histo3D",
+                   utility_files_dir+"/ra7_lepsf_fastsim/muons/sf_mu_multi.root::histo3D"],
+                  [utility_files_dir+"/ra7_lepsf_fastsim/electrons/sf_el_tight2d3dIDEmu.root::histo3D",
+                   utility_files_dir+"/ra7_lepsf_fastsim/electrons/sf_el_multi.root::histo3D"]]
+RA7_puweights = utility_files_dir+"/ra7_puWeights.root::pileup"
+
 MODULES.append( ('leptonChoiceRA5', lambda : LeptonChoiceRA5("Loop","Mini",whichApplication="Fakes",lepChoiceMethod="TT_loopTF_2FF",FRFileName=FRname,isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF))) 
+MODULES.append( ('leptonChoiceRA7', lambda : LeptonChoiceRA7("Loop","Mini",whichApplication="Fakes",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
+#MODULES.append( ('leptonChoiceEWK', lambda : LeptonChoiceEWK("Loop","Mini",whichApplication="Fakes",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
+MODULES.append( ('leptonChoiceEWKtau', lambda : LeptonChoiceEWK("Loop","Mini",whichApplication="Taus",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
 #MODULES.append( ('leptonChoiceRA5_FO', lambda : LeptonChoiceRA5("SortFO","Mini",whichApplication="Fakes",lepChoiceMethod="sort_FO",FRFileName=FRname,isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF))) 
 #MODULES.append( ('leptonChoiceRA5_InSitu', lambda : LeptonChoiceRA5("InSitu","MiniInSitu",whichApplication="Fakes",lepChoiceMethod="TT_loopTF_2FF",FRFileName="InSituHardCoded",isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF))) 
 MODULES.append( ('leptonChoiceRA5_Flips', lambda : LeptonChoiceRA5("Flips","Mini",whichApplication="Flips",FRFileName="hardcodedUCSx",isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF)))
@@ -115,7 +186,9 @@ MODULES.append ( ('puWeightsVtx', lambda : VertexWeightFriend(pufile,pufile,"nvt
 putruefiledata_central = utility_files_dir+"/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_pileup_69000_50.root"
 putruefiledata_up = utility_files_dir+"/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_pileup_69000_50_p5pc.root"
 putruefiledata_down = utility_files_dir+"/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_pileup_69000_50_m5pc.root"
-putruefilemc = "/afs/cern.ch/user/p/peruzzi/work/cmgtools/CMSSW_7_4_14/src/CMGTools/TTHAnalysis/python/plotter/susy-multilepton/for-pu-rew/pu_plots_true_miniAODv2/zjets-4-nvtx_plots_true.root"
+putruefilemc = utility_files_dir+"/zjets-4-nvtx_plots_true.root"
+
+#putruefilemc = "/afs/cern.ch/user/p/peruzzi/work/cmgtools/CMSSW_7_4_14/src/CMGTools/TTHAnalysis/python/plotter/susy-multilepton/for-pu-rew/pu_plots_true_miniAODv2/zjets-4-nvtx_plots_true.root"
 MODULES.append ( ('puWeightsTrue_central', lambda : VertexWeightFriend(putruefilemc,putruefiledata_central,"nTrueInt_signal","pileup",verbose=True,vtx_coll_to_reweight="nTrueInt",name="vtxWeight") ) )
 MODULES.append ( ('puWeightsTrue_up', lambda : VertexWeightFriend(putruefilemc,putruefiledata_up,"nTrueInt_signal","pileup",verbose=True,vtx_coll_to_reweight="nTrueInt",postfix="up",name="vtxWeightUp") ) )
 MODULES.append ( ('puWeightsTrue_down', lambda : VertexWeightFriend(putruefilemc,putruefiledata_down,"nTrueInt_signal","pileup",verbose=True,vtx_coll_to_reweight="nTrueInt",postfix="down",name="vtxWeightDown") ) )
@@ -168,7 +241,17 @@ MODULES.append ( ('recalcLepAwareVars',ObjFloatCalc("recalcLepAwareVars","LepGoo
 #MODULES.append( ('MuMVAId', MuonMVAFriend("BPH",     "/afs/cern.ch/work/g/gpetrucc/TREES_70X_240914/0_muMVAId_v1/train70XBPH_BDTG.weights.xml", label="BPH")) )
 #MODULES.append( ('MuMVAId', MuonMVAFriend("BPHCalo", "/afs/cern.ch/work/g/gpetrucc/TREES_70X_240914/0_muMVAId_v1/train70XBPHCalo_BDTG.weights.xml", label="BPHCalo")) )
 #MODULES.append( ('MuMVAId', MuonMVAFriend("Full",    "/afs/cern.ch/work/g/gpetrucc/TREES_70X_240914/0_muMVAId_v1/train70XFull_BDTG.weights.xml", label="Full")) )
-#from CMGTools.TTHAnalysis.tools.LepMVAFriend import LepMVAFriend
+from CMGTools.TTHAnalysis.tools.LepMVAFriend import LepMVAFriend
+#MODULES.append( ('LepMVAFriendMoriond16', lambda: LepMVAFriend((os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/tth/%s_BDTG.weights.xml",
+#                                                                os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/tth/%s_BDTG.weights.xml",),
+#                                                               training="forMoriond16", label="TTHMoriond16")) )
+MODULES.append( ('LepMVAFriendMoriond16', lambda: LepMVAFriend((os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/marco/forMoriond16_76X_%s_noJetNDauCharged_BDTG.weights.xml",
+                                                                os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/marco/forMoriond16_76X_%s_noJetNDauCharged_BDTG.weights.xml"),
+                                                               training="forMoriond16", label="TTHMoriond16")) )
+MODULES.append( ('LepMVAMultiIso', lambda: LepMVAFriend((os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/marco/asMultiIso_%s_BDTG.weights.xml",
+                                                         os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/marco/asMultiIso_%s_BDTG.weights.xml"),
+                                                               training="mvaMultiIso", label="mvaMultiIso")) )
+
 #MODULES.append( ('LepMVAFriend', LepMVAFriend(("/afs/cern.ch/user/g/gpetrucc/w/TREES_72X_171214/0_lepMVA_v1/%s_BDTG.weights.xml",
 #                                               "/afs/cern.ch/user/g/gpetrucc/w/TREES_72X_171214/0_lepMVA_v1/%s_BDTG.weights.xml"))) )
 #MODULES.append( ('LepMVAFriend', LepMVAFriend(("/afs/cern.ch/work/g/gpetrucc/TREES_70X_240914/0_lepMVA_v1/SV_%s_BDTG.weights.xml",
@@ -221,22 +304,23 @@ import os, itertools
 
 from optparse import OptionParser
 parser = OptionParser(usage="%prog [options] <TREE_DIR> <OUT>")
-parser.add_option("-m", "--modules", dest="modules",  type="string", default=[], action="append", help="Run these modules");
-parser.add_option("-d", "--dataset", dest="datasets",  type="string", default=[], action="append", help="Process only this dataset (or dataset if specified multiple times)");
-parser.add_option("-D", "--dm", "--dataset-match", dest="datasetMatches",  type="string", default=[], action="append", help="Process only this dataset (or dataset if specified multiple times): REGEXP");
-parser.add_option("-c", "--chunk",   dest="chunks",    type="int",    default=[], action="append", help="Process only these chunks (works only if a single dataset is selected with -d)");
-parser.add_option("-N", "--events",  dest="chunkSize", type="int",    default=500000, help="Default chunk size when splitting trees");
-parser.add_option("-j", "--jobs",    dest="jobs",      type="int",    default=1, help="Use N threads");
-parser.add_option("-p", "--pretend", dest="pretend",   action="store_true", default=False, help="Don't run anything");
-parser.add_option("-T", "--tree-dir",   dest="treeDir",     type="string", default="sf", help="Directory of the friend tree in the file (default: 'sf')");
-parser.add_option("-q", "--queue",   dest="queue",     type="string", default=None, help="Run jobs on lxbatch instead of locally");
-parser.add_option("-t", "--tree",    dest="tree",      default='ttHLepTreeProducerTTH', help="Pattern for tree name");
-parser.add_option("-V", "--vector",  dest="vectorTree", action="store_true", default=True, help="Input tree is a vector");
-parser.add_option("-F", "--add-friend",    dest="friendTrees",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename). Can use {name}, {cname} patterns in the treename") 
-parser.add_option("--FMC", "--add-friend-mc",    dest="friendTreesMC",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename) to MC only. Can use {name}, {cname} patterns in the treename") 
+parser.add_option("-c", "--chunk"  , dest="chunks"  , type="int"   , default=[], action="append", help="Process only these chunks (works only if a single dataset is selected with -d)");
+parser.add_option("-d", "--dataset", dest="datasets", type="string", default=[], action="append", help="Process only this dataset (or dataset if specified multiple times)");
+parser.add_option("-j", "--jobs"   , dest="jobs"   , type="int"    , default=1 , help="Use N threads");
+parser.add_option("-m", "--modules", dest="modules", type="string" , default=[], action="append", help="Run these modules");
+parser.add_option("-n", "--new"    , dest="newOnly", action="store_true", default=False, help="Make only missing trees");
+parser.add_option("-p", "--pretend", dest="pretend", action="store_true", default=False, help="Don't run anything");
+parser.add_option("-q", "--queue"  , dest="queue"  , type="string", default=None, help="Run jobs on lxbatch instead of locally");
+parser.add_option("-t", "--tree"   , dest="tree"   , default='ttHLepTreeProducerTTH', help="Pattern for tree name");
+parser.add_option("-D", "--dm", "--dataset-match"  , dest="datasetMatches",  type="string", default=[], action="append", help="Process only this dataset (or dataset if specified multiple times): REGEXP");
+parser.add_option("-F", "--add-friend"  , dest="friendTrees", action="append", default=[], nargs=2, help="Add a friend tree (treename, filename). Can use {name}, {cname} patterns in the treename") 
+parser.add_option("-L", "--list-modules", dest="listModules", action="store_true", default=False, help="just list the configured modules");
+parser.add_option("-N", "--events"      , dest="chunkSize"  , type="int", default=500000, help="Default chunk size when splitting trees");
+parser.add_option("-T", "--tree-dir"    , dest="treeDir"    , type="string", default="sf", help="Directory of the friend tree in the file (default: 'sf')");
+parser.add_option("-V", "--vector"      , dest="vectorTree" , action="store_true", default=True, help="Input tree is a vector");
+parser.add_option("--log", "--log-dir", dest="logdir", type="string", default=None, help="Directory of stdout and stderr");
 parser.add_option("--FD", "--add-friend-data",    dest="friendTreesData",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename) to data trees only. Can use {name}, {cname} patterns in the treename") 
-parser.add_option("-L", "--list-modules",  dest="listModules", action="store_true", default=False, help="just list the configured modules");
-parser.add_option("-n", "--new",  dest="newOnly", action="store_true", default=False, help="Make only missing trees");
+parser.add_option("--FMC", "--add-friend-mc",    dest="friendTreesMC",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename) to MC only. Can use {name}, {cname} patterns in the treename") 
 (options, args) = parser.parse_args()
 
 if options.listModules:
@@ -263,14 +347,20 @@ jobs = []
 for D in glob(args[0]+"/*"):
     treename = options.tree
     fname    = "%s/%s/%s_tree.root" % (D,options.tree,options.tree)
-    if (not os.path.exists(fname)) and (os.path.exists("%s/%s/tree.root" % (D,options.tree)) ):
-        treename = "tree"
-        fname    = "%s/%s/tree.root" % (D,options.tree)
 
-    if (not os.path.exists(fname)) and (os.path.exists("%s/%s/tree.root.url" % (D,options.tree)) ):
-        treename = "tree"
-        fname    = "%s/%s/tree.root" % (D,options.tree)
-        fname    = open(fname+".url","r").readline().strip()
+    ## THE PSI PART
+    s = os.path.basename(D)
+    treename = "tree"
+    fname    = "%s/%s/tree.root" % (D,options.tree)
+    #fname    = "/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/11/2015-11-21-20-23-00/" + s + ".root"
+    #if (not os.path.exists(fname)) and (os.path.exists("%s/%s/tree.root" % (D,options.tree)) ):
+    #    treename = "tree"
+    #    fname    = "%s/%s/tree.root" % (D,options.tree)
+
+    #if (not os.path.exists(fname)) and (os.path.exists("%s/%s/tree.root.url" % (D,options.tree)) ):
+    #    treename = "tree"
+    #    fname    = "%s/%s/tree.root" % (D,options.tree)
+    #    fname    = open(fname+".url","r").readline().strip()
 
     if os.path.exists(fname) or (os.path.exists("%s/%s/tree.root.url" % (D,options.tree))):
         short = os.path.basename(D)
@@ -283,6 +373,8 @@ for D in glob(args[0]+"/*"):
             if not found: continue
         data =  any(x in short for x in "DoubleMu DoubleEl DoubleEG MuEG MuonEG SingleMu SingleEl".split()) # FIXME
         f = ROOT.TFile.Open(fname)
+        #print "opening dcap://t3se01.psi.ch:22125/" + fname
+        #f = ROOT.TFile.Open("dcap://t3se01.psi.ch:22125/" + fname)
         t = f.Get(treename)
         if not t:
             print "Corrupted ",fname
@@ -317,21 +409,35 @@ print "I have %d task(s) to process" % len(jobs)
 
 if options.queue:
     import os, sys
-    basecmd = "bsub -q {queue} {dir}/lxbatch_runner.sh {dir} {cmssw} python {self} -N {chunkSize} -T '{tdir}' -t {tree} {data} {output}".format(
-                queue = options.queue, dir = os.getcwd(), cmssw = os.environ['CMSSW_BASE'], 
-                self=sys.argv[0], chunkSize=options.chunkSize, tdir=options.treeDir, tree=options.tree, data=args[0], output=args[1]
-            )
+
+    runner = "lxbatch_runner.sh"
+    super  = "bsub -q {queue}".format(queue = options.queue)
+    if options.queue in ["all.q", "short.q", "long.q"]:
+        super  = "qsub -q {queue} -N friender".format(queue = options.queue)
+        runner = "psibatch_runner.sh"
+
+    basecmd = "{dir}/{runner} {dir} {cmssw} python {self} -N {chunkSize} -T {tdir} -t {tree} {data} {output}".format(
+                dir = os.getcwd(), runner=runner, cmssw = os.environ['CMSSW_BASE'], 
+                self=sys.argv[0], chunkSize=options.chunkSize, tdir=options.treeDir, 
+                tree=options.tree, data=args[0], output=args[1])
+    logdir = options.logdir if options.logdir else args[1] 
+    logdir = logdir.rstrip("/")
+
     if options.vectorTree: basecmd += " --vector "
-    friendPost =  "".join(["  -F  %s %s " % (fn,ft) for fn,ft in options.friendTrees])
-    friendPost += "".join([" --FM %s %s " % (fn,ft) for fn,ft in options.friendTreesMC])
-    friendPost += "".join([" --FD %s %s " % (fn,ft) for fn,ft in options.friendTreesData])
-    friendPost += "".join(["  -m  '%s'  " % m for m in options.modules])
+    friendPost =  " ".join([" -F  %s %s" % (fn,ft) for fn,ft in options.friendTrees])
+    friendPost += " ".join(["--FM %s %s" % (fn,ft) for fn,ft in options.friendTreesMC])
+    friendPost += " ".join(["--FD %s %s" % (fn,ft) for fn,ft in options.friendTreesData])
+    friendPost += " ".join([" -m  %s" % m for m in options.modules])
+    
+    #ff = open("submit.sh", "a")
     for (name,fin,fout,data,range,chunk) in jobs:
         if chunk != -1:
-            print "{base} -d {data} -c {chunk} {post}".format(base=basecmd, data=name, chunk=chunk, post=friendPost)
+            cmd = "{super} -o {logdir}/{data}_{chunk}.out -e {logdir}/{data}_{chunk}.err {base} -d {data} -c {chunk} {post}".format(super=super, logdir=logdir, base=basecmd, data=name, chunk=chunk, post=friendPost)
         else:
-            print "{base} -d {data} {post}".format(base=basecmd, data=name, chunk=chunk, post=friendPost)
-        
+            cmd = "{super} -o {logdir}/{data}.out -e {logdir}/{data}.err {base} -d {data} {post}".format(super=super, logdir=logdir, base=basecmd, data=name, chunk=chunk, post=friendPost)
+
+        print cmd
+        os.system(cmd)
     exit()
 
 maintimer = ROOT.TStopwatch()
@@ -343,6 +449,8 @@ def _runIt(myargs):
         ROOT.gEnv.SetValue("XNet.Debug", -1); # suppress output about opening connections
         ROOT.gEnv.SetValue("XrdClientDebug.kUSERDEBUG", -1); # suppress output about opening connections
         fb   = ROOT.TXNetFile(fin+"?readaheadsz=65535")
+    elif "pnfs" in fin:
+        fb = ROOT.TFile.Open("dcap://t3se01.psi.ch:22125/" + fin)
     else:
         fb = ROOT.TFile(fin)
 

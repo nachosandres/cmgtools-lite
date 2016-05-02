@@ -807,6 +807,12 @@ float multiIso_singleWP(float LepGood_miniRelIso, float LepGood_jetPtRatiov2, fl
             abort();
     }
 }
+
+float multiIso_singleWP(float LepGood_miniRelIso, float LepGood_jetPtRatiov2, float LepGood_jetPtRelv2, int wp) {
+    WP::WPId wpid = static_cast<WP::WPId>(wp);
+    return multiIso_singleWP(LepGood_miniRelIso, LepGood_jetPtRatiov2, LepGood_jetPtRelv2, wpid);
+}
+
 float multiIso_multiWP(int LepGood_pdgId, float LepGood_pt, float LepGood_eta, float LepGood_miniRelIso, float LepGood_jetPtRatiov2, float LepGood_jetPtRelv2, WP::WPId wp) {
     switch (wp) {
         case WP::VT: 

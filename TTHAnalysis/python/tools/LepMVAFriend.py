@@ -23,10 +23,15 @@ from CMGTools.TTHAnalysis.leptonMVA import MVATool, CategorizedMVA
 _CommonSpect = [ 
 ]
 _CommonVars = {
+'mvaMultiIso' : [ 
+    MVAVar("LepGood_miniRelIso",lambda x: x.miniRelIso),
+    MVAVar("LepGood_jetPtRelv2",lambda x: x.jetPtRelv2),
+    MVAVar("LepGood_jetPtRatiov2 := min(LepGood_jetPtRatiov2,1.5)", lambda x : min(x.jetPtRatiov2,1.5)),
+],
 'forMoriond16': [
     MVAVar("LepGood_pt",lambda x: x.pt),
     MVAVar("LepGood_eta",lambda x: x.eta),
-    MVAVar("LepGood_jetNDauChargedMVASel",lambda x: x.jetNDauChargedMVASel),
+    #MVAVar("LepGood_jetNDauChargedMVASel",lambda x: x.jetNDauChargedMVASel),
     MVAVar("LepGood_miniRelIsoCharged",lambda x: x.miniRelIsoCharged),
     MVAVar("LepGood_miniRelIsoNeutral",lambda x: x.miniRelIsoNeutral),
     MVAVar("LepGood_jetPtRelv2",lambda x: x.jetPtRelv2),
@@ -38,7 +43,7 @@ _CommonVars = {
 ], 'forMoriond16elmvaIdPhys14': [
     MVAVar("LepGood_pt",lambda x: x.pt),
     MVAVar("LepGood_eta",lambda x: x.eta),
-    MVAVar("LepGood_jetNDauChargedMVASel",lambda x: x.jetNDauChargedMVASel),
+    #MVAVar("LepGood_jetNDauChargedMVASel",lambda x: x.jetNDauChargedMVASel),
     MVAVar("LepGood_miniRelIsoCharged",lambda x: x.miniRelIsoCharged),
     MVAVar("LepGood_miniRelIsoNeutral",lambda x: x.miniRelIsoNeutral),
     MVAVar("LepGood_jetPtRelv2",lambda x: x.jetPtRelv2),
@@ -93,12 +98,15 @@ class LeptonMVA:
         if "V2" in training:
             muVars = _CommonVars[training][:] + _MuonVars[:]
             elVars = _CommonVars[training][:] + _ElectronVars['V2'][:]
+        elif "mvaMultiIso" in training:
+            muVars = _CommonVars[training][:]
+            elVars = _CommonVars[training][:]
         elif "forMoriond16" in training:
             muVars = _CommonVars[training][:] + _MuonVars[:]
             elVars = _CommonVars[training][:] + _ElectronVars[training][:]
         if not muVars:
             self.mu = lambda mu, ncorr : -37.0;
-        elif "forMoriond16" in training:
+        elif "forMoriond16" in training or "mvaMultiIso" in training:
             self.mu = CategorizedMVA([
                 ( lambda x: True , MVATool("BDTG",basepathmu%"mu",_CommonSpect,muVars) ),
             ])
@@ -109,7 +117,7 @@ class LeptonMVA:
             ])
         if not elVars:
             self.el = lambda el, ncorr : -37.0;
-        elif "forMoriond16" in training:
+        elif "forMoriond16" in training or "mvaMultiIso" in training:
             self.el = CategorizedMVA([
                 ( lambda x: True, MVATool("BDTG",basepathel%"el",_CommonSpect,elVars) ),
             ])

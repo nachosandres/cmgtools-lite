@@ -1,0 +1,16 @@
+weight: appWeight_ewkDown_Loop*(!hasTTT_Loop)
+
+change: LepGood1_(\w+) : LepGood_\1[i1_Loop[]]
+change: LepGood2_(\w+) : LepGood_\1[i2_Loop[]]
+change: LepGood3_(\w+) : LepGood_\1[i3_Loop[]]
+change: nJet30\b       : nJet30_Mini
+change: htJet30j\b     : htJet30j_Mini
+change: nBJetMedium30\b: nBJetMedium30_Mini
+change: BR\b           : BR_Loop
+change: SR\b           : SR_Loop
+change: hasTTT\b       : hasTTT_Loop
+change: hasTTF\b       : hasTTF_Loop
+change: hasTFF\b       : hasTFF_Loop
+change: hasFFF\b       : hasFFF_Loop
+change: appWeight\b    : appWeight_Loop
+

@@ -1,0 +1,57 @@
+### STANDARD SELECTION
+
+
+# Signals
+_sig_TChiNeu_SlepSneu_750_100    : TChiNeuSlepSneu_mCh750_mChi100    : xsec ; Label="750/100", FillColor=ROOT.kBlue-1
+_sig_TChiNeu_SlepSneu_450_300    : TChiNeuSlepSneu_mCh450_mChi300    : xsec ; Label="450/300", FillColor=ROOT.kGreen-1
+_sig_TChiNeu_SlepSneu_300_270    : TChiNeuSlepSneu_mCh300_mChi270    : xsec ; Label="300/270", FillColor=ROOT.kRed-1
+
+_sig_TChiNeu_SlepSneu_450_300_SS : TChiNeuSlepSneu_mCh450_mChi300_SS : xsec ; Label="450/300 (SS)", FillColor=ROOT.kGreen-4
+_sig_TChiNeu_SlepSneu_300_270_SS : TChiNeuSlepSneu_mCh300_mChi270_SS : xsec ; Label="300/270 (SS)", FillColor=ROOT.kRed-4
+
+_sig_TChiNeu_WZ_350_100          : TChiNeuWZ_mCh350_mChi100          : xsec ; Label="350/100", FillColor=ROOT.kBlue-1
+_sig_TChiNeu_WZ_350_20           : TChiNeuWZ_mCh350_mChi20           : xsec ; Label="350/20" , FillColor=ROOT.kBlue-4
+_sig_TChiNeu_WZ_200_100          : TChiNeuWZ_mCh200_mChi100          : xsec ; Label="200/100", FillColor=ROOT.kGreen-1
+_sig_TChiNeu_WZ_150_120          : TChiNeuWZ_mCh150_mChi120          : xsec ; Label="150/120 (deg)", FillColor=ROOT.kRed-1
+
+_sig_TChiNeu_WZ_350_100_OS       : TChiNeuWZ_mCh350_mChi100_OS       : xsec ; Label="350/100 (OS)", FillColor=ROOT.kBlue-1
+_sig_TChiNeu_WZ_350_20_OS        : TChiNeuWZ_mCh350_mChi20_OS        : xsec ; Label="350/20 (OS)" , FillColor=ROOT.kBlue-4
+_sig_TChiNeu_WZ_200_100_OS       : TChiNeuWZ_mCh200_mChi100_OS       : xsec ; Label="200/100 (OS)", FillColor=ROOT.kGreen-1
+_sig_TChiNeu_WZ_150_120_OS       : TChiNeuWZ_mCh150_mChi120_OS       : xsec ; Label="150/120 (OS\, deg)", FillColor=ROOT.kRed-1, SkipMe=True
+
+_sig_TChiNeu_WH_250_20           : TChiNeuWH_mCh250_mChi20           : xsec ; Label="250/20", FillColor=ROOT.kBlue-1
+_sig_TChiNeu_WH_150_20           : TChiNeuWH_mCh150_mChi20           : xsec ; Label="150/20", FillColor=ROOT.kGreen-1
+
+_sig_TChiNeu_WH_250_20_SL        : TChiNeuWH_mCh250_mChi20_SL        : xsec ; Label="250/20", FillColor=ROOT.kBlue-1
+_sig_TChiNeu_WH_150_30_SL        : TChiNeuWH_mCh150_mChi30_SL        : xsec ; Label="150/30", FillColor=ROOT.kGreen-1
+
+_sig_TChiChi_SlepSneu_600_50     : TChiChiSlepSneu_mCh600_mChi50     : xsec ; Label="600/50", FillColor=ROOT.kBlue-1
+_sig_TChiChi_SlepSneu_350_200    : TChiChiSlepSneu_mCh350_mChi200    : xsec ; Label="350/200", FillColor=ROOT.kGreen-1
+
+
+
+# Prompt backgrounds
+_standard_prompt_WZ              : WZTo3LNu                          : xsec ; Label="WZ", FillColor=ROOT.kGray
+
+
+#_standard_prompt_WZ              : WZTo3LNu                          : 1.22*xsec ; Label="WZ", FillColor=ROOT.kOrange
+#_standard_prompt_ttW: TTWToLNu : xsec ; FillColor=ROOT.kGreen+3, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="ttW (prompt)", NormSystematic=0.2
+#_standard_prompt_ttZH: TTZToLLNuNu : xsec ; FillColor=ROOT.kGreen-6, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="ttZ/H (prompt)", NormSystematic=0.2
+#_standard_prompt_ttZH: TTLLJets_m1to10 : xsec ; FillColor=ROOT.kGreen-6, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="ttZ/H (prompt)", NormSystematic=0.2
+#_standard_prompt_ttZH: TTHnobb : xsec; FillColor=ROOT.kGreen-6, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="ttZ/H (prompt)", NormSystematic=0.2
+#_standard_prompt_WWss: WpWpJJ : xsec; FillColor=ROOT.kOrange-3, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="WWss (prompt)", NormSystematic=0.3
+#_standard_prompt_XG: TTGJets : xsec; FillColor=ROOT.kViolet+2, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="X+G (conv.)", NormSystematic=0.5
+#_standard_prompt_XG: TGJets : xsec; FillColor=ROOT.kViolet+2, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="X+G (conv.)", NormSystematic=0.5
+#_standard_prompt_XG: WGToLNuG : xsec; FillColor=ROOT.kViolet+2, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="X+G (conv.)", NormSystematic=0.5
+#_standard_prompt_XG: ZGTo2LG : xsec; FillColor=ROOT.kViolet+2, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="X+G (conv.)", NormSystematic=0.5
+#_standard_prompt_Rares: WWDouble : xsec; FillColor=ROOT.kMagenta-7, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="Rares", NormSystematic=0.5
+#_standard_prompt_Rares: ZZTo4L: xsec ; FillColor=ROOT.kMagenta-7, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="Rares", NormSystematic=0.5
+#_standard_prompt_Rares: tZq_ll : xsec ; FillColor=ROOT.kMagenta-7, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="Rares", NormSystematic=0.5
+#_standard_prompt_Rares: GGHZZ4L : xsec ; FillColor=ROOT.kMagenta-7, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="Rares", NormSystematic=0.5
+#_standard_prompt_Rares: VHToNonbb : xsec ; FillColor=ROOT.kMagenta-7, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="Rares", NormSystematic=0.5
+#_standard_prompt_Rares: WWZ : xsec ; FillColor=ROOT.kMagenta-7, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="Rares", NormSystematic=0.5
+#_standard_prompt_Rares: ZZZ : xsec; FillColor=ROOT.kMagenta-7, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="Rares", NormSystematic=0.5
+#_standard_prompt_Rares: WZZ : xsec; FillColor=ROOT.kMagenta-7, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="Rares", NormSystematic=0.5
+#_standard_prompt_Rares: TTTT : xsec; FillColor=ROOT.kMagenta-7, FakeRate="susy-multilepton/standard_sel.txt\,susy-multilepton/load_is_2_prompt_loop.txt", Label="Rares", NormSystematic=0.5
+
+

@@ -4,7 +4,7 @@ process.load('Configuration.StandardSequences.Services_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 # define your favorite global tag (OLD GTs)
-#process.GlobalTag.globaltag = 'PHYS14_25_V2::All'  
+#process.GlobalTag.globaltag = '74X_mcRun2_asymptotic_v2'
 # define your favorite global tag (newer GTs in condDBv2)
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag as customiseGlobalTag
 process.GlobalTag = customiseGlobalTag(process.GlobalTag, globaltag = '74X_mcRun2_asymptotic_v2')
