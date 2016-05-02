@@ -99,16 +99,10 @@ class MCAnalysis:
             elif (not os.path.exists(rootfile)) and os.path.exists("%s/%s/%s/tree.root" % (options.path, field[1].strip(), treename)):
                 # Heppy calls the tree just 'tree.root'
                 rootfile = "%s/%s/%s/tree.root" % (options.path, field[1].strip(), treename)
-                #if field[1].strip().find("WZTo3LNu") > -1: treename = "tree"
-                #else: treename = "demo/events"
-                #treename = "tree"
             elif (not os.path.exists(rootfile)) and os.path.exists("%s/%s/%s/tree.root.url" % (options.path, field[1].strip(), treename)):
                 # Heppy calls the tree just 'tree.root'
                 rootfile = "%s/%s/%s/tree.root" % (options.path, field[1].strip(), treename)
                 rootfile = open(rootfile+".url","r").readline().strip()
-                #if field[1].strip().find("WZTo3LNu") > -1: treename = "tree"
-                #else: treename = "demo/events"
-                #treename = "tree"
             pckfile = options.path+"/%s/skimAnalyzerCount/SkimReport.pck" % field[1].strip()
             tty = TreeToYield(rootfile, options, settings=extra, name=pname, cname=field[1].strip(), objname=objname)
             if signal: 
@@ -128,13 +122,9 @@ class MCAnalysis:
                 if ('Sum Weights' in counters) and options.weight:
                     nevt = counters['Sum Weights']
                     scale = "genWeight*%s/%g" % (field[2], 0.001*nevt)
-                    #scale = "0.2094/%g" % (0.001*nevt) 
-                    #scale = "1"
                 else:
                     nevt = counters['All Events']
                     scale = "%s/%g" % (field[2], 0.001*nevt)
-                    #scale = "0.2094/%g" % (0.001*nevt) 
-                    #scale = "1"
                 if len(field) == 4: scale += "*("+field[3]+")"
                 for p0,s in options.processesToScale:
                     for p in p0.split(","):

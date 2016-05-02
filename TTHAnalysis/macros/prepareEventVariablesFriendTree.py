@@ -47,9 +47,9 @@ MODULES.append( ('leptonJetReCleanerSusyRA5', lambda : LeptonJetReCleaner("Mini"
 ## RA7 lepton collections: looser multiIso, no tightCharge, no iso Emulation
 MODULES.append( ('leptonJetReCleanerSusyRA7', lambda : LeptonJetReCleaner("Mini", 
                    lambda lep : lep.miniRelIso < 0.4 and _susy2lss_lepId_CBloose(lep), 
-                   lambda lep : _susy3l_lepId_loosestFO(lep) and _susy2lss_lepId_IPcuts(lep), # cuts applied on top of loose
-                   lambda lep,ht : _susy2lss_lepId_IPcuts(lep) and _susy3l_lepId_loosestFO(lep), # cuts applied on top of loose
-                   lambda lep,ht : _susy3l_multiIso(lep) and _susy3l_lepId_CB(lep), # cuts applied on top of loose
+                   lambda lep : lep.pt>10 and _susy3l_lepId_loosestFO(lep) and _susy2lss_lepId_IPcuts(lep), # cuts applied on top of loose
+                   lambda lep,ht : lep.pt>10 and _susy2lss_lepId_IPcuts(lep) and _susy3l_lepId_loosestFO(lep), # cuts applied on top of loose
+                   lambda lep,ht : lep.pt>10 and _susy3l_multiIso(lep) and _susy3l_lepId_CB(lep), # cuts applied on top of loose
                    cleanJet = lambda lep,jet,dr : dr<0.4,
                    selectJet = lambda jet: abs(jet.eta)<2.4,
                    isFastSim = isFastSim,
@@ -58,31 +58,18 @@ MODULES.append( ('leptonJetReCleanerSusyRA7', lambda : LeptonJetReCleaner("Mini"
                    doVeto = "RA7",
                    CSVbtagFileName = btagSF, EFFbtagFileName = btagEFF, CSVbtagFileNameFastSim = btagSF_FastSim ) ))
 
-#MODULES.append( ('leptonJetReCleanerSusyRA7', lambda : LeptonJetReCleaner("Mini", 
-#                   lambda lep : lep.miniRelIso < 0.4 and _susy2lss_lepId_CBloose(lep), 
-#                   lambda lep : lep.pt>10 and _susy3l_lepId_loosestFO(lep) and _susy2lss_lepId_IPcuts(lep), # cuts applied on top of loose
-#                   lambda lep,ht : lep.pt>10 and _susy2lss_lepId_IPcuts(lep) and _susy3l_lepId_loosestFO(lep), # cuts applied on top of loose
-#                   lambda lep,ht : lep.pt>10 and _susy3l_multiIso(lep) and _susy3l_lepId_CB(lep), # cuts applied on top of loose
-#                   cleanJet = lambda lep,jet,dr : dr<0.4,
-#                   selectJet = lambda jet: abs(jet.eta)<2.4,
-#                   isFastSim = isFastSim,
-#                   jetPt = 30,
-#                   bJetPt = 30,
-#                   doVeto = "RA7",
-#                   CSVbtagFileName = btagSF, EFFbtagFileName = btagEFF, CSVbtagFileNameFastSim = btagSF_FastSim ) ))
-
-#MODULES.append( ('leptonJetReCleanerSusyRA7mva', lambda : LeptonJetReCleaner("Mini", 
-#                   lambda lep : lep.miniRelIso < 0.4 and _susy2lss_lepId_CBloose(lep), 
-#                   lambda lep : lep.pt>10 and _susy3l_lepId_loosestFO(lep) and _susy2lss_lepId_IPcuts(lep), # cuts applied on top of loose
-#                   lambda lep,ht : lep.pt>10 and _susy2lss_lepId_IPcuts(lep) and _susy3l_lepId_loosestFO(lep), # cuts applied on top of loose
-#                   lambda lep,ht : lep.mvaTTHMoriond16>0.75 and lep.sip3d<8 and (abs(lep.pdgId)==11 or lep.mediumMuonId>0),
-#                   cleanJet = lambda lep,jet,dr : dr<0.4,
-#                   selectJet = lambda jet: abs(jet.eta)<2.4,
-#                   isFastSim = isFastSim,
-#                   jetPt = 30,
-#                   bJetPt = 30,
-#                   doVeto = "RA7",
-#                   CSVbtagFileName = btagSF, EFFbtagFileName = btagEFF, CSVbtagFileNameFastSim = btagSF_FastSim ) ))
+MODULES.append( ('leptonJetReCleanerSusyRA7mva', lambda : LeptonJetReCleaner("Mini", 
+                   lambda lep : lep.miniRelIso < 0.4 and _susy2lss_lepId_CBloose(lep), 
+                   lambda lep : lep.pt>10 and _susy3l_lepId_loosestFO(lep) and _susy2lss_lepId_IPcuts(lep), # cuts applied on top of loose
+                   lambda lep,ht : lep.pt>10 and _susy2lss_lepId_IPcuts(lep) and _susy3l_lepId_loosestFO(lep), # cuts applied on top of loose
+                   lambda lep,ht : lep.mvaTTHMoriond16>0.75 and lep.sip3d<8 and (abs(lep.pdgId)==11 or lep.mediumMuonId>0),
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<2.4,
+                   isFastSim = isFastSim,
+                   jetPt = 30,
+                   bJetPt = 30,
+                   doVeto = "RA7",
+                   CSVbtagFileName = btagSF, EFFbtagFileName = btagEFF, CSVbtagFileNameFastSim = btagSF_FastSim ) ))
 
 #MODULES.append( ('leptonJetReCleanerSusyInSitu', lambda : LeptonJetReCleaner("MiniInSitu", 
 #                lambda lep : lep.miniRelIso < 0.4 and _susy2lss_lepId_CBloose(lep), 
@@ -93,6 +80,13 @@ MODULES.append( ('leptonJetReCleanerSusyRA7', lambda : LeptonJetReCleaner("Mini"
 #                selectJet = lambda jet: abs(jet.eta)<2.4,
 #                isMC = True, # SET TO THE RIGHT THING
 #                CSVbtagFileName = btagSF, EFFbtagFileName = btagEFF ) ))
+#MODULES.append( ('leptonJetReCleanerSusyFO', lambda : LeptonJetReCleaner("FOsel", 
+#                lambda lep : lep.miniRelIso < 0.4 and _susy2lss_lepId_CBloose(lep), 
+#                lambda lep : (_susy2lss_lepId_loosestFO(lep) and _susy2lss_lepId_IPcuts(lep)), # cuts applied on top of previous selection
+#                lambda lep,ht : _susy2lss_lepId_IPcuts(lep) and (_susy2lss_lepId_loosestFO(lep) if ht>300 else _susy2lss_lepId_tighterFO(lep)),
+#                cleanJet = lambda lep,jet,dr : (lep.conept > (10 if abs(lep.pdgId)==13 else 15) and dr < 0.4),
+#                selectJet = lambda jet: abs(jet.eta)<2.4,
+#                isMC = True ) )) # SET TO THE RIGHT THING
 
 # RA5 stuff
 #FRname=utility_files_dir+"/FakeRatesUCSXMethod_301115_withEWKsyst_v6.root"
@@ -123,21 +117,15 @@ RA7_puweights = utility_files_dir+"/ra7_puWeights.root::pileup"
 
 MODULES.append( ('leptonChoiceRA5', lambda : LeptonChoiceRA5("Loop","Mini",whichApplication="Fakes",lepChoiceMethod="TT_loopTF_2FF",FRFileName=FRname,isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF))) 
 MODULES.append( ('leptonChoiceRA7', lambda : LeptonChoiceRA7("Loop","Mini",whichApplication="Fakes",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
-#MODULES.append( ('leptonChoiceEWK', lambda : LeptonChoiceEWK("Loop","Mini",whichApplication="Fakes",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
+MODULES.append( ('leptonChoiceEWK', lambda : LeptonChoiceEWK("Loop","Mini",whichApplication="Fakes",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
 MODULES.append( ('leptonChoiceEWKtau', lambda : LeptonChoiceEWK("Loop","Mini",whichApplication="Taus",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
+
 #MODULES.append( ('leptonChoiceRA5_FO', lambda : LeptonChoiceRA5("SortFO","Mini",whichApplication="Fakes",lepChoiceMethod="sort_FO",FRFileName=FRname,isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF))) 
 #MODULES.append( ('leptonChoiceRA5_InSitu', lambda : LeptonChoiceRA5("InSitu","MiniInSitu",whichApplication="Fakes",lepChoiceMethod="TT_loopTF_2FF",FRFileName="InSituHardCoded",isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF))) 
 MODULES.append( ('leptonChoiceRA5_Flips', lambda : LeptonChoiceRA5("Flips","Mini",whichApplication="Flips",FRFileName="hardcodedUCSx",isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF)))
 #MODULES.append( ('leptonChoiceRA5_WZ', lambda : LeptonChoiceRA5("WZ","Mini",whichApplication="WZ",isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF)))
 
 
-#MODULES.append( ('leptonJetReCleanerSusyFO', lambda : LeptonJetReCleaner("FOsel", 
-#                lambda lep : lep.miniRelIso < 0.4 and _susy2lss_lepId_CBloose(lep), 
-#                lambda lep : (_susy2lss_lepId_loosestFO(lep) and _susy2lss_lepId_IPcuts(lep)), # cuts applied on top of previous selection
-#                lambda lep,ht : _susy2lss_lepId_IPcuts(lep) and (_susy2lss_lepId_loosestFO(lep) if ht>300 else _susy2lss_lepId_tighterFO(lep)),
-#                cleanJet = lambda lep,jet,dr : (lep.conept > (10 if abs(lep.pdgId)==13 else 15) and dr < 0.4),
-#                selectJet = lambda jet: abs(jet.eta)<2.4,
-#                isMC = True ) )) # SET TO THE RIGHT THING
 from CMGTools.TTHAnalysis.tools.leptonFakeRateQCDVars import LeptonFakeRateQCDVars
 #--- TTH instances
 MODULES.append( ('leptonFakeRateQCDVarsTTH', lambda : LeptonFakeRateQCDVars(
@@ -188,7 +176,6 @@ putruefiledata_up = utility_files_dir+"/Cert_246908-260627_13TeV_PromptReco_Coll
 putruefiledata_down = utility_files_dir+"/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_pileup_69000_50_m5pc.root"
 putruefilemc = utility_files_dir+"/zjets-4-nvtx_plots_true.root"
 
-#putruefilemc = "/afs/cern.ch/user/p/peruzzi/work/cmgtools/CMSSW_7_4_14/src/CMGTools/TTHAnalysis/python/plotter/susy-multilepton/for-pu-rew/pu_plots_true_miniAODv2/zjets-4-nvtx_plots_true.root"
 MODULES.append ( ('puWeightsTrue_central', lambda : VertexWeightFriend(putruefilemc,putruefiledata_central,"nTrueInt_signal","pileup",verbose=True,vtx_coll_to_reweight="nTrueInt",name="vtxWeight") ) )
 MODULES.append ( ('puWeightsTrue_up', lambda : VertexWeightFriend(putruefilemc,putruefiledata_up,"nTrueInt_signal","pileup",verbose=True,vtx_coll_to_reweight="nTrueInt",postfix="up",name="vtxWeightUp") ) )
 MODULES.append ( ('puWeightsTrue_down', lambda : VertexWeightFriend(putruefilemc,putruefiledata_down,"nTrueInt_signal","pileup",verbose=True,vtx_coll_to_reweight="nTrueInt",postfix="down",name="vtxWeightDown") ) )
@@ -348,19 +335,14 @@ for D in glob(args[0]+"/*"):
     treename = options.tree
     fname    = "%s/%s/%s_tree.root" % (D,options.tree,options.tree)
 
-    ## THE PSI PART
-    s = os.path.basename(D)
-    treename = "tree"
-    fname    = "%s/%s/tree.root" % (D,options.tree)
-    #fname    = "/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/11/2015-11-21-20-23-00/" + s + ".root"
-    #if (not os.path.exists(fname)) and (os.path.exists("%s/%s/tree.root" % (D,options.tree)) ):
-    #    treename = "tree"
-    #    fname    = "%s/%s/tree.root" % (D,options.tree)
+    if (not os.path.exists(fname)) and (os.path.exists("%s/%s/tree.root" % (D,options.tree)) ):
+        treename = "tree"
+        fname    = "%s/%s/tree.root" % (D,options.tree)
 
-    #if (not os.path.exists(fname)) and (os.path.exists("%s/%s/tree.root.url" % (D,options.tree)) ):
-    #    treename = "tree"
-    #    fname    = "%s/%s/tree.root" % (D,options.tree)
-    #    fname    = open(fname+".url","r").readline().strip()
+    if (not os.path.exists(fname)) and (os.path.exists("%s/%s/tree.root.url" % (D,options.tree)) ):
+        treename = "tree"
+        fname    = "%s/%s/tree.root" % (D,options.tree)
+        fname    = open(fname+".url","r").readline().strip()
 
     if os.path.exists(fname) or (os.path.exists("%s/%s/tree.root.url" % (D,options.tree))):
         short = os.path.basename(D)
@@ -373,8 +355,6 @@ for D in glob(args[0]+"/*"):
             if not found: continue
         data =  any(x in short for x in "DoubleMu DoubleEl DoubleEG MuEG MuonEG SingleMu SingleEl".split()) # FIXME
         f = ROOT.TFile.Open(fname)
-        #print "opening dcap://t3se01.psi.ch:22125/" + fname
-        #f = ROOT.TFile.Open("dcap://t3se01.psi.ch:22125/" + fname)
         t = f.Get(treename)
         if not t:
             print "Corrupted ",fname

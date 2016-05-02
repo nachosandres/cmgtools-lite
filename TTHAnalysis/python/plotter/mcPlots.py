@@ -496,105 +496,6 @@ def doRatioHists(pspec,pmap,total,totalSyst,maxRange,fixRange=False,fitRatio=Non
         ratio.Draw("E SAME" if ratio.ClassName() != "TGraphAsymmErrors" else "PZ SAME");
     return (ratios, unity, unity0, line)
 
-#def doRatioHists(pspec,pmap,total,totalSyst,maxRange,fitRatio=None,errorsOnRef=True,ratioNums="signal",ratioDen="background"):
-#    numkey = "data" 
-#    if "data" not in pmap: 
-#        if len(pmap) == 4 and 'signal' in pmap and 'background' in pmap:
-#            # do this first
-#            total.GetXaxis().SetLabelOffset(999) ## send them away
-#            total.GetXaxis().SetTitleOffset(999) ## in outer space
-#            total.GetYaxis().SetLabelSize(0.05)
-#            # then we can overwrite total with background
-#            numkey = 'signal'
-#            total     = pmap['background']
-#            totalSyst = pmap['background']
-#        else:    
-#            return (None,None,None,None)
-#    ratio = None
-#    if hasattr(pmap[numkey], 'poissonGraph'):
-#        ratio = pmap[numkey].poissonGraph.Clone("data_div"); 
-#        for i in xrange(ratio.GetN()):
-#            x    = ratio.GetX()[i]
-#            div  = total.GetBinContent(total.GetXaxis().FindBin(x))
-#            ratio.SetPoint(i, x, ratio.GetY()[i]/div if div > 0 else 0)
-#            ratio.SetPointError(i, ratio.GetErrorXlow(i), ratio.GetErrorXhigh(i), 
-#                                   ratio.GetErrorYlow(i)/div  if div > 0 else 0, 
-#                                   ratio.GetErrorYhigh(i)/div if div > 0 else 0) 
-#    else:
-#        ratio = pmap[numkey].Clone("data_div"); 
-#        ratio.Divide(total)
-#    unity  = totalSyst.Clone("sim_div");
-#    unity0 = total.Clone("sim_div");
-#    rmin, rmax =  1,1
-#    for b in xrange(1,unity.GetNbinsX()+1):
-#        e,e0,n = unity.GetBinError(b), unity0.GetBinError(b), unity.GetBinContent(b)
-#        unity.SetBinContent(b, 1 if n > 0 else 0)
-#        unity0.SetBinContent(b,  1 if n > 0 else 0)
-#        if errorsOnRef:
-#            unity.SetBinError(b, e/n if n > 0 else 0)
-#            unity0.SetBinError(b, e0/n if n > 0 else 0)
-#        else:
-#            unity.SetBinError(b, 0)
-#            unity0.SetBinError(b, 0)
-#        rmin = min([ rmin, 1-2*e/n if n > 0 else 1])
-#        rmax = max([ rmax, 1+2*e/n if n > 0 else 1])
-#    if ratio.ClassName() != "TGraphAsymmErrors":
-#        for b in xrange(1,unity.GetNbinsX()+1):
-#            if ratio.GetBinContent(b) == 0: continue
-#            rmin = min([ rmin, ratio.GetBinContent(b) - 2*ratio.GetBinError(b) ]) 
-#            rmax = max([ rmax, ratio.GetBinContent(b) + 2*ratio.GetBinError(b) ])  
-#    else:
-#        for i in xrange(ratio.GetN()):
-#            rmin = min([ rmin, ratio.GetY()[i] - 2*ratio.GetErrorYlow(i)  ]) 
-#            rmax = max([ rmax, ratio.GetY()[i] + 2*ratio.GetErrorYhigh(i) ])  
-#    if rmin < maxRange[0]: rmin = maxRange[0]; 
-#    if rmax > maxRange[1]: rmax = maxRange[1];
-#    if (rmax > 3 and rmax <= 3.4): rmax = 3.4
-#    if (rmax > 2 and rmax <= 2.4): rmax = 2.4
-#    unity.SetFillStyle(1001);
-#    unity.SetFillColor(ROOT.kCyan);
-#    unity.SetMarkerStyle(1);
-#    unity.SetMarkerColor(ROOT.kCyan);
-#    unity0.SetFillStyle(1001);
-#    unity0.SetFillColor(53);
-#    unity0.SetMarkerStyle(1);
-#    unity0.SetMarkerColor(53);
-#    ROOT.gStyle.SetErrorX(0.5);
-#    if errorsOnRef:
-#        unity.Draw("E2");
-#    else:
-#        unity.Draw("AXIS");
-#    if fitRatio != None:
-#        from CMGTools.TTHAnalysis.tools.plotDecorations import fitTGraph
-#        fitTGraph(ratio,order=fitRatio)
-#        unity.SetFillStyle(3013);
-#        unity0.SetFillStyle(3013);
-#        if errorsOnRef:
-#            unity.Draw("AXIS SAME");
-#            unity0.Draw("E2 SAME");
-#    else:
-#        if total != totalSyst and errorsOnRef:
-#            unity0.Draw("E2 SAME");
-#    unity.GetYaxis().SetRangeUser(rmin,rmax);
-#    unity.GetXaxis().SetTitleSize(0.14)
-#    unity.GetYaxis().SetTitleSize(0.14)
-#    unity.GetXaxis().SetLabelSize(0.11)
-#    unity.GetYaxis().SetLabelSize(0.11)
-#    unity.GetYaxis().SetNdivisions(505)
-#    unity.GetYaxis().SetDecimals(True)
-#    unity.GetYaxis().SetTitle("Data/Pred.")
-#    unity.GetYaxis().SetTitleOffset(0.52);
-#    total.GetXaxis().SetLabelOffset(999) ## send them away
-#    total.GetXaxis().SetTitleOffset(999) ## in outer space
-#    total.GetYaxis().SetLabelSize(0.05)
-#    #ratio.SetMarkerSize(0.7*ratio.GetMarkerSize()) # no it is confusing
-#    #$ROOT.gStyle.SetErrorX(0.0);
-#    line = ROOT.TLine(unity.GetXaxis().GetXmin(),1,unity.GetXaxis().GetXmax(),1)
-#    line.SetLineWidth(2);
-#    line.SetLineColor(58);
-#    line.Draw("L")
-#    ratio.Draw("E SAME" if ratio.ClassName() != "TGraphAsymmErrors" else "PZ SAME");
-#    return (ratio, unity, unity0, line)
 
 def doStatTests(total,data,test,legendCorner):
     #print "Stat tests for %s:" % total.GetName()
@@ -632,7 +533,6 @@ def doStatTests(total,data,test,legendCorner):
 
 legend_ = None;
 def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,mcStyle="F",legWidth=0.18,legBorder=True,sf=0.0):
-        print "my sf is " + str(sf)
         if (corner == None): return
         total = sum([x.Integral() for x in pmap.itervalues()])
         sigEntries = []; bgEntries = []
@@ -663,20 +563,21 @@ def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,
             (x1,y1,x2,y2) = (.5, .33 + textSize*max(nentries-3,0), .5+legWidth, .15)
         elif corner == "BL":
             (x1,y1,x2,y2) = (.2, .33 + textSize*max(nentries-3,0), .2+legWidth, .15)
-        
-        if sf != 0:
-            lx = ROOT.TLatex()
-            #lx = ROOT.TLatex(x1,y1-0.3,"SF_{MC} = %3.3f" % (sf))
-            lx.SetTextFont(42)
-            lx.SetTextColor(ROOT.kRed)
-            lx.SetTextSize(textSize)
-            lx.SetTextAlign(22)
-            print x1
-            print y1
-            #lx.DrawLatex(x1,y1-0.3,"SF_{MC} = %3.3f" % (sf))
-            lx.DrawLatex(0.8,0.5,"SF_{MC} = %3.3f" % (sf))
-            global lx_
-            lx_ = lx
+       
+        #FIXME 
+        #if sf != 0:
+        #    lx = ROOT.TLatex()
+        #    #lx = ROOT.TLatex(x1,y1-0.3,"SF_{MC} = %3.3f" % (sf))
+        #    lx.SetTextFont(42)
+        #    lx.SetTextColor(ROOT.kRed)
+        #    lx.SetTextSize(textSize)
+        #    lx.SetTextAlign(22)
+        #    print x1
+        #    print y1
+        #    #lx.DrawLatex(x1,y1-0.3,"SF_{MC} = %3.3f" % (sf))
+        #    lx.DrawLatex(0.8,0.5,"SF_{MC} = %3.3f" % (sf))
+        #    global lx_
+        #    lx_ = lx
         leg = ROOT.TLegend(x1,y1,x2,y2)
         leg.SetFillColor(0)
         leg.SetShadowColor(0)
@@ -867,6 +768,7 @@ class PlotMaker:
                 # 
                 if not makeCanvas and not self._options.printPlots: continue
                 doRatio = self._options.showRatio and ("TH2" not in total.ClassName())
+                #with --emptyStack these lines are not needed anymore
                 #doRatio = self._options.showRatio and ('data' in pmap or (self._options.plotmode != "stack")) and ("TH2" not in total.ClassName())
                 #doRatio = self._options.showRatio and ('data' in pmap or (self._options.plotmode != "stack" and len(pmap) == 4)) and ("TH2" not in total.ClassName())
                 islog = pspec.hasOption('Logy'); 
