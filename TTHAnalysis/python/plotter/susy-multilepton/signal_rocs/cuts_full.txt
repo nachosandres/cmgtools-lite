@@ -1,9 +1,0 @@
-mu     : abs(LepGood_pdgId) == 13
-rap    : (abs(LepGood_pdgId) == 13 && abs(LepGood_eta) < 2.4) || (abs(LepGood_pdgId) == 11 && abs(LepGood_eta) < 2.5)
-pt20   : LepGood_pt > 20
-dxy    : abs(LepGood_dxy) < 0.05
-dz     : abs(LepGood_dz) < 0.1
-sip    : LepGood_sip3d < 4
-id     : (abs(LepGood_pdgId) == 13 && LepGood_mediumMuonId > 0) || (abs(LepGood_pdgId) == 11 && LepGood_mvaIdSpring15>=0.87+(0.60-0.87)*(abs(LepGood_eta)>0.8)+(+0.17-0.60)*(abs(LepGood_eta)>1.479))
-conv   : abs(LepGood_pdgId) != 11 || (LepGood_convVeto && LepGood_lostHits == 0)
-hlteml : abs(LepGood_pdgId) != 11 || (LepGood_hadronicOverEm < 0.08 && abs(LepGood_dEtaScTrkIn) < 0.01 && LepGood_eInvMinusPInv < 0.01 && ((abs(LepGood_etaSc) < 1.479 && LepGood_sigmaIEtaIEta < 0.011 && abs(LepGood_dPhiScTrkIn) < 0.04) || (abs(LepGood_etaSc) > 1.479 && LepGood_sigmaIEtaIEta < 0.031 && abs(LepGood_dPhiScTrkIn) < 0.08)) && LepGood_mvaIdSpring15 > -0.70+(-0.83+0.70)*(abs(LepGood_eta)>0.8)+(-0.92+0.83)*(abs(LepGood_eta)>1.479))

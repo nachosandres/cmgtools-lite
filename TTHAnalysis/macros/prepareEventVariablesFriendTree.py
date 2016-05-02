@@ -245,11 +245,11 @@ from CMGTools.TTHAnalysis.tools.LepMVAFriend import LepMVAFriend
 #MODULES.append( ('LepMVAFriendMoriond16', lambda: LepMVAFriend((os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/tth/%s_BDTG.weights.xml",
 #                                                                os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/tth/%s_BDTG.weights.xml",),
 #                                                               training="forMoriond16", label="TTHMoriond16")) )
-MODULES.append( ('LepMVAFriendMoriond16', lambda: LepMVAFriend((os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/marco/forMoriond16_76X_%s_noJetNDauCharged_BDTG.weights.xml",
-                                                                os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/marco/forMoriond16_76X_%s_noJetNDauCharged_BDTG.weights.xml"),
+MODULES.append( ('LepMVAFriendMoriond16', lambda: LepMVAFriend((os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/leptonMVAforROCs/forMoriond16_76X_%s_noJetNDauCharged_BDTG.weights.xml",
+                                                                os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/leptonMVAforROCs/forMoriond16_76X_%s_noJetNDauCharged_BDTG.weights.xml"),
                                                                training="forMoriond16", label="TTHMoriond16")) )
-MODULES.append( ('LepMVAMultiIso', lambda: LepMVAFriend((os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/marco/asMultiIso_%s_BDTG.weights.xml",
-                                                         os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/marco/asMultiIso_%s_BDTG.weights.xml"),
+MODULES.append( ('LepMVAMultiIso', lambda: LepMVAFriend((os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/leptonMVAforROCs/asMultiIso_%s_BDTG.weights.xml",
+                                                         os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/leptonMVAforROCs/asMultiIso_%s_BDTG.weights.xml"),
                                                                training="mvaMultiIso", label="mvaMultiIso")) )
 
 #MODULES.append( ('LepMVAFriend', LepMVAFriend(("/afs/cern.ch/user/g/gpetrucc/w/TREES_72X_171214/0_lepMVA_v1/%s_BDTG.weights.xml",
