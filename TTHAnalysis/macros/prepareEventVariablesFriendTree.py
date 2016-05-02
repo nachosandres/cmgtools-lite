@@ -26,7 +26,7 @@ from CMGTools.TTHAnalysis.tools.leptonChoiceEWK import LeptonChoiceEWK
 isFastSim = False
 
 #utility_files_dir= "/afs/cern.ch/work/p/peruzzi/ra5trees/cms_utility_files"
-utility_files_dir= "/shome/cheidegg/o/cms_utility_files"
+utility_files_dir= "/afs/cern.ch/work/c/cheidegg/eco/2016-05-02_cmg74X_utility-files"
 btagSF = utility_files_dir+"/CSVv2_25ns.csv"
 btagEFF = utility_files_dir+"/btageff__ttbar_powheg_pythia8_25ns.root"
 btagSF_FastSim = utility_files_dir+"/CSV_13TEV_Combined_20_11_2015_FullSim_FastSim.csv"
