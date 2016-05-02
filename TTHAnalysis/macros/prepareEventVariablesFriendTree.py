@@ -25,8 +25,8 @@ from CMGTools.TTHAnalysis.tools.leptonChoiceEWK import LeptonChoiceEWK
 
 isFastSim = False
 
-utility_files_dir= "/afs/cern.ch/work/p/peruzzi/ra5trees/cms_utility_files"
-#utility_files_dir= "/shome/cheidegg/o/cms_utility_files"
+#utility_files_dir= "/afs/cern.ch/work/p/peruzzi/ra5trees/cms_utility_files"
+utility_files_dir= "/shome/cheidegg/o/cms_utility_files"
 btagSF = utility_files_dir+"/CSVv2_25ns.csv"
 btagEFF = utility_files_dir+"/btageff__ttbar_powheg_pythia8_25ns.root"
 btagSF_FastSim = utility_files_dir+"/CSV_13TEV_Combined_20_11_2015_FullSim_FastSim.csv"
@@ -116,14 +116,14 @@ RA7_fast_lepSF = [[utility_files_dir+"/ra7_lepsf_fastsim/muons/sf_mu_mediumID.ro
 RA7_puweights = utility_files_dir+"/ra7_puWeights.root::pileup"
 
 MODULES.append( ('leptonChoiceRA5', lambda : LeptonChoiceRA5("Loop","Mini",whichApplication="Fakes",lepChoiceMethod="TT_loopTF_2FF",FRFileName=FRname,isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF))) 
-MODULES.append( ('leptonChoiceRA7', lambda : LeptonChoiceRA7("Loop","Mini",whichApplication="Fakes",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
-MODULES.append( ('leptonChoiceEWK', lambda : LeptonChoiceEWK("Loop","Mini",whichApplication="Fakes",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
-MODULES.append( ('leptonChoiceEWKtau', lambda : LeptonChoiceEWK("Loop","Mini",whichApplication="Taus",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
-
 #MODULES.append( ('leptonChoiceRA5_FO', lambda : LeptonChoiceRA5("SortFO","Mini",whichApplication="Fakes",lepChoiceMethod="sort_FO",FRFileName=FRname,isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF))) 
 #MODULES.append( ('leptonChoiceRA5_InSitu', lambda : LeptonChoiceRA5("InSitu","MiniInSitu",whichApplication="Fakes",lepChoiceMethod="TT_loopTF_2FF",FRFileName="InSituHardCoded",isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF))) 
-MODULES.append( ('leptonChoiceRA5_Flips', lambda : LeptonChoiceRA5("Flips","Mini",whichApplication="Flips",FRFileName="hardcodedUCSx",isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF)))
+#MODULES.append( ('leptonChoiceRA5_Flips', lambda : LeptonChoiceRA5("Flips","Mini",whichApplication="Flips",FRFileName="hardcodedUCSx",isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF)))
 #MODULES.append( ('leptonChoiceRA5_WZ', lambda : LeptonChoiceRA5("WZ","Mini",whichApplication="WZ",isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF)))
+
+MODULES.append( ('leptonChoiceRA7', lambda : LeptonChoiceRA7("Loop","Mini",whichApplication="Fakes",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
+MODULES.append( ('leptonChoiceEWK', lambda : LeptonChoiceEWK("Loop","Mini",whichApplication="Fakes",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
+#MODULES.append( ('leptonChoiceEWKtau', lambda : LeptonChoiceEWK("Loop","Mini",whichApplication="Taus",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
 
 
 from CMGTools.TTHAnalysis.tools.leptonFakeRateQCDVars import LeptonFakeRateQCDVars
