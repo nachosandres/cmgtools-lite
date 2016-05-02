@@ -154,13 +154,14 @@ class TreeToYield:
 #            print 'Adding friend',tf_tree,tf_file
             tf = self._tree.AddFriend(tf_tree, tf_file.format(name=self._name, cname=self._cname, P=getattr(self._options,'path',''))),
             self._friends.append(tf)
-        for tf_tree,tf_file,tf_new in self._options.friendTreesRename[:]:
-            tff = ROOT.TFile.Open(tf_file.format(name=self._name, cname=self._cname, P=getattr(self._options,'path','')))
-            ttf = tff.Get(tf_tree)
-            ttf.SetDirectory(0)
-            tf = self._tree.AddFriend(ttf, tf_new)
-            self._friends.append(tf)
-            tff.Close()
+        #FIXME
+        #for tf_tree,tf_file,tf_new in self._options.friendTreesRename[:]:
+        #    tff = ROOT.TFile.Open(tf_file.format(name=self._name, cname=self._cname, P=getattr(self._options,'path','')))
+        #    ttf = tff.Get(tf_tree)
+        #    ttf.SetDirectory(0)
+        #    tf = self._tree.AddFriend(ttf, tf_new)
+        #    self._friends.append(tf)
+        #    tff.Close()
         self._isInit = True
 
     def getTree(self):
@@ -291,7 +292,6 @@ class TreeToYield:
         if not self._isInit: self._init()
         if self._weight:
             if self._isdata: cut = "(%s)     *(%s)*(%s)" % (self._weightString,                    self._scaleFactor, self.adaptExpr(cut,cut=True))
-            #else:            cut =                "(%s)" % (self.adaptExpr(cut,cut=True))
             else:            cut = "(%s)*(%s)*(%s)*(%s)" % (self._weightString,self._options.lumi, self._scaleFactor, self.adaptExpr(cut,cut=True))
         else:
             cut = self.adaptExpr(cut,cut=True)
@@ -428,7 +428,6 @@ def addTreeToYieldOptions(parser):
     parser.add_option("--obj", "--objname",    dest="objname", default='tree', help="Pattern for the name of the TTree inside the file");
     parser.add_option("-G", "--no-fractions",  dest="fractions",action="store_false", default=True, help="Don't print the fractions");
     parser.add_option("-F", "--add-friend",    dest="friendTrees",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename). Can use {name}, {cname} patterns in the treename") 
-    parser.add_option("--FR", "--add-friend-rename",    dest="friendTreesRename",  action="append", default=[], nargs=3, help="Add a friend tree (treename, filename, newname). Can use {name}, {cname} patterns in the treename") 
     parser.add_option("--Fs", "--add-friend-simple",    dest="friendTreesSimple",  action="append", default=[], nargs=1, help="Add friends in a directory. The rootfile must be called evVarFriend_{cname}.root and tree must be called 't' in a subdir 'sf' inside the rootfile.") 
     parser.add_option("--FMC", "--add-friend-mc",    dest="friendTreesMC",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename) to MC only. Can use {name}, {cname} patterns in the treename") 
     parser.add_option("--FD", "--add-friend-data",    dest="friendTreesData",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename) to data trees only. Can use {name}, {cname} patterns in the treename") 
@@ -438,6 +437,7 @@ def addTreeToYieldOptions(parser):
     parser.add_option("--s2v", "--scalar2vector",     dest="doS2V",    action="store_true", default=False, help="Do scalar to vector conversion") 
     parser.add_option("--neg", "--allow-negative-results",     dest="allowNegative",    action="store_true", default=False, help="If the total yield is negative, keep it so rather than truncating it to zero") 
     parser.add_option("--max-entries",     dest="maxEntries", default=1000000000, type="int", help="Max entries to process in each tree") 
+    #FIXME: parser.add_option("--FR", "--add-friend-rename",    dest="friendTreesRename",  action="append", default=[], nargs=3, help="Add a friend tree (treename, filename, newname). Can use {name}, {cname} patterns in the treename") 
 
 def mergeReports(reports):
     import copy
