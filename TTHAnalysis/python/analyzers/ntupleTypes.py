@@ -256,14 +256,23 @@ def jetLepAwareJEC(lep): # use only if jetAna.calculateSeparateCorrections==True
     if not hasattr(lep.jet,'rawFactor'): return l # if lep==jet (matched to lepton object itself)
     p4j = lep.jet.p4()
     j = ROOT.TLorentzVector(p4j.Px(),p4j.Py(),p4j.Pz(),p4j.E())
+    print "ptRel -->", lep.pt(),"//", j.Pt(),j.Eta(),j.Phi()
     if ((j*lep.jet.rawFactor()-l).Rho()<1e-4): return l # matched to jet containing only the lepton
     j = (j*lep.jet.rawFactor()-l*(1.0/lep.jet.l1corrFactor()))*lep.jet.corrFactor()+l
+    print "specCor -->", lep.pt(),"//", j.Pt(),j.Eta(),j.Phi()
     return j
 def ptRelv2(lep): # use only if jetAna.calculateSeparateCorrections==True
     m = jetLepAwareJEC(lep)
     p4l = lep.p4()
     l = ROOT.TLorentzVector(p4l.Px(),p4l.Py(),p4l.Pz(),p4l.E())
     if ((m-l).Rho()<1e-4): return 0 # lep.jet==lep (no match) or jet containing only the lepton
+    #print "prout"
+    dot = l.Vect().Dot( (m-l).Vect() )
+    #print "prout"
+    print l.Pt(), m.Pt(), l.P()*l.P(), (m-l).P()*(m-l).P(), '//', m.M(), dot
+    ptr=sqrt( (l.P()*l.P()) - (dot*dot/((m-l).P()*(m-l).P())))
+    print (l.P()*l.P()),'/== ', (dot*dot/(m.P()*m.P())),'/== ', "===>", ptr
+    print "ptRel result --> ", lep.pt(),"//", l.Perp((m-l).Vect()),
     return l.Perp((m-l).Vect())
 def ptRelHv2(lep): # use only if jetAna.calculateSeparateCorrections==True
     m = jetLepAwareJEC(lep)

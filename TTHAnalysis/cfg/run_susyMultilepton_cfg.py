@@ -88,8 +88,8 @@ if SOS == True:
     # otherwise with only absIso cut at 10 GeV and no relIso we risk cleaning away good jets
 
 if isolation == "miniIso": 
-    lepAna.loose_muon_isoCut     = lambda muon : muon.miniRelIso < 0.4 and muon.sip3D() < 8
-    lepAna.loose_electron_isoCut = lambda elec : elec.miniRelIso < 0.4 and elec.sip3D() < 8
+    lepAna.loose_muon_isoCut     = lambda muon : muon.miniRelIso < 0.4 #and muon.sip3D() < 8
+    lepAna.loose_electron_isoCut = lambda elec : elec.miniRelIso < 0.4 #and elec.sip3D() < 8
 elif isolation == None:
     lepAna.loose_muon_isoCut     = lambda muon : True
     lepAna.loose_electron_isoCut = lambda elec : True
@@ -118,7 +118,7 @@ tauAna.loose_etaMax = 2.3
 #tauAna.loose_vetoLeptonsPOG = True
 #tauAna.loose_tauAntiMuonID = "againstMuonTight"
 #tauAna.loose_tauAntiElectronID = "againstElectronLoose"
-if True: #if cleaning jet-loose tau cleaning
+if False: #if cleaning jet-loose tau cleaning
     jetAna.cleanJetsFromTaus = True
     jetAnaScaleUp.cleanJetsFromTaus = True
     jetAnaScaleDown.cleanJetsFromTaus = True
@@ -314,36 +314,55 @@ from CMGTools.RootTools.samples.samples_13TeV_RunIIFall15MiniAODv2 import *
 #from CMGTools.RootTools.samples.samples_13TeV_signals import *
 from CMGTools.RootTools.samples.samples_13TeV_DATA2015 import *
 
-selectedComponents = [ TTLep_pow ];
+selectedComponents = [] #[ TTLep_pow ];
 
 
 from CMGTools.HToZZ4L.tools.configTools import printSummary, configureSplittingFromTime, cropToLumi
 
-_Wjets_DY = [WJetsToLNu,DYJetsToLL_M10to50,DYJetsToLL_M50]
-_fakes = [TTJets_DiLepton,TTJets_SingleLeptonFromT,TTJets_SingleLeptonFromTbar,WWTo2L2Nu]
+_Wjets_DY = [DYJetsToLL_M50,WJetsToLNu,DYJetsToLL_M10to50] #WJetsToLNu,DYJetsToLL_M10to50,
+_fakes = [TTJets_DiLepton,TTJets_SingleLeptonFromT,TTJets_SingleLeptonFromTbar,WWTo2L2Nu] #TTJets_SingleLeptonFromT,TTJets_SingleLeptonFromTbar,WWTo2L2Nu
 _ttH = [TTHnobb,TTHnobb_pow]
-_TTV = [TTWToLNu,TTZToLLNuNu_LO,TTLLJets_m1to10]
-_convs = [TTGJets,TGJets,WGToLNuG,ZGTo2LG]
-_singleTop = [TToLeptons_sch_amcatnlo,TToLeptons_tch_amcatnlo,T_tWch,TBar_tWch]
+_TTV = [TTWToLNu,TTZToLLNuNu_LO,TTLLJets_m1to10] #,TTLLJets_m1to10]
+_convs = [TTGJets,TGJets,WGToLNuG,ZGTo2LG] #TTGJets,TGJets,WGToLNuG,
+_singleTop = [TToLeptons_sch_amcatnlo,TToLeptons_tch_amcatnlo,T_tWch,TBar_tWch] #TToLeptons_sch_amcatnlo,TToLeptons_tch_amcatnlo,T_tWch,TBar_tWch
 _diboson = [WZTo3LNu,ZZTo4L]
-_other = [tZq_ll,TTTT,WpWpJJ,WWDouble,WZZ] # WWZ ZZZ
+_other = [tZq_ll,TTTT,WpWpJJ,WWZ,ZZZ,WWDouble,WZZ] # WWZ ZZZ WWDouble,WZZ
 
-#selectedComponents = _Wjets_DY + _fakes + _ttH + _TTV + _convs + _singleTop + _diboson + _other
-print 'Before cropping to lumi and adjusting the splitting:'
-printSummary(selectedComponents)
+# = kreator.makeMCComponentFromEOS('T5ttttDeg_mGo1000_mStop300_mChi280', '/T5ttttDeg_mGo1000_mStop300_mChi280_4bodydec/', '/store/cmst3/group/susy/gpetrucc/13TeV/RunIISpring15DR74/%s',".*root", 0.325388)
 
-_fast = [DYJetsToLL_M10to50,WJetsToLNu,TTJets_SingleLeptonFromT,TTJets_SingleLeptonFromTbar,TTGJets,TGJets,WGToLNuG]+_singleTop
-_slow = [DYJetsToLL_M50,TTJets_DiLepton,ZGTo2LG,WWTo2L2Nu]+_TTV+_ttH+_diboson+_other
+#_extras = [TTZToLLNuNu, WWZ, ZZZ ]
+#_ttH + _TTV 
+#selectedComponents = _Wjets_DY + _fakes + _convs + _singleTop + _diboson + _other
+#selectedComponents =_ttH + _TTV 
+selectedComponents = [SMS_T1tttt_mGluino1500_mLSP100]
+#print 'Before cropping to lumi and adjusting the splitting:'
+#printSummary(selectedComponents)
 
-cropToLumi(_convs+_diboson+_other,50)
+#_fast = [DYJetsToLL_M10to50,WJetsToLNu,TTJets_SingleLeptonFromT,TTJets_SingleLeptonFromTbar,TTGJets,TGJets,WGToLNuG]+_singleTop
+#_slow = [DYJetsToLL_M50,TTJets_DiLepton,ZGTo2LG,WWTo2L2Nu]+_TTV+_ttH+_diboson+_other
 
-configureSplittingFromTime(_fast,30,5)
-configureSplittingFromTime(_slow,100,5)
+#cropToLumi(_convs+_diboson+_other,50)
 
-print 'After cropping to lumi and adjusting the splitting:'
-printSummary(selectedComponents)
+#configureSplittingFromTime(_fast,30,5)
+#configureSplittingFromTime(_slow,100,5)
+
+#print 'After cropping to lumi and adjusting the splitting:'
+#printSummary(selectedComponents)
 # Use the dropLHEweights option if you don't need the per-event LHE weights! It saves a lot of space.
 
+#selectedComponents.extend(_ttH)
+#selectedComponents.extend(_TTV)
+#selectedComponents.extend(_Wjets_DY)
+#selectedComponents.extend(_fakes)
+#selectedComponents.extend(_convs)
+#selectedComponents.extend(_singleTop)
+#selectedComponents.extend(_diboson)
+#selectedComponents.extend(_other)
+
+#selectedComponents.extend(_extras)
+
+for c in selectedComponents:
+    c.splitFactor = 500
 
 #selectedComponents = SMS_miniAODv2_T1tttt
 #susyCounter.SMS_varying_masses = ['genSusyMGluino','genSusyMNeutralino']
@@ -566,7 +585,7 @@ sequence = cfg.Sequence(susyCoreSequence+[
         treeProducer,
     ])
 preprocessor = None
-
+#sequence.remove(ttHLepSkim)
 #-------- HOW TO RUN -----------
 
 test = getHeppyOption('test')
@@ -591,6 +610,20 @@ elif test == '5':
         comp.files = comp.files[:5]
         comp.splitFactor = 1
         comp.fineSplitFactor = 5
+elif test == "ra5-sync-mc":
+
+    #eventSelector = cfg.Analyzer(
+    #    'EventSelector',
+    #    toSelect = [
+    #        # here put the event numbers (actual event numbers from CMSSW)
+    #        ]
+    #    )
+
+
+    comp = cfg.MCComponent( files = ["root://eoscms.cern.ch//store/mc/RunIIFall15MiniAODv2/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/60000/14C51DB0-D6B8-E511-8D9B-8CDCD4A9A484.root"], name="TTW_RA5_sync" )
+    comp.triggers = []
+    selectedComponents = [ comp ]
+    sequence.remove(jsonAna)
 elif test == '76X-MC':
     what = getHeppyOption("sample","TTLep")
     if what == "TTLep":
