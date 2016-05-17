@@ -3,10 +3,10 @@ from CMGTools.TTHAnalysis.tools.leptonJetReCleaner import passTripleMllVeto,pass
 from ROOT import TFile,TH1F
 import copy, os
 
-for extlib in ["fake_rates_UCSx_v5_03.cc","flip_rates_UCSx_v5_01.cc","triggerSF_fullsim_UCSx_v5_01.cc","lepton_SF_UCSx_v5_03.cc","FastSimTriggerEff.cc"]:
+for extlib in ["fakerate/fake_rates_UCSx_v5_03.cc","fliprate/flip_rates_UCSx_v5_01.cc","triggerSF/triggerSF_fullsim_UCSx_v5_01.cc","leptonSF/lepton_SF_UCSx_v5_03.cc","triggerSF/FastSimTriggerEff.cc"]:
     if not extlib.endswith(".cc"): raise RuntimeError
     if "/%s"%extlib.replace(".cc","_cc.so") not in ROOT.gSystem.GetLibraries():
-        ROOT.gROOT.LoadMacro("/mnt/t3nfs01/data01/shome/cheidegg/o/2016-05-02_cmg74X_utility-files/%s+"%extlib)
+        ROOT.gROOT.LoadMacro(os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/%s"+%extlib)
         #ROOT.gROOT.LoadMacro("/afs/cern.ch/work/p/peruzzi/ra5trees/cms_utility_files/%s+"%extlib)
 from ROOT import triggerScaleFactorFullSim
 from ROOT import FastSimTriggerEfficiency

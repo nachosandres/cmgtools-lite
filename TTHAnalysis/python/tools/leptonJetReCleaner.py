@@ -45,20 +45,20 @@ class LeptonJetReCleaner:
         label = self.label
 
         biglist = [
-            ("nLepGood"                ,"I"              ),("LepGood_conePt"              ,"F",20,"nLepGood"              ),
-            ("nLepLoose"         +label,"I"              ),("iL"                    +label,"I",20,"nLepLoose"       +label),
-            ("nLepLooseVeto"     +label,"I"              ),("iLV"                   +label,"I",20,"nLepLooseVeto"   +label),
-            ("nLepCleaning"      +label,"I"              ),("iC"                    +label,"I",20,"nLepCleaning"    +label), 
-            ("nLepCleaningVeto"  +label,"I"              ),("iCV"                   +label,"I",20,"nLepCleaningVeto"+label),
-            ("nLepFO"            +label,"I"              ),("iF"                    +label,"I",20,"nLepFO"          +label),
-            ("nLepFOVeto"        +label,"I"              ),("iFV"                   +label,"I",20,"nLepFOVeto"      +label),
-            ("nLepTight"         +label,"I"              ),("iT"                    +label,"I",20,"nLepTight"       +label),
-            ("nLepTightVeto"     +label,"I"              ),("iTV"                   +label,"I",20,"nLepTightVeto"   +label),
-            ("LepGood_isLoose"   +label,"I",20,"nLepGood"),("LepGood_isLooseVeto"   +label,"I",20,"nLepGood"              ),
-            ("LepGood_isCleaning"+label,"I",20,"nLepGood"),("LepGood_isCleaningVeto"+label,"I",20,"nLepGood"              ),
-            ("LepGood_isFO"      +label,"I",20,"nLepGood"),("LepGood_isFOVeto"      +label,"I",20,"nLepGood"              ),
-            ("LepGood_isTight"   +label,"I",20,"nLepGood"),("LepGood_isTightVeto"   +label,"I",20,"nLepGood"              ),
-            ("LepGood_mcMatchPdgId"    ,"F",20,"nLepGood"), # calculate conept and matched charge, now calculated in production
+            ("nLepGood","I"), ("LepGood_conePt","F",20,"nLepGood"),
+            ("nLepLoose"+label, "I"), ("iL"+label,"I",20,"nLepLoose"+label), # passing loose
+            ("nLepLooseVeto"+label, "I"), ("iLV"+label,"I",20,"nLepLooseVeto"+label), # passing loose + veto
+            ("nLepCleaning"+label, "I"), ("iC"+label,"I",20,"nLepCleaning"+label), # passing cleaning
+            ("nLepCleaningVeto"+label, "I"), ("iCV"+label,"I",20,"nLepCleaningVeto"+label), # passing cleaning + veto
+            ("nLepFO"+label, "I"), ("iF"+label,"I",20,"nLepFO"+label), # passing FO
+            ("nLepFOVeto"+label, "I"), ("iFV"+label,"I",20,"nLepFOVeto"+label), # passing FO + veto
+            ("nLepTight"+label, "I"), ("iT"+label,"I",20,"nLepTight"+label), # passing tight
+            ("nLepTightVeto"+label, "I"), ("iTV"+label,"I",20,"nLepTightVeto"+label), # passing tight + veto
+            ("LepGood_isLoose"+label,"I",20,"nLepGood"),("LepGood_isLooseVeto"+label,"I",20,"nLepGood"),
+            ("LepGood_isCleaning"+label,"I",20,"nLepGood"),("LepGood_isCleaningVeto"+label,"I",20,"nLepGood"),
+            ("LepGood_isFO"+label,"I",20,"nLepGood"),("LepGood_isFOVeto"+label,"I",20,"nLepGood"),
+            ("LepGood_isTight"+label,"I",20,"nLepGood"),("LepGood_isTightVeto"+label,"I",20,"nLepGood"),
+            ("LepGood_mcMatchPdgId","F",20,"nLepGood"), # calculate conept and matched charge, now calculated in production
             ]
         if self.isFastSim: biglist.append(("pTGluinoPair","F"))
         for key in self.systsBTAG:
