@@ -290,22 +290,23 @@ import os, itertools
 
 from optparse import OptionParser
 parser = OptionParser(usage="%prog [options] <TREE_DIR> <OUT>")
-parser.add_option("-m", "--modules", dest="modules", type="string" , default=[], action="append", help="Run these modules");
-parser.add_option("-d", "--dataset", dest="datasets", type="string", default=[], action="append", help="Process only this dataset (or dataset if specified multiple times)");
-parser.add_option("-D", "--dm", "--dataset-match"  , dest="datasetMatches",  type="string", default=[], action="append", help="Process only this dataset (or dataset if specified multiple times): REGEXP");
-parser.add_option("-c", "--chunk"  , dest="chunks"  , type="int"   , default=[], action="append", help="Process only these chunks (works only if a single dataset is selected with -d)");
-parser.add_option("-N", "--events"      , dest="chunkSize"  , type="int", default=500000, help="Default chunk size when splitting trees");
-parser.add_option("-j", "--jobs"   , dest="jobs"   , type="int"    , default=1 , help="Use N threads");
-parser.add_option("-p", "--pretend", dest="pretend", action="store_true", default=False, help="Don't run anything");
-parser.add_option("-T", "--tree-dir"    , dest="treeDir"    , type="string", default="sf", help="Directory of the friend tree in the file (default: 'sf')");
-parser.add_option("-q", "--queue"  , dest="queue"  , type="string", default=None, help="Run jobs on lxbatch instead of locally");
-parser.add_option("-t", "--tree"   , dest="tree"   , default='ttHLepTreeProducerTTH', help="Pattern for tree name");
-parser.add_option("-V", "--vector"      , dest="vectorTree" , action="store_true", default=True, help="Input tree is a vector");
-parser.add_option("-F", "--add-friend"  , dest="friendTrees", action="append", default=[], nargs=2, help="Add a friend tree (treename, filename). Can use {name}, {cname} patterns in the treename") 
-parser.add_option("--FD", "--add-friend-data",    dest="friendTreesData",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename) to data trees only. Can use {name}, {cname} patterns in the treename") 
-parser.add_option("-L", "--list-modules", dest="listModules", action="store_true", default=False, help="just list the configured modules");
-parser.add_option("-n", "--new"    , dest="newOnly", action="store_true", default=False, help="Make only missing trees");
+parser.add_option("-m", "--modules", dest="modules",  type="string", default=[], action="append", help="Run these modules");
+parser.add_option("-d", "--dataset", dest="datasets",  type="string", default=[], action="append", help="Process only this dataset (or dataset if specified multiple times)");
+parser.add_option("-D", "--dm", "--dataset-match", dest="datasetMatches",  type="string", default=[], action="append", help="Process only this dataset (or dataset if specified multiple times): REGEXP");
+parser.add_option("-c", "--chunk",   dest="chunks",    type="int",    default=[], action="append", help="Process only these chunks (works only if a single dataset is selected with -d)");
+parser.add_option("-N", "--events",  dest="chunkSize", type="int",    default=500000, help="Default chunk size when splitting trees");
+parser.add_option("-j", "--jobs",    dest="jobs",      type="int",    default=1, help="Use N threads");
+parser.add_option("-p", "--pretend", dest="pretend",   action="store_true", default=False, help="Don't run anything");
+parser.add_option("-T", "--tree-dir",   dest="treeDir",     type="string", default="sf", help="Directory of the friend tree in the file (default: 'sf')");
+parser.add_option("-q", "--queue",   dest="queue",     type="string", default=None, help="Run jobs on lxbatch instead of locally");
+parser.add_option("-t", "--tree",    dest="tree",      default='ttHLepTreeProducerTTH', help="Pattern for tree name");
+parser.add_option("-V", "--vector",  dest="vectorTree", action="store_true", default=True, help="Input tree is a vector");
+parser.add_option("-F", "--add-friend",    dest="friendTrees",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename). Can use {name}, {cname} patterns in the treename") 
 parser.add_option("--FMC", "--add-friend-mc",    dest="friendTreesMC",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename) to MC only. Can use {name}, {cname} patterns in the treename") 
+parser.add_option("--FD", "--add-friend-data",    dest="friendTreesData",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename) to data trees only. Can use {name}, {cname} patterns in the treename") 
+parser.add_option("-L", "--list-modules",  dest="listModules", action="store_true", default=False, help="just list the configured modules");
+parser.add_option("-n", "--new",  dest="newOnly", action="store_true", default=False, help="Make only missing trees");
+parser.add_option("-I", "--import", dest="imports",  type="string", default=[], action="append", help="Modules to import");
 parser.add_option("-e", "--env"    , dest="env"    , type="string", default=None, help="Environment that is used (options=lx,psi)");
 parser.add_option("--log", "--log-dir", dest="logdir", type="string", default=None, help="Directory of stdout and stderr");
 (options, args) = parser.parse_args()
@@ -404,10 +405,10 @@ if options.queue:
     logdir = logdir.rstrip("/")
 
     if options.vectorTree: basecmd += " --vector "
-    friendPost =  " ".join([" -F  %s %s" % (fn,ft) for fn,ft in options.friendTrees])
-    friendPost += " ".join(["--FM %s %s" % (fn,ft) for fn,ft in options.friendTreesMC])
-    friendPost += " ".join(["--FD %s %s" % (fn,ft) for fn,ft in options.friendTreesData])
-    friendPost += " ".join([" -m  %s" % m for m in options.modules])
+    friendPost =  "".join(["  -F  %s %s " % (fn,ft) for fn,ft in options.friendTrees])
+    friendPost += "".join([" --FM %s %s " % (fn,ft) for fn,ft in options.friendTreesMC])
+    friendPost += "".join([" --FD %s %s " % (fn,ft) for fn,ft in options.friendTreesData])
+    friendPost += "".join(["  -m  '%s'  " % m for m in options.modules])
     
     #ff = open("submit.sh", "a")
     for (name,fin,fout,data,range,chunk) in jobs:
