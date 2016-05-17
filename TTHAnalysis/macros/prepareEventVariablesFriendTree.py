@@ -25,11 +25,10 @@ from CMGTools.TTHAnalysis.tools.leptonChoiceEWK import LeptonChoiceEWK
 
 isFastSim = False
 
-#utility_files_dir= "/afs/cern.ch/work/p/peruzzi/ra5trees/cms_utility_files"
-utility_files_dir= "/afs/cern.ch/work/c/cheidegg/eco/2016-05-02_cmg74X_utility-files"
-btagSF = utility_files_dir+"/CSVv2_25ns.csv"
-btagEFF = utility_files_dir+"/btageff__ttbar_powheg_pythia8_25ns.root"
-btagSF_FastSim = utility_files_dir+"/CSV_13TEV_Combined_20_11_2015_FullSim_FastSim.csv"
+utility_files_dir = os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/"
+btagSF = utility_files_dir+"/btag/CSVv2_25ns.csv"
+btagEFF = utility_files_dir+"/btag/btageff__ttbar_powheg_pythia8_25ns.root"
+btagSF_FastSim = utility_files_dir+"/btag/CSV_13TEV_Combined_20_11_2015_FullSim_FastSim.csv"
 
 #--- Susy multilep instances
 MODULES.append( ('leptonJetReCleanerSusyRA5', lambda : LeptonJetReCleaner("Mini", 
@@ -91,29 +90,29 @@ MODULES.append( ('leptonJetReCleanerSusyRA7mva', lambda : LeptonJetReCleaner("Mi
 # RA5 stuff
 #FRname=utility_files_dir+"/FakeRatesUCSXMethod_301115_withEWKsyst_v6.root"
 #FRname="hardcodedUCSx"
-FRname="/afs/cern.ch/work/c/cheidegg/scratch/2016-02-26_RA7syncHeppy/FR_RA7_Jan16.root"
-FS_lepSF=[utility_files_dir+"/sf_mu_mediumID_multi.root",utility_files_dir+"/sf_el_tight_IDEmu_ISOEMu_ra5.root"]
+FRname=utility_files_dir+"/fakerate/ra7_FR_Jan16.root"
+FS_lepSF=[utility_files_dir+"/leptonSF/sf_mu_mediumID_multi.root",utility_files_dir+"/leptonSF/sf_el_tight_IDEmu_ISOEMu_ra5.root"]
 
 # RA7 stuff
 # syntax: <filepath>::<histogram>[::<upvar>::<downvar>]
 # objects are always lists, first entry is muons, second is electrons
 # entries themselves can be lists if there are more than 1 histogram per flavor
 
-RA7_FRname     = [[utility_files_dir + "/ra7_FR_Jan16.root::FRMuPtCorr_UCSX_non::FRMuPtCorr_UCSX_HI_non::FRMuPtCorr_UCSX_LO_non"],
-                  [utility_files_dir + "/ra7_FR_Jan16.root::FRElPtCorr_UCSX_non::FRElPtCorr_UCSX_HI_non::FRElPtCorr_UCSX_LO_non"]]
-RA7_full_lepSF = [[utility_files_dir+"/ra7_lepsf_fullsim/muons/TnP_MuonID_NUM_MediumID_DENOM_generalTracks_VAR_map_pt_eta.root::pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_tag_combRelIsoPF04dBeta_bin0_&_tag_pt_bin0_&_tag_IsoMu20_pass",
-                   utility_files_dir+"/ra7_lepsf_fullsim/muons/TnP_MuonID_NUM_TightIP2D_DENOM_LooseID_VAR_map_pt_eta.root::pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_tag_combRelIsoPF04dBeta_bin0_&_tag_pt_bin0_&_PF_pass_&_tag_IsoMu20_pass",
-                   utility_files_dir+"/ra7_lepsf_fullsim/muons/TnP_MuonID_NUM_TightIP3D_DENOM_LooseID_VAR_map_pt_eta.root::pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_tag_combRelIsoPF04dBeta_bin0_&_tag_pt_bin0_&_PF_pass_&_tag_IsoMu20_pass",
-                   utility_files_dir+"/ra7_lepsf_fullsim/muons/TnP_MuonID_NUM_MultiIsoMedium_DENOM_MediumID_VAR_map_pt_eta.root::pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_tag_combRelIsoPF04dBeta_bin0_&_tag_pt_bin0_&_Medium_pass_&_tag_IsoMu20_pass"],
-                  [utility_files_dir+"/ra7_lepsf_fullsim/electrons/kinematicBinSFele.root::MVATight_and_IDEmu_and_TightIP2D_and_TightIP3D",
-                   utility_files_dir+"/ra7_lepsf_fullsim/electrons/kinematicBinSFele.root::MultiIsoTight_vs_AbsEta"]]
-RA7_fast_lepSF = [[utility_files_dir+"/ra7_lepsf_fastsim/muons/sf_mu_mediumID.root::histo3D", 
-                   utility_files_dir+"/ra7_lepsf_fastsim/muons/sf_mu_tightIP2D.root::histo3D",
-                   utility_files_dir+"/ra7_lepsf_fastsim/muons/sf_mu_tightIP3D.root::histo3D",
-                   utility_files_dir+"/ra7_lepsf_fastsim/muons/sf_mu_multi.root::histo3D"],
-                  [utility_files_dir+"/ra7_lepsf_fastsim/electrons/sf_el_tight2d3dIDEmu.root::histo3D",
-                   utility_files_dir+"/ra7_lepsf_fastsim/electrons/sf_el_multi.root::histo3D"]]
-RA7_puweights = utility_files_dir+"/ra7_puWeights.root::pileup"
+RA7_FRname     = [[utility_files_dir+"/fakerate/ra7_FR_Jan16.root::FRMuPtCorr_UCSX_non::FRMuPtCorr_UCSX_HI_non::FRMuPtCorr_UCSX_LO_non"],
+                  [utility_files_dir+"/fakerate/ra7_FR_Jan16.root::FRElPtCorr_UCSX_non::FRElPtCorr_UCSX_HI_non::FRElPtCorr_UCSX_LO_non"]]
+RA7_full_lepSF = [[utility_files_dir+"/leptonSF/ra7_lepsf_fullsim/muons/TnP_MuonID_NUM_MediumID_DENOM_generalTracks_VAR_map_pt_eta.root::pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_tag_combRelIsoPF04dBeta_bin0_&_tag_pt_bin0_&_tag_IsoMu20_pass",
+                   utility_files_dir+"/leptonSF/ra7_lepsf_fullsim/muons/TnP_MuonID_NUM_TightIP2D_DENOM_LooseID_VAR_map_pt_eta.root::pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_tag_combRelIsoPF04dBeta_bin0_&_tag_pt_bin0_&_PF_pass_&_tag_IsoMu20_pass",
+                   utility_files_dir+"/leptonSF/ra7_lepsf_fullsim/muons/TnP_MuonID_NUM_TightIP3D_DENOM_LooseID_VAR_map_pt_eta.root::pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_tag_combRelIsoPF04dBeta_bin0_&_tag_pt_bin0_&_PF_pass_&_tag_IsoMu20_pass",
+                   utility_files_dir+"/leptonSF/ra7_lepsf_fullsim/muons/TnP_MuonID_NUM_MultiIsoMedium_DENOM_MediumID_VAR_map_pt_eta.root::pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_tag_combRelIsoPF04dBeta_bin0_&_tag_pt_bin0_&_Medium_pass_&_tag_IsoMu20_pass"],
+                  [utility_files_dir+"/leptonSF/ra7_lepsf_fullsim/electrons/kinematicBinSFele.root::MVATight_and_IDEmu_and_TightIP2D_and_TightIP3D",
+                   utility_files_dir+"/leptonSF/ra7_lepsf_fullsim/electrons/kinematicBinSFele.root::MultiIsoTight_vs_AbsEta"]]
+RA7_fast_lepSF = [[utility_files_dir+"/leptonSF/ra7_lepsf_fastsim/muons/sf_mu_mediumID.root::histo3D", 
+                   utility_files_dir+"/leptonSF/ra7_lepsf_fastsim/muons/sf_mu_tightIP2D.root::histo3D",
+                   utility_files_dir+"/leptonSF/ra7_lepsf_fastsim/muons/sf_mu_tightIP3D.root::histo3D",
+                   utility_files_dir+"/leptonSF/ra7_lepsf_fastsim/muons/sf_mu_multi.root::histo3D"],
+                  [utility_files_dir+"/leptonSF/ra7_lepsf_fastsim/electrons/sf_el_tight2d3dIDEmu.root::histo3D",
+                   utility_files_dir+"/leptonSF/ra7_lepsf_fastsim/electrons/sf_el_multi.root::histo3D"]]
+RA7_puweights = utility_files_dir+"/pileup/ra7_puWeights.root::pileup"
 
 MODULES.append( ('leptonChoiceRA5', lambda : LeptonChoiceRA5("Loop","Mini",whichApplication="Fakes",lepChoiceMethod="TT_loopTF_2FF",FRFileName=FRname,isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF))) 
 #MODULES.append( ('leptonChoiceRA5_FO', lambda : LeptonChoiceRA5("SortFO","Mini",whichApplication="Fakes",lepChoiceMethod="sort_FO",FRFileName=FRname,isFastSim=isFastSim,lepSFFileNameFastSim=FS_lepSF))) 
@@ -123,7 +122,7 @@ MODULES.append( ('leptonChoiceRA5', lambda : LeptonChoiceRA5("Loop","Mini",which
 
 MODULES.append( ('leptonChoiceRA7', lambda : LeptonChoiceRA7("Loop","Mini",whichApplication="Fakes",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
 MODULES.append( ('leptonChoiceEWK', lambda : LeptonChoiceEWK("Loop","Mini",whichApplication="Fakes",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
-#MODULES.append( ('leptonChoiceEWKtau', lambda : LeptonChoiceEWK("Loop","Mini",whichApplication="Taus",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
+MODULES.append( ('leptonChoiceEWKtau', lambda : LeptonChoiceEWK("Loop","Mini",whichApplication="Taus",isFastSim=isFastSim,filePathFakeRate=RA7_FRname,filePathLeptonSFfull=RA7_full_lepSF,filePathLeptonSFfast=RA7_fast_lepSF,filePathPileUp=RA7_puweights))) 
 
 
 from CMGTools.TTHAnalysis.tools.leptonFakeRateQCDVars import LeptonFakeRateQCDVars
@@ -168,13 +167,13 @@ MODULES.append ( ('leptonFakeRateFO2isoInSitu', lambda: ObjTagger('FO2isoInSitu'
 
 from CMGTools.TTHAnalysis.tools.vertexWeightFriend import VertexWeightFriend
 
-pufile="/afs/cern.ch/user/p/peruzzi/work/cmgtools/CMSSW_7_4_14/src/CMGTools/TTHAnalysis/python/plotter/susy-multilepton/for-pu-rew/pu_plots_258750/zjets-4-nvtx_plots.root"
-MODULES.append ( ('puWeightsVtx', lambda : VertexWeightFriend(pufile,pufile,"nvtx_signal","nvtx_data",verbose=True) ) )
+#pufile="/afs/cern.ch/user/p/peruzzi/work/cmgtools/CMSSW_7_4_14/src/CMGTools/TTHAnalysis/python/plotter/susy-multilepton/for-pu-rew/pu_plots_258750/zjets-4-nvtx_plots.root"
+#MODULES.append ( ('puWeightsVtx', lambda : VertexWeightFriend(pufile,pufile,"nvtx_signal","nvtx_data",verbose=True) ) )
 
-putruefiledata_central = utility_files_dir+"/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_pileup_69000_50.root"
-putruefiledata_up = utility_files_dir+"/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_pileup_69000_50_p5pc.root"
-putruefiledata_down = utility_files_dir+"/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_pileup_69000_50_m5pc.root"
-putruefilemc = utility_files_dir+"/zjets-4-nvtx_plots_true.root"
+putruefiledata_central = utility_files_dir+"/json/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_pileup_69000_50.root"
+putruefiledata_up = utility_files_dir+"/json/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_pileup_69000_50_p5pc.root"
+putruefiledata_down = utility_files_dir+"/json/Cert_246908-260627_13TeV_PromptReco_Collisions15_25ns_JSON_pileup_69000_50_m5pc.root"
+putruefilemc = utility_files_dir+"/pileup/zjets-4-nvtx_plots_true.root"
 
 MODULES.append ( ('puWeightsTrue_central', lambda : VertexWeightFriend(putruefilemc,putruefiledata_central,"nTrueInt_signal","pileup",verbose=True,vtx_coll_to_reweight="nTrueInt",name="vtxWeight") ) )
 MODULES.append ( ('puWeightsTrue_up', lambda : VertexWeightFriend(putruefilemc,putruefiledata_up,"nTrueInt_signal","pileup",verbose=True,vtx_coll_to_reweight="nTrueInt",postfix="up",name="vtxWeightUp") ) )
@@ -232,11 +231,11 @@ from CMGTools.TTHAnalysis.tools.LepMVAFriend import LepMVAFriend
 #MODULES.append( ('LepMVAFriendMoriond16', lambda: LepMVAFriend((os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/tth/%s_BDTG.weights.xml",
 #                                                                os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/tth/%s_BDTG.weights.xml",),
 #                                                               training="forMoriond16", label="TTHMoriond16")) )
-MODULES.append( ('LepMVAFriendMoriond16', lambda: LepMVAFriend((os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/leptonMVAforROCs/forMoriond16_76X_%s_noJetNDauCharged_BDTG.weights.xml",
-                                                                os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/leptonMVAforROCs/forMoriond16_76X_%s_noJetNDauCharged_BDTG.weights.xml"),
+MODULES.append( ('LepMVAFriendMoriond16', lambda: LepMVAFriend((os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/tth_no-jetNDauChargedMVASel/forMoriond16_76X_%s_noJetNDauCharged_BDTG.weights.xml",
+                                                                os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/tth_no-jetNDauChargedMVASel/forMoriond16_76X_%s_noJetNDauCharged_BDTG.weights.xml"),
                                                                training="forMoriond16", label="TTHMoriond16")) )
-MODULES.append( ('LepMVAMultiIso', lambda: LepMVAFriend((os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/leptonMVAforROCs/asMultiIso_%s_BDTG.weights.xml",
-                                                         os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/leptonMVAforROCs/asMultiIso_%s_BDTG.weights.xml"),
+MODULES.append( ('LepMVAMultiIso', lambda: LepMVAFriend((os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/asMultiIso/asMultiIso_%s_BDTG.weights.xml",
+                                                         os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/data/leptonMVA/asMultiIso/asMultiIso_%s_BDTG.weights.xml"),
                                                                training="mvaMultiIso", label="mvaMultiIso")) )
 
 #MODULES.append( ('LepMVAFriend', LepMVAFriend(("/afs/cern.ch/user/g/gpetrucc/w/TREES_72X_171214/0_lepMVA_v1/%s_BDTG.weights.xml",
@@ -291,23 +290,24 @@ import os, itertools
 
 from optparse import OptionParser
 parser = OptionParser(usage="%prog [options] <TREE_DIR> <OUT>")
-parser.add_option("-c", "--chunk"  , dest="chunks"  , type="int"   , default=[], action="append", help="Process only these chunks (works only if a single dataset is selected with -d)");
-parser.add_option("-d", "--dataset", dest="datasets", type="string", default=[], action="append", help="Process only this dataset (or dataset if specified multiple times)");
-parser.add_option("-j", "--jobs"   , dest="jobs"   , type="int"    , default=1 , help="Use N threads");
 parser.add_option("-m", "--modules", dest="modules", type="string" , default=[], action="append", help="Run these modules");
-parser.add_option("-n", "--new"    , dest="newOnly", action="store_true", default=False, help="Make only missing trees");
+parser.add_option("-d", "--dataset", dest="datasets", type="string", default=[], action="append", help="Process only this dataset (or dataset if specified multiple times)");
+parser.add_option("-D", "--dm", "--dataset-match"  , dest="datasetMatches",  type="string", default=[], action="append", help="Process only this dataset (or dataset if specified multiple times): REGEXP");
+parser.add_option("-c", "--chunk"  , dest="chunks"  , type="int"   , default=[], action="append", help="Process only these chunks (works only if a single dataset is selected with -d)");
+parser.add_option("-N", "--events"      , dest="chunkSize"  , type="int", default=500000, help="Default chunk size when splitting trees");
+parser.add_option("-j", "--jobs"   , dest="jobs"   , type="int"    , default=1 , help="Use N threads");
 parser.add_option("-p", "--pretend", dest="pretend", action="store_true", default=False, help="Don't run anything");
+parser.add_option("-T", "--tree-dir"    , dest="treeDir"    , type="string", default="sf", help="Directory of the friend tree in the file (default: 'sf')");
 parser.add_option("-q", "--queue"  , dest="queue"  , type="string", default=None, help="Run jobs on lxbatch instead of locally");
 parser.add_option("-t", "--tree"   , dest="tree"   , default='ttHLepTreeProducerTTH', help="Pattern for tree name");
-parser.add_option("-D", "--dm", "--dataset-match"  , dest="datasetMatches",  type="string", default=[], action="append", help="Process only this dataset (or dataset if specified multiple times): REGEXP");
-parser.add_option("-F", "--add-friend"  , dest="friendTrees", action="append", default=[], nargs=2, help="Add a friend tree (treename, filename). Can use {name}, {cname} patterns in the treename") 
-parser.add_option("-L", "--list-modules", dest="listModules", action="store_true", default=False, help="just list the configured modules");
-parser.add_option("-N", "--events"      , dest="chunkSize"  , type="int", default=500000, help="Default chunk size when splitting trees");
-parser.add_option("-T", "--tree-dir"    , dest="treeDir"    , type="string", default="sf", help="Directory of the friend tree in the file (default: 'sf')");
 parser.add_option("-V", "--vector"      , dest="vectorTree" , action="store_true", default=True, help="Input tree is a vector");
-parser.add_option("--log", "--log-dir", dest="logdir", type="string", default=None, help="Directory of stdout and stderr");
+parser.add_option("-F", "--add-friend"  , dest="friendTrees", action="append", default=[], nargs=2, help="Add a friend tree (treename, filename). Can use {name}, {cname} patterns in the treename") 
 parser.add_option("--FD", "--add-friend-data",    dest="friendTreesData",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename) to data trees only. Can use {name}, {cname} patterns in the treename") 
+parser.add_option("-L", "--list-modules", dest="listModules", action="store_true", default=False, help="just list the configured modules");
+parser.add_option("-n", "--new"    , dest="newOnly", action="store_true", default=False, help="Make only missing trees");
 parser.add_option("--FMC", "--add-friend-mc",    dest="friendTreesMC",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename) to MC only. Can use {name}, {cname} patterns in the treename") 
+parser.add_option("-e", "--env"    , dest="env"    , type="string", default=None, help="Environment that is used (options=lx,psi)");
+parser.add_option("--log", "--log-dir", dest="logdir", type="string", default=None, help="Directory of stdout and stderr");
 (options, args) = parser.parse_args()
 
 if options.listModules:
@@ -392,7 +392,7 @@ if options.queue:
 
     runner = "lxbatch_runner.sh"
     super  = "bsub -q {queue}".format(queue = options.queue)
-    if options.queue in ["all.q", "short.q", "long.q"]:
+    if options.queue in ["all.q", "short.q", "long.q"] and options.env == "psi":
         super  = "qsub -q {queue} -N friender".format(queue = options.queue)
         runner = "psibatch_runner.sh"
 
