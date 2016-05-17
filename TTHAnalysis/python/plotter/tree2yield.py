@@ -154,14 +154,6 @@ class TreeToYield:
 #            print 'Adding friend',tf_tree,tf_file
             tf = self._tree.AddFriend(tf_tree, tf_file.format(name=self._name, cname=self._cname, P=getattr(self._options,'path',''))),
             self._friends.append(tf)
-        #FIXME
-        #for tf_tree,tf_file,tf_new in self._options.friendTreesRename[:]:
-        #    tff = ROOT.TFile.Open(tf_file.format(name=self._name, cname=self._cname, P=getattr(self._options,'path','')))
-        #    ttf = tff.Get(tf_tree)
-        #    ttf.SetDirectory(0)
-        #    tf = self._tree.AddFriend(ttf, tf_new)
-        #    self._friends.append(tf)
-        #    tff.Close()
         self._isInit = True
 
     def getTree(self):
@@ -299,8 +291,8 @@ class TreeToYield:
         if self._options.doS2V:
             cut  = scalarToVector(cut)
             expr = scalarToVector(expr)
-        #print cut
-        #print expr
+#        print cut
+#        print expr
         if ROOT.gROOT.FindObject("dummy") != None: ROOT.gROOT.FindObject("dummy").Delete()
         histo = None
         canKeys = False
@@ -362,7 +354,6 @@ class TreeToYield:
         drawOpt = "goff"
         if profile1D or profile2D: drawOpt += " PROF";
         self._tree.Draw("%s>>%s" % (expr,"dummy"), cut, drawOpt, self._options.maxEntries)
-
         if canKeys and histo.GetEntries() > 0 and histo.GetEntries() < self.getOption('KeysPdfMinN',100) and not self._isdata and self.getOption("KeysPdf",False):
             #print "Histogram for %s/%s has %d entries, so will use KeysPdf " % (self._cname, self._name, histo.GetEntries())
             if "/TH1Keys_cc.so" not in ROOT.gSystem.GetLibraries(): 
@@ -437,7 +428,6 @@ def addTreeToYieldOptions(parser):
     parser.add_option("--s2v", "--scalar2vector",     dest="doS2V",    action="store_true", default=False, help="Do scalar to vector conversion") 
     parser.add_option("--neg", "--allow-negative-results",     dest="allowNegative",    action="store_true", default=False, help="If the total yield is negative, keep it so rather than truncating it to zero") 
     parser.add_option("--max-entries",     dest="maxEntries", default=1000000000, type="int", help="Max entries to process in each tree") 
-    #FIXME: parser.add_option("--FR", "--add-friend-rename",    dest="friendTreesRename",  action="append", default=[], nargs=3, help="Add a friend tree (treename, filename, newname). Can use {name}, {cname} patterns in the treename") 
 
 def mergeReports(reports):
     import copy
