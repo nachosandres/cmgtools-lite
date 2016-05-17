@@ -532,7 +532,7 @@ def doStatTests(total,data,test,legendCorner):
 
 
 legend_ = None;
-def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,mcStyle="F",legWidth=0.18,legBorder=True,sf=0.0):
+def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,mcStyle="F",legWidth=0.18,legBorder=True):
         if (corner == None): return
         total = sum([x.Integral() for x in pmap.itervalues()])
         sigEntries = []; bgEntries = []
@@ -564,20 +564,6 @@ def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,
         elif corner == "BL":
             (x1,y1,x2,y2) = (.2, .33 + textSize*max(nentries-3,0), .2+legWidth, .15)
        
-        #FIXME 
-        #if sf != 0:
-        #    lx = ROOT.TLatex()
-        #    #lx = ROOT.TLatex(x1,y1-0.3,"SF_{MC} = %3.3f" % (sf))
-        #    lx.SetTextFont(42)
-        #    lx.SetTextColor(ROOT.kRed)
-        #    lx.SetTextSize(textSize)
-        #    lx.SetTextAlign(22)
-        #    print x1
-        #    print y1
-        #    #lx.DrawLatex(x1,y1-0.3,"SF_{MC} = %3.3f" % (sf))
-        #    lx.DrawLatex(0.8,0.5,"SF_{MC} = %3.3f" % (sf))
-        #    global lx_
-        #    lx_ = lx
         leg = ROOT.TLegend(x1,y1,x2,y2)
         leg.SetFillColor(0)
         leg.SetShadowColor(0)
@@ -839,12 +825,11 @@ class PlotMaker:
                     total.GetYaxis().SetRangeUser(options.yrange[0], options.yrange[1])
                 legendCutoff = pspec.getOption('LegendCutoff', 1e-5 if c1.GetLogy() else 1e-2)
                 if self._options.plotmode == "norm": legendCutoff = 0
-                sf = self._sf if self._sf != 0 and self._options.showSF else 0 
                 doLegend(pmap,mca,corner=pspec.getOption('Legend','TR') if self._options.legendCorner == "" else self._options.legendCorner,
                                   cutoff=legendCutoff, mcStyle=("F" if self._options.plotmode == "stack" else "L"),
                                   cutoffSignals=not(options.showSigShape or options.showIndivSigShapes or options.showSFitShape), 
                                   textSize=( (0.045 if doRatio else 0.035) if options.legendFontSize <= 0 else options.legendFontSize ),
-                                  legWidth=options.legendWidth, legBorder=options.legendBorder, sf=sf)
+                                  legWidth=options.legendWidth, legBorder=options.legendBorder)
                 doTinyCmsPrelim(hasExpo = total.GetMaximum() > 9e4 and not c1.GetLogy(),textSize=(0.045 if doRatio else 0.033)*options.topSpamSize)
                 signorm = None; datnorm = None; sfitnorm = None
                 if options.showSigShape or options.showIndivSigShapes or options.showIndivSigs: 
