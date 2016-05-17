@@ -15,7 +15,7 @@ parser.add_option("--postfix-pred",dest="postfixmap", type="string", default=[],
 (options, args) = parser.parse_args()
 options.weight = True
 options.final  = True
-#options.allProcesses  = True
+options.allProcesses  = True
 
 def cutCentralValueAtZero(mca,cut,pname,oldplots):
     if pname=='data': return
@@ -60,7 +60,7 @@ cuts = CutsFile(args[1],options)
 binname = os.path.basename(args[1]).replace(".txt","") if options.outname == None else options.outname
 outdir  = options.outdir+"/" if options.outdir else ""
 
-report = mca.getPlotsRaw("x", args[2], args[3], cuts.allCuts(), nodata=options.asimov, options={"IncludeOverflows":False})
+report = mca.getPlotsRaw("x", args[2], args[3], cuts.allCuts(), nodata=options.asimov, options={"IncludeOverflows":True})
 
 for post in postfixes:
     for rep in report:

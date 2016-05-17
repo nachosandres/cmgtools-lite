@@ -6,7 +6,7 @@ import copy, os
 for extlib in ["fake_rates_UCSx_v5_03.cc","flip_rates_UCSx_v5_01.cc","triggerSF_fullsim_UCSx_v5_01.cc","lepton_SF_UCSx_v5_03.cc","FastSimTriggerEff.cc"]:
     if not extlib.endswith(".cc"): raise RuntimeError
     if "/%s"%extlib.replace(".cc","_cc.so") not in ROOT.gSystem.GetLibraries():
-        ROOT.gROOT.LoadMacro("/afs/cern.ch/work/c/cheidegg/eco/2016-05-02_cmg74X_utility-files/%s+"%extlib)
+        ROOT.gROOT.LoadMacro("/mnt/t3nfs01/data01/shome/cheidegg/o/2016-05-02_cmg74X_utility-files/%s+"%extlib)
         #ROOT.gROOT.LoadMacro("/afs/cern.ch/work/p/peruzzi/ra5trees/cms_utility_files/%s+"%extlib)
 from ROOT import triggerScaleFactorFullSim
 from ROOT import FastSimTriggerEfficiency
@@ -44,13 +44,12 @@ class LeptonChoiceEWK:
 
     ## __init__
     ## _______________________________________________________________
-    def __init__(self, label, inputlabel, whichApplication, isFastSim=False, filePathFakeRate=None, filePathLeptonSFfull=None, filePathLeptonSFfast=None, filePathPileUp=None):
-
-        self.counter = 0
+    def __init__(self, label, inputlabel, whichApplication, isFastSim=False, filePathFakeRate=None, filePathLeptonSFfull=None, filePathLeptonSFfast=None, filePathPileUp=None, noTausOS=True):
 
         self.label      = "" if (label in ["", None]) else ("_" + label)
         self.inputlabel = '_' + inputlabel
         self.isFastSim = isFastSim
+        self.noTausOS  = noTausOS # set to true if you do NOT want to use taus in the OSSF/OSOF pairing for mll
 
         if self.isFastSim:
             print '-'*15
@@ -130,6 +129,7 @@ class LeptonChoiceEWK:
             if not cut(l1): continue
             for i2, l2 in enumerate(lepsl):
                 if not cut(l2): continue
+                if self.noTausOS and (l1.isTau or l2.isTau): continue
                 if l1 == l2: continue
                 if l1.pdgId == -l2.pdgId:
                    mz = (l1.p4() + l2.p4()).M()
@@ -152,6 +152,7 @@ class LeptonChoiceEWK:
             if not cut(l1): continue
             for i2, l2 in enumerate(lepsl):
                 if not cut(l2): continue
+                if self.noTausOS and (l1.isTau or l2.isTau): continue
                 if l1 == l2: continue
                 if l1.charge == -l2.charge and l1.pdgId != -l2.pdgId:
                    mz = (l1.p4() + l2.p4()).M()
@@ -496,6 +497,7 @@ class LeptonChoiceEWK:
 
         if   os == 1: self.ret["hasOSSF" + self.systs["JEC"][var]] = 1
         elif os == 0: self.ret["hasOSOF" + self.systs["JEC"][var]] = 1
+        elif os == 2: self.ret["hasSS"   + self.systs["JEC"][var]] = 1
 
         if abs(m - 91) < 15:
             self.ret["isOnZ" + self.systs["JEC"][var]] = 1
@@ -584,6 +586,7 @@ class LeptonChoiceEWK:
 
         ossf = self.ret["hasOSSF" + self.systs["JEC"][var]]
         osof = self.ret["hasOSOF" + self.systs["JEC"][var]]
+        ss   = self.ret["hasSS"   + self.systs["JEC"][var]]
         m    = self.ret["mll"     + self.systs["JEC"][var]]
         mT   = self.ret["mTmin"   + self.systs["JEC"][var]]
         met  = self.met[var]
@@ -653,6 +656,32 @@ class LeptonChoiceEWK:
         elif osof and 100 <= m       and 160 <= mT       and 100 <= met < 150: SR = 58
         elif osof and 100 <= m       and 160 <= mT       and 150 <= met < 200: SR = 59
         elif osof and 100 <= m       and 160 <= mT       and 200 <= met      : SR = 60
+
+        # SS category
+        elif ss   and        m < 100 and        mT < 120 and  50 <= met < 100: SR = 61
+        elif ss   and        m < 100 and        mT < 120 and 100 <= met < 150: SR = 62
+        elif ss   and        m < 100 and        mT < 120 and 150 <= met < 200: SR = 63
+        elif ss   and        m < 100 and        mT < 120 and 200 <= met      : SR = 64
+        elif ss   and        m < 100 and 120 <= mT < 160 and  50 <= met < 100: SR = 65
+        elif ss   and        m < 100 and 120 <= mT < 160 and 100 <= met < 150: SR = 66
+        elif ss   and        m < 100 and 120 <= mT < 160 and 150 <= met < 200: SR = 67
+        elif ss   and        m < 100 and 120 <= mT < 160 and 200 <= met      : SR = 68
+        elif ss   and        m < 100 and 160 <= mT       and  50 <= met < 100: SR = 69
+        elif ss   and        m < 100 and 160 <= mT       and 100 <= met < 150: SR = 70
+        elif ss   and        m < 100 and 160 <= mT       and 150 <= met < 200: SR = 71
+        elif ss   and        m < 100 and 160 <= mT       and 200 <= met      : SR = 72
+        elif ss   and 100 <= m       and        mT < 120 and  50 <= met < 100: SR = 73
+        elif ss   and 100 <= m       and        mT < 120 and 100 <= met < 150: SR = 74
+        elif ss   and 100 <= m       and        mT < 120 and 150 <= met < 200: SR = 75
+        elif ss   and 100 <= m       and        mT < 120 and 200 <= met      : SR = 76
+        elif ss   and 100 <= m       and 120 <= mT < 160 and  50 <= met < 100: SR = 77
+        elif ss   and 100 <= m       and 120 <= mT < 160 and 100 <= met < 150: SR = 78
+        elif ss   and 100 <= m       and 120 <= mT < 160 and 150 <= met < 200: SR = 79
+        elif ss   and 100 <= m       and 120 <= mT < 160 and 200 <= met      : SR = 80
+        elif ss   and 100 <= m       and 160 <= mT       and  50 <= met < 100: SR = 81
+        elif ss   and 100 <= m       and 160 <= mT       and 100 <= met < 150: SR = 82
+        elif ss   and 100 <= m       and 160 <= mT       and 150 <= met < 200: SR = 83
+        elif ss   and 100 <= m       and 160 <= mT       and 200 <= met      : SR = 84
 
         return SR        
 
@@ -770,6 +799,7 @@ class LeptonChoiceEWK:
             biglist.append(("isOnZ"     + self.systs["JEC"  ][var] + self.label, "I"))
             biglist.append(("hasOSSF"   + self.systs["JEC"  ][var] + self.label, "I"))
             biglist.append(("hasOSOF"   + self.systs["JEC"  ][var] + self.label, "I"))
+            biglist.append(("hasSS"     + self.systs["JEC"  ][var] + self.label, "I"))
             biglist.append(("BR"        + self.systs["JEC"  ][var] + self.label, "I"))
             biglist.append(("SR"        + self.systs["JEC"  ][var] + self.label, "I"))
         for var in self.systs["LEPSF"]: 
@@ -854,7 +884,16 @@ class LeptonChoiceEWK:
             buffer.sort()
             return (buffer[0][1], buffer[0][2], buffer[0][3], buffer[0][4], buffer[0][5], 0)
 
-        ## neither OSSF nor OSOF pair found
+        ## no OS pair, take any SS pair from light-flavor leptons
+        for (l1, l2, l3) in self.triples:
+            if l1.isTau + l2.isTau + l3.isTau > 1: continue
+            lep1 = l1; lep2 = l2
+            if l1.isTau: lep1 = l2; lep2 = l3
+            if l2.isTau: lep2 = l3
+            mz = (lep1.p4() + lep2.p4()).M()
+            return (mz, lep1.trIdx, lep2.trIdx, lep1.isTau, lep2.isTau, 2)
+
+        ## nothing useful found
         return (-1, -1, -1, 0, 0, -1)
 
 
@@ -929,6 +968,7 @@ class LeptonChoiceEWK:
             self.ret["isOnZ"     + self.systs["JEC"  ][var]] = 0
             self.ret["hasOSSF"   + self.systs["JEC"  ][var]] = 0
             self.ret["hasOSOF"   + self.systs["JEC"  ][var]] = 0
+            self.ret["hasSS"     + self.systs["JEC"  ][var]] = 0
             self.ret["BR"        + self.systs["JEC"  ][var]] = 0 
             self.ret["SR"        + self.systs["JEC"  ][var]] = 0 
         for var in self.systs["LEPSF"]: 
