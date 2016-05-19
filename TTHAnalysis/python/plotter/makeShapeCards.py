@@ -74,7 +74,7 @@ def getYieldScale(mass,process):
             break
     return scale 
 
-report = mca.getPlotsRaw("x", args[2], args[3], cuts.allCuts(), nodata=options.asimov)
+report = mca.getPlotsRaw("x", args[2], args[3], cuts.allCuts(), nodata=options.asimov, options={"IncludeOverflows":True})
 
 if options.asimov:
     tomerge = []
