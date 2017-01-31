@@ -100,7 +100,7 @@ float leptonSF_ra7(int pdgid, float pt, float eta, int var=0){
      _histo_recoToTight_leptonSF_el = (TH2F*)(_file_recoToMVA_leptonSF_el->Get("GsfElectronToMVATightTightIP2DSIP3D4"));
      _histo_TightToMultiIso_leptonSF_el = (TH2F*)(_file_recoToMVA_leptonSF_el->Get("MVATightElectronToMultiIsoM"));
      
-     _file_reco_leptonSF_el = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/electrons/egammaEffi_EGM2D.root", "read");
+     _file_reco_leptonSF_el = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/electrons/egammaEffi.txt_EGM2D.root", "read");
      _histo_reco_leptonSF_el = (TH2F*) (_file_reco_leptonSF_el->Get("EGamma_SF2D"));
    }
    float out = 0.;
