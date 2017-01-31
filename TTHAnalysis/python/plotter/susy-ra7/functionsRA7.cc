@@ -89,18 +89,18 @@ float leptonSF_ra7(int pdgid, float pt, float eta, int var=0){
   
   if (!_histo_reco_leptonSF_mu) {
      _file_reco_leptonSF_mu = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/muons/sf_mu_trk_susy_ICHEP.root", "data");
-     _file_recoToMedium_leptonSF_mu = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/muons/TnP_MuonID_NUM_MediumID_DENOM_generalTracks_VAR_map_pt_eta.root", "read");
-     _file_MediumToMultiIso_leptonSF_mu = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/muons/TnP_MuonID_NUM_MultiIsoLoose_DENOM_MediumID_VAR_map_pt_eta.root", "read");
+     _file_recoToMedium_leptonSF_mu = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/muons/TnP_NUM_MediumID_DENOM_generalTracks_VAR_map_pt_eta.root", "read");
+     _file_MediumToMultiIso_leptonSF_mu = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/muons/TnP_NUM_MultiIsoLoose_DENOM_MediumID_VAR_map_pt_eta.root", "read");
      _histo_reco_leptonSF_mu = (TGraphAsymmErrors*)(_file_reco_leptonSF_mu->Get("ratio_eta"));
      _histo_recoToMedium_leptonSF_mu = (TH2F*)(_file_recoToMedium_leptonSF_mu->Get("pt_abseta_PLOT_pair_probeMultiplicity_bin0"));
      _histo_MediumToMultiIso_leptonSF_mu = (TH2F*)(_file_MediumToMultiIso_leptonSF_mu->Get("pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_Medium2016_pass"));
    }
    if (!_histo_recoToTight_leptonSF_el) {
-     _file_recoToMVA_leptonSF_el = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/electrons/sf_el_susy_ICHEP.root", "read");
-     _histo_recoToTight_leptonSF_el = (TH2F*)(_file_recoToMVA_leptonSF_el->Get("GsfElectronToTightID2D3D"));
+     _file_recoToMVA_leptonSF_el = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/electrons/scaleFactors.root", "read");
+     _histo_recoToTight_leptonSF_el = (TH2F*)(_file_recoToMVA_leptonSF_el->Get("GsfElectronToMVATightTightIP2DSIP3D4"));
      _histo_TightToMultiIso_leptonSF_el = (TH2F*)(_file_recoToMVA_leptonSF_el->Get("MVATightElectronToMultiIsoM"));
      
-     _file_reco_leptonSF_el = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/electrons/sf_el_trk_susy_ICHEP.root", "read");
+     _file_reco_leptonSF_el = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/electrons/egammaEffi_EGM2D.root", "read");
      _histo_reco_leptonSF_el = (TH2F*) (_file_reco_leptonSF_el->Get("EGamma_SF2D"));
    }
    float out = 0.;
