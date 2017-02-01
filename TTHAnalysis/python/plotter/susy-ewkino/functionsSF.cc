@@ -4,6 +4,8 @@
 #include "TFile.h"
 #include "TSystem.h"
 
+
+
 TString CMSSW_BASE_SF = gSystem->ExpandPathName("${CMSSW_BASE}");
 TString DATA_SF = CMSSW_BASE_SF+"/src/CMGTools/TTHAnalysis/data";
 
@@ -97,23 +99,24 @@ float triggerSF(int BR, float pt1, int pdg1,
 // LEPTON SCALE FACTORS FULLSIM
 // -------------------------------------------------------------
 
+
 // electrons
-TFile* f_elSF_id   = new TFile(DATA_SF+"/leptonSF/electronSF_id_EWKino_fullsim_ICHEP2016_12p9fb.root"    , "read");
-TFile* f_elSF_eff  = new TFile(DATA_SF+"/leptonSF/electronSF_trkEff_EWKino_fullsim_ICHEP2016_12p9fb.root", "read");
-TH2F* h_elSF_mvaVT = (TH2F*) f_elSF_id ->Get("GsfElectronToLeptonMvaVTIDEmuTightIP2DSIP3D8miniIso04");
-TH2F* h_elSF_mvaM  = (TH2F*) f_elSF_id ->Get("GsfElectronToLeptonMvaMIDEmuTightIP2DSIP3D8miniIso04");
-TH2F* h_elSF_id    = (TH2F*) f_elSF_id ->Get("GsfElectronToLoose2D");
+TFile* f_elSF_id   = new TFile(DATA_SF+"/leptonSF/electronSF_id_EWKino_fullsim_M17_36p5fb.root"    , "read");
+TFile* f_elSF_eff  = new TFile(DATA_SF+"/leptonSF/electronSF_trkEff_EWKino_fullsim_M17_36p5fb.root", "read");
+TH2F* h_elSF_mvaVT = (TH2F*) f_elSF_id ->Get("GsfElectronToLeptonMvaVTIDEmuTightIP2DSIP3D8mini04");
+TH2F* h_elSF_mvaM  = (TH2F*) f_elSF_id ->Get("GsfElectronToLeptonMvaMIDEmuTightIP2DSIP3D8mini04");
+TH2F* h_elSF_id    = (TH2F*) f_elSF_id ->Get("GsfElectronToMVAVLooseTightIP2D");
 TH2F* h_elSF_trk   = (TH2F*) f_elSF_eff->Get("EGamma_SF2D");
 
 // muons
-TFile* f_muSF_mvaVT = new TFile(DATA_SF+"/leptonSF/muonSF_mvaVT_EWKino_fullsim_ICHEP2016_12p9fb.root", "read");
-TFile* f_muSF_mvaM  = new TFile(DATA_SF+"/leptonSF/muonSF_mvaM_EWKino_fullsim_ICHEP2016_12p9fb.root" , "read");
-TFile* f_muSF_id    = new TFile(DATA_SF+"/leptonSF/muonSF_id_EWKino_fullsim_ICHEP2016_12p9fb.root"   , "read");
-TFile* f_muSF_eff   = new TFile(DATA_SF+"/leptonSF/muonSF_trk_EWKino_fullsim_ICHEP2016_12p9fb.root"  , "read"); 
-TH2F* h_muSF_mvaVT = (TH2F*) f_muSF_mvaVT->Get("pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_tag_combRelIsoPF04dBeta_bin0_&_tag_pt_bin0_&_mvaPreSel_pass" );
-TH2F* h_muSF_mvaM  = (TH2F*) f_muSF_mvaM ->Get("pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_tag_combRelIsoPF04dBeta_bin0_&_tag_pt_bin0_&_mvaPreSel_pass" );
-TH2F* h_muSF_id    = (TH2F*) f_muSF_id   ->Get("pt_abseta_PLOT_pair_probeMultiplicity_bin0" );
-TGraphAsymmErrors* h_muSF_trk = (TGraphAsymmErrors*) f_muSF_eff->Get("ratio_eta");
+TFile* f_muSF_mvaVT = new TFile(DATA_SF+"/leptonSF/muonSF_mvaVT_EWKino_fullsim_M17_36p5fb.root", "read");
+TFile* f_muSF_mvaM  = new TFile(DATA_SF+"/leptonSF/muonSF_mvaM_EWKino_fullsim_M17_36p5fb.root" , "read");
+TFile* f_muSF_id    = new TFile(DATA_SF+"/leptonSF/muonSF_id_EWKino_fullsim_M17_36p5fb.root"   , "read");
+//TFile* f_muSF_eff   = new TFile(DATA_SF+"/leptonSF/muonSF_trk_EWKino_fullsim_ICHEP2016_12p9fb.root"  , "read"); 
+TH2F* h_muSF_mvaVT = (TH2F*) f_muSF_mvaVT->Get("SF" );
+TH2F* h_muSF_mvaM  = (TH2F*) f_muSF_mvaM ->Get("SF" );
+TH2F* h_muSF_id    = (TH2F*) f_muSF_id   ->Get("SF" );
+//TGraphAsymmErrors* h_muSF_trk = (TGraphAsymmErrors*) f_muSF_eff->Get("ratio_eta");
 
 float getElectronSF(float pt, float eta, int wp = 0){
     TH2F* hist = (wp == 1)?h_elSF_mvaVT:h_elSF_mvaM;
@@ -130,11 +133,12 @@ float getElectronUnc(float pt, float eta, int wp = 0, int var = 0){
 
 float getMuonSF(float pt, float eta, int wp = 0){
     TH2F* hist = (wp == 1)?h_muSF_mvaVT:h_muSF_mvaM;
-    return h_muSF_trk->Eval(eta)*getSF(hist, pt, abs(eta))*getSF(h_muSF_id, pt, abs(eta)); 
+    return getSF(hist, pt, abs(eta))*getSF(h_muSF_id, pt, abs(eta)); 
+    //return h_muSF_trk->Eval(eta)*getSF(hist, pt, abs(eta))*getSF(h_muSF_id, pt, abs(eta)); 
 }
 
 float getMuonUnc(float pt, int var = 0) {
-    if (pt<20) 
+    if (pt<20)  //FIXME: check uncertainty on tracking efficiency once it is available
          return var*TMath::Sqrt(0.03*0.03+0.01*0.01+0.01*0.01);
     return var*TMath::Sqrt(0.02*0.02+0.01*0.01);  
 }

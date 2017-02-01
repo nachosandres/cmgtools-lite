@@ -148,3 +148,7 @@ minDR3lmm  : minDeltaR_3l_mumu : 50,0,5 ; XTitle="minDeltaR(#mu\,#mu)", LegendCu
 minDR4lmm  : minDeltaR_4l_mumu : 50,0,5 ; XTitle="minDeltaR(#mu\,#mu)", LegendCutoff=1e-4, IncludeOverflows=False
 
 
+mu_pt_badClone    : badCloneMuonMoriond2017_maxPt    : 60,0,60 ; YTitle="Events", XTitle="p_{T}(bad #mu clone)"    , LegendCutoff=1e-4, Logy, YMin=0.1, YMax=10000
+mu_pt_badNotClone : badNotCloneMuonMoriond2017_maxPt : 60,0,60 ; YTitle="Events", XTitle="p_{T}(bad #mu not clone)", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=10000
+
+

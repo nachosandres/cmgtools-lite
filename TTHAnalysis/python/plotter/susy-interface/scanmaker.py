@@ -20,20 +20,23 @@ def prepareJob(mm, name, mp, baseSig, baseSys, binning, bkgpath, outpath, xslist
 	tmpfile  = open(mm.srcpath +"/submitJob_"+ name +".py", "w")
 
 	for line in source:
-		line = line.replace("THENAME"      , name                                              )
-		line = line.replace("THESIGNAL"    , sig                                               )
-		line = line.replace("THEMASS1"     , mp[0]                                             )
-		line = line.replace("THEMASS2"     , mp[1]                                             )
-		line = line.replace("THEOFFSET"    , func.getOffset(mm.getVariable("expr",""), binning))
-		line = line.replace("THEFILE"      , mp[2]                                             )
-		line = line.replace("THEXS"        , xs                                                ) 
-		line = line.replace("THEQ2FILE"    , mm.getVariable("q2accfile","")                    )
-		line = line.replace("THEQ2SYNTAX"  , mm.getVariable("q2accformat","")                  )
-		line = line.replace("THEWEIGHTSTR" , mm.getVariable("mcaWeightFS","1.0")               )
+		line = line.replace("THENAME"      , name                                                    )
+		line = line.replace("THESIGNAL"    , sig                                                     )
+		line = line.replace("THEMASS1"     , mp[0]                                                   )
+		line = line.replace("THEMASS2"     , mp[1]                                                   )
+		line = line.replace("THEOFFSET"    , func.getOffset(mm.getVariable("expr",""), binning)      )
+		line = line.replace("THETREEDIR"   , mm.treedir                                              )
+		line = line.replace("THETREENAME"  , mm.getVariable("treename","treeProducerSusyMultilepton"))
+		line = line.replace("THEFILE"      , mp[2]                                                   )
+		line = line.replace("THEXS"        , xs                                                      ) 
+		#line = line.replace("THEQ2FILE"    , mm.getVariable("q2accfile","")                          )
+		#line = line.replace("THEQ2SYNTAX"  , mm.getVariable("q2accformat","")                        )
+		line = line.replace("THEWEIGHTSTR" , mm.getVariable("mcaWeightFS","1.0")                     )
 		line = line.replace("THEFRFILES"   , "["+",".join(["\""+f+"\"" for f in mm.getVariable("frFilesFS","").split(";")])+"]")
-		line = line.replace("THEJEC"       , mm.getVariable("jec","")                          )
-		line = line.replace("THEMET"       , mm.getVariable("met","")                          )
-		line = line.replace("THEQ2ACC"     , mm.getVariable("q2acc","")                        )
+		line = line.replace("THEJEC"       , mm.getVariable("jec","")                                )
+		line = line.replace("THEMET"       , mm.getVariable("met","")                                )
+		line = line.replace("THEQ2ACC"     , mm.getVariable("q2acc","")                              )
+		line = line.replace("THEPUW"       , mm.getVariable("puw","")                                )
 		line = line.replace("THEFRJEC"     , "["+",".join(["\""+f+"\"" for f in mm.getVariable("frFilesFSJec","").split(";")])+"]")
 		line = line.replace("THEWVJEC"     , "["+",".join(["\""+f+"\"" for f in mm.getVariable("wVarsFSJec"  ,"").split(";")])+"]")
 		line = line.replace("THEFRMET"     , "["+",".join(["\""+f+"\"" for f in mm.getVariable("frFilesFSMet","").split(";")])+"]")
@@ -72,7 +75,6 @@ options.models  = func.splitList(options.models)
 mm              = maker.Maker("scanmaker", baseBkg, args, options, parser.defaults)
 mm.loadModels()
 
-friends = mm.collectFriends()	
 sl      = mm.getVariable("lumi","12.9").replace(".","p")
 
 combinePath = mm.getVariable("combineTool")
@@ -88,6 +90,8 @@ if options.doCheck and (not combinePath or not os.path.isdir(combinePath) or com
 
 ## first do bkg
 if not options.sigOnly:
+
+	friends = mm.collectFriends(False)
 
 	mm.reloadBase(baseBkg)
 	mm.resetRegion()
@@ -127,6 +131,8 @@ if not options.bkgOnly:
 
 	cards = []
 	
+	friends = mm.collectFriends(True)
+
 	mm.reloadBase(baseSig)
 	mm.resetRegion()
 

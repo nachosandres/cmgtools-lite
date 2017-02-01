@@ -1,6 +1,0 @@
-alwaystrue: 1
-cleanup: minMllAFAS > 12
-3loose:  nLepFO == 3 && abs(LepGood1_charge+LepGood2_charge+LepGood3_charge) == 1
-3light:  abs(LepGood1_pdgId)<14 && abs(LepGood2_pdgId)<14 && abs(LepGood3_pdgId)<14
-0or1jet: nJet40<=1
-0bjet: nBJetMedium25 == 0

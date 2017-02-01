@@ -1,7 +1,7 @@
 import os, datetime, subprocess
 
-T="/mnt/t3nfs01/data01/shome/cheidegg/o/2016-11-29_ewkskims80X_M17_MERGED"
-O="/afs/cern.ch/user/c/cheidegg/www/heppy/2017-01-18_ewk80X_unblinded" # Do NOT give a trailing /
+T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-01-27_ewkskims80X_M17_MERGED"
+O="/afs/cern.ch/user/c/cheidegg/www/heppy/2017-01-27_ewk80X_freezingSSR/" # Do NOT give a trailing /
 L=36.5
 
 ## below is the most crucial part: the base command for plotting
@@ -12,21 +12,21 @@ L=36.5
 ## - {PLOTS} replacing the path of the plots file
 ## - select the plot 'SSR' (i.e. '--sP SSR' or via susy-interface: --selPlots SSR)
 ## - {FLAGS} a placeholder where to insert a flag if necessary
-base = "python susy-interface/plotmaker.py 3l 3lA "+T+" {OUTDIR} -l "+str(L)+" --make data --selPlots SSR -o SSR --flags '--perBin -X blinding --perBin --ratioOffset 0.03 --print C,png,pdf,txt --plotgroup rares_ttX+=rares_ttW --plotgroup rares_ttX+=rares_ttZ --plotgroup fakes_appldata+=promptsub' --noFlags"
+base = "python susy-interface/plotmaker.py 3l 3lA "+T+" {OUTDIR} --plot {PLOTS} -l "+str(L)+" --make data --selPlots SSR -o SSR --flags '--perBin -X blinding --perBin --ratioOffset 0.03 --print C,png,pdf,txt --plotgroup rares_ttX+=rares_ttW --plotgroup rares_ttX+=rares_ttZ --plotgroup fakes_appldata+=promptsub {FLAGS}' --noFlags"
 
 ## give bins expression (min, max) for what is to be used IN THE FINAL PLOT!
 bins  = [1,8]
 
 ## give expressions to draw, or file paths to access
 exprs = [
-         #"2lss",
-         #"2lss", 
-         "SuperSig3L1(countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), srMt(3, mT_3l, mTL_3l, mTT_3l), met_pt)",
+         "plots_2lss.root",
+         "plots_2lss.root", 
+         "SuperSig3L1(countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), srMt, met_pt)",
          "SuperSig3L2(countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), met_pt)",
          "SuperSig3L3(countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), mT2L_3l, met_pt)",
          "SuperSig3L4(countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), mT2T_3l, met_pt)",
          "SuperSig3L5(countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), met_pt)",
-         "SuperSig4L1(countTaus(4, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2], LepSel_pdgId[3]), met_pt)"
+         "SuperSig4L1(met_pt)"
          ]
 
 
@@ -70,7 +70,7 @@ def unwrapBins(bins):
 
 ## prepare plots file
 timestamp = datetime.datetime.now().strftime("%y%m%d%H%M%S%f")
-mkdir("tmp")
+mkdir("tmp",True)
 remember = []
 
 ## run the plots
@@ -79,21 +79,22 @@ for i,expr in enumerate(exprs):
 	bin = i+1
 	mkdir("tmp/draw",True)
 
-	if os.path.exists(expr) and not expr in remember:
-		remember.append(expr)
+	if os.path.exists(expr):
+		if not expr in remember: remember.append(expr)
 		continue
 
 	plotsfile = "tmp/"+timestamp+"_"+str(i)+".txt"
 	outfile   = "tmp/"+timestamp+"_"+str(i)+".root"
 
 	fp = open(plotsfile, "w")
-	fp.write("SSR : if3("+expr+","+str(bin)+",0) : "+str(len(bins))+","+str(bins[0]-0.5)+","+str(bins[1]-0.5)+" ; YTitle='Events', XTitle='Super Signal Region', Legend='TR', IncludeOverflows=False, LegendCutoff=1e-5, Logy\n")
+	fp.write("SSR : if3("+expr+","+str(bin)+",0) : "+str(bins[1]-bins[0]+1)+","+str(bins[0])+","+str(bins[1]+1)+" ; YTitle='Events', XTitle='Super Signal Region', Legend='TL', IncludeOverflows=False, LegendCutoff=1e-5, RMin=0, RMax=3, Logy, YMin=0.1, YMax=5000\n")
+	#fp.write("SSR : if3("+expr+","+str(bin)+",0) : "+str(bins[1]-bins[0]+1)+","+str(bins[0]-0.5)+","+str(bins[1]+0.5)+" ; YTitle='Events', XTitle='Super Signal Region', Legend='TL', IncludeOverflows=False, LegendCutoff=1e-5, RMin=0, RMax=3, Logy, YMin=0.1, YMax=5000\n")
 	fp.close()
 
 	flags = " ".join(["--add-histos "+f for f in remember])
 	if len(remember)>0: remember = [] # only load them once
 	if i > 0: 
-		flags = "--add-histos tmp/"+timestamp+"_"+str(i-1)+".root"
+		flags += " --add-histos tmp/"+timestamp+"_"+str(i-1)+".root"
 	theCmd = base.format(OUTDIR="tmp/draw", PLOTS=plotsfile, FLAGS=flags)
 	os.system(theCmd)
 

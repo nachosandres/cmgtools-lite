@@ -686,15 +686,23 @@ class PlotMaker:
                 pspecs = matchspec + [ p for p in pspecs if p.name != self._options.preFitData ]
             for pspec in pspecs:
                 print "    plot: ",pspec.name
-                pmap = mca.getPlots(pspec,cut,makeSummary=True,closeTreeAfter=True)
-                if options.addHistos and os.path.exists(options.addHistos):
-                    tf = ROOT.TFile.Open(options.addHistos, "read")
-                    procs = pmap.keys()
-                    for proc in pmap.keys():
-                        toAdd = tf.Get(pspec.name+"_"+proc)
-                        if toAdd: pmap[proc].Add(toAdd)
-                    tf.Close()
-                #
+                pmap = mca.getPlots(pspec,cut,makeSummary=True,closeTreeAfter=False)
+                if len(options.addHistos)>0:
+                    for theFile in options.addHistos:
+                        if not os.path.exists(theFile): continue
+                        tf = ROOT.TFile.Open(theFile, "read")
+                        for proc in pmap.keys():
+                            toAdd = tf.Get(pspec.name+"_"+proc)
+                            print pspec.name+"_"+proc
+                            print toAdd
+                            if toAdd: pmap[proc].Add(toAdd)
+                            if not toAdd and proc=="fakes_appldata":
+                                toAdd = tf.Get(pspec.name+"_fakes_data")
+                                if toAdd: pmap["fakes_appldata"].Add(toAdd)
+                                toAdd = tf.Get(pspec.name+"_flips_data")
+                                if toAdd: pmap["fakes_appldata"].Add(toAdd)
+                        tf.Close()
+                 
                 # blinding policy
                 blind = pspec.getOption('Blinded','None') if 'data' in pmap else 'None'
                 if self._options.unblind == True: blind = 'None'
@@ -1114,7 +1122,7 @@ class PlotMaker:
                                         pmap["data"].Draw("P SAME")
                                         c1.Print("%s/%s_data_%s.%s" % (fdir, outputName, p, ext))
                             else:
-                                if total.Integral()>0:
+                                if total.Integral()>0 or self._options.emptyStack or not self._options.plotmode=="stack":
                                     c1.Print("%s/%s.%s" % (fdir, outputName, ext))
                             ROOT.gErrorIgnoreLevel = savErrorLevel;
                 c1.Close()
@@ -1183,7 +1191,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--cmssqrtS", dest="cmssqrtS", type="string", default="13 TeV", help="Sqrt of s to be written in the official CMS text.")
     parser.add_option("--printBin", dest="printBinning", type="string", default=None, help="Write 'Events/xx' instead of 'Events' on the y axis")
     parser.add_option('--env',      dest='env'         , type='string', default="", help='Set environment (currently supported: "oviedo")')
-    parser.add_option('--add-histos', dest='addHistos' , type='string', default=None, help='File path to load and add histograms from to the ones that are newly made.')
+    parser.add_option('--add-histos', dest='addHistos' , type='string', action="append", default=[], help='File path to load and add histograms from to the ones that are newly made.')
 
 if __name__ == "__main__":
     from optparse import OptionParser

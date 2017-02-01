@@ -121,7 +121,7 @@ BEGIN::3lE
   sigs        +:= sig_TChiNeuWH_.*;sig_TChiNeuSlepSneu_TE_.*;sig_TChiNeuSlepSneu_TD_.*
   flags       +:= -A 3l BRcut 'BR == 5' 
   flags       +:= -R trigger triggerTau '$DATA{Triggers_ee||Triggers_em||Triggers_mm||Triggers_lt} $MC{1} $FASTSIM{1}'
-#  flags       +:= -A sanity tightcharge '((LepSel1_tightCharge>=1 || abs(LepSel1_pdgId)!=11) && (LepSel2_tightCharge>=1 || abs(LepSel2_pdgId)!=11) && (LepSel3_tightCharge>=1 || abs(LepSel3_pdgId)!=11))'
+  flags       +:= -A sanity tightcharge '((LepSel1_tightCharge>1 || abs(LepSel1_pdgId)!=11) && (LepSel2_tightCharge>1 || abs(LepSel2_pdgId)!=11) && (LepSel3_tightCharge>1 || abs(LepSel3_pdgId)!=11))'
 #  flags       +:= -R trigger trigger2T '!isData || Triggers_leplep || Triggers_leptau'
   flagsPlots  +:= --legendHeader 'E: SS + \#tau'
   plots       #:= {lep      : lep.*._pt ; .*_eta ; flavor3l ; charge3l; minDR3l                         }

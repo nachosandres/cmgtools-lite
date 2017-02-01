@@ -170,7 +170,7 @@ class Maker():
 		return toReturn
 	def getExprCut(self):
 		return getCut(getattr(self.config, "firstCut", "alwaystrue"), self.getVariable("expr"), self.getVariable("bins"))
-	def getFriends(self):
+	def getFriends(self,isFastSim=False):
 		friends = []
 		friends += ["-F sf/t {P}/"+f+"/evVarFriend_{cname}.root"    for f in getattr(self.config,"sfriends"  ,[])]
 		friends += getattr(self.config, "friends" , [])
@@ -178,6 +178,9 @@ class Maker():
 		friends += getattr(self.config, "dfriends" , [])
 		friends += ["--FMC sf/t {P}/"+f+"/evVarFriend_{cname}.root" for f in getattr(self.config,"smcfriends",[])]
 		friends += getattr(self.config, "mcfriends", [])
+		if isFastSim:
+			friends += ["-F sf/t {P}/"+f+"/evVarFriend_{cname}.root" for f in getattr(self.config,"sfsfriends",[])]
+			friends += getattr(self.config, "fsfriends" , [])
 		return friends
 	def getFriendLocations(self):
 		fs = []

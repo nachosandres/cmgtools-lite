@@ -147,10 +147,10 @@ if __name__ == "__main__":
             os.system('rm %s/%s/tree.root.url'%(splitdir,treename))
             os.system('rm %s/skimAnalyzerCount/SkimReport.pck'%splitdir)
             os.system('rm %s/skimAnalyzerCount/SkimReport.txt'%splitdir)
-            os.system('rmdir %s/%s'%(splitdir,treename))
-            os.system('rmdir %s/skimAnalyzerCount'%splitdir)
-            os.system('rmdir %s'%splitdir)
-            os.system('rmdir %s'%outdir)
+            os.system('rm -r %s/%s'%(splitdir,treename))
+            os.system('rm -r %s/skimAnalyzerCount'%splitdir)
+            os.system('rm -r %s'%splitdir)
+            #os.system('rmdir %s'%outdir)
 
     
 
