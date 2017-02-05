@@ -12,7 +12,7 @@ class bTagWeightAnalyzer():
 
     ## __init__
     ## _______________________________________________________________
-    def __init__(self, csv, eff, algo='csvv2', wp=1, branchbtag='btagCSV', branchflavor='hadronFlavour', recllabel='Recl', isFastSim=False):
+    def __init__(self, csv, eff, algo='CSVv2', wp=1, branchbtag='btagCSV', branchflavor='hadronFlavour', recllabel='Recl', isFastSim=False):
 
         self.recllabel = "_"+recllabel if recllabel and recllabel[0:1]!="_" else recllabel
         self.algo      = algo
@@ -21,15 +21,12 @@ class bTagWeightAnalyzer():
         self.label     = "FS" if isFastSim else ""
 
         self.branchflavor = branchflavor
-        self.branchbtag   = "btagCSV" if algo in ["csvv2", "csv"] else "btagCMVA"
+        self.branchbtag   = "btagCSV" if algo in ["CSVv2", "CSV", "csvv2", "csv"] else "btagCMVA"
         self.cutVal       = self.getCutVal()
        
         vector = ROOT.vector('string')()
         vector.push_back("up")
         vector.push_back("down")
-        vectorC = ROOT.vector('string')()
-        vectorC.push_back("up_correlated")
-        vectorC.push_back("down_correlated")
 
         ## load POG stuff
         ## in reader instance: 1 = medium wp
@@ -39,7 +36,7 @@ class bTagWeightAnalyzer():
         self.reader_b.load(self.calib, 0, "comb" if not isFastSim else "fastsim")
         self.reader_c = ROOT.BTagCalibrationReader(1, "central", vector)
         self.reader_c.load(self.calib, 1, "comb" if not isFastSim else "fastsim")
-        self.reader_l = ROOT.BTagCalibrationReader(1, "central", vectorC)
+        self.reader_l = ROOT.BTagCalibrationReader(1, "central", vector)
         self.reader_l.load(self.calib, 2, "incl" if not isFastSim else "fastsim")
 
         f_eff        = ROOT.TFile.Open(eff, "read")
@@ -67,6 +64,7 @@ class bTagWeightAnalyzer():
         indices   = list(getattr(self.event, "iJSel" + self.recllabel))[0:int(getattr(self.event,"nJetSel"+self.recllabel))]
         self.jets = []
         for idx in indices:
+            if abs(idx)>99: continue
             if idx >= 0: self.jets.append(goodJets[idx])
             else       : self.jets.append(discJets[-idx-1])
 
@@ -127,7 +125,7 @@ class bTagWeightAnalyzer():
     ## getCutVal
     ## _______________________________________________________________
     def getCutVal(self):
-        if self.algo in ["csvv2", "csv"]:
+        if self.algo in ["CSVv2", "CSV", "csvv2", "csv"]:
             return [0.5426, 0.8484, 0.9535][self.wp]
         return [-0.5884, 0.4432, 0.9432][self.wp]
 
@@ -154,8 +152,8 @@ class bTagWeightAnalyzer():
        theReader   = [self.reader_b, self.reader_c, self.reader_l][flavor]
     
        SF     = theReader.eval_auto_bounds("central", flavor, eta_cutoff, pt_cutoff)  
-       SFup   = theReader.eval_auto_bounds("up_correlated"   if flavor==2 and not self.isFastSim else "up"  , flavor, eta_cutoff, pt_cutoff)  
-       SFdn   = theReader.eval_auto_bounds("down_correlated" if flavor==2 and not self.isFastSim else "down", flavor, eta_cutoff, pt_cutoff)  
+       SFup   = theReader.eval_auto_bounds("up"  , flavor, eta_cutoff, pt_cutoff)  
+       SFdn   = theReader.eval_auto_bounds("down", flavor, eta_cutoff, pt_cutoff)  
 
        return [SF, SFup, SFdn]
 

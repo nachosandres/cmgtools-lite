@@ -19,9 +19,9 @@ MODULES.append( ('bTagEventWeightFastSIM', bTagEventWeightFastSIM ))
 
 from CMGTools.TTHAnalysis.tools.bTagWeightAnalyzer import bTagWeightAnalyzer
 btagsf_payload_fullsim  = os.path.join(utility_files_dir, "btag", "CSVv2Moriond17_2017_1_26_BtoH.csv"                )
-btagsf_payload_fastsim  = os.path.join(utility_files_dir, "btag", "fastsim_csvv2_ttbar_26_1_2017.csv"                )
+btagsf_payload_fastsim  = os.path.join(utility_files_dir, "btag", "fastsim_csvv2_ttbar_26_1_2017_fixed.csv"          )
 btag_efficiency_fullsim = os.path.join(utility_files_dir, "btag", "btageff__ttbar_powheg_pythia8_25ns_Moriond17.root")
-btag_efficiency_fastsim = os.path.join(utility_files_dir, "btag", " btageff__SMS-T1bbbb-T1qqqq_25ns_Moriond17.root"  )
+btag_efficiency_fastsim = os.path.join(utility_files_dir, "btag", "btageff__SMS-T1bbbb-T1qqqq_25ns_Moriond17.root"   )
 bTagEventWeightFullSim = lambda : bTagWeightAnalyzer(btagsf_payload_fullsim, btag_efficiency_fullsim, recllabel='Mini')
 bTagEventWeightFastSim = lambda : bTagWeightAnalyzer(btagsf_payload_fastsim, btag_efficiency_fastsim, recllabel='Mini', isFastSim=True)
 MODULES.append( ('bTagEventWeightFullSim', bTagEventWeightFullSim ))
