@@ -317,7 +317,7 @@ class LeptonBuilderRA7:
     ## findSR
     ## _______________________________________________________________
     def findSR(self, var, mT, isonZ):
-
+        #mT = self.mt(self.lepSelFO[2].conePt, self.met[var], self.lepSelFO[2].phi, self.metphi[var])
         SR = -1
         offset = isonZ*23
         if   self.nJets30[var] >= 2 and self.nbJets25[var] == 0 and  50+isonZ*20 <= self.met[var] < 150 and  60 <= self.ht[var] < 400 and mT < 120 :   SR =  1 #1a
@@ -350,6 +350,7 @@ class LeptonBuilderRA7:
     ## findSSR
     ## _______________________________________________________________
     def findSSR(self, var, mT, isonZ):
+        #mT = self.mt(self.lepSelFO[2].conePt, self.met[var], self.lepSelFO[2].phi, self.metphi[var])
         SSR = -1
         if   self.nJets30[var] >= 2 and self.nbJets25[var] <= 2 and self.met[var] >= 250 and self.ht[var] >= 200 and mT > 120 and not isonZ:   SSR =  1 #SSR1
         elif self.nJets30[var] >= 2 and self.nbJets25[var] >= 3 and self.met[var] >=  50 and self.ht[var] >=  60 and mT > 120 and not isonZ:   SSR =  2 #SSR2
@@ -401,7 +402,7 @@ class LeptonBuilderRA7:
     def findMtMin(self, max):
 
         self.mTmin = {}
-        used = [self.bestOSPair.l1, self.bestOSPair.l2] if (self.bestOSPair and abs(self.bestOSPair.mll-91)<15 and self.bestOSPair.l1 in self.lepsT and self.bestOSPair.l2 in self.lepsT) else []
+        used = [self.bestOSPair.l1, self.bestOSPair.l2] if (self.bestOSPair and abs(self.bestOSPair.mll-91)<15 and self.bestOSPair.l1 in self.lepsT and self.bestOSPair.l2 in self.lepsT and (self.bestOSPair.l1.pdgId == -self.bestOSPair.l2.pdgId)) else []
         #used = [self.bestOSPair.l1, self.bestOSPair.l2] if self.bestOSPair else []
         leps = []
 
@@ -433,7 +434,7 @@ class LeptonBuilderRA7:
     def findMtMinFO(self, max):
 
         self.mTmin = {}
-        used = [self.bestOSPair.l1, self.bestOSPair.l2] if (self.bestOSPair and abs(self.bestOSPair.mll-91)<15) else []
+        used = [self.bestOSPair.l1, self.bestOSPair.l2] if (self.bestOSPair and abs(self.bestOSPair.mll-91)<15 and (self.bestOSPair.l1.pdgId == -self.bestOSPair.l2.pdgId)) else []
         #used = [self.bestOSPair.l1, self.bestOSPair.l2] if self.bestOSPair else []
         leps = []
 
@@ -515,7 +516,7 @@ class LeptonBuilderRA7:
         biglist.append(("nLepSel"   , "I"))
         for var in ["pt", "eta", "phi", "mass", "conePt", "dxy", "dz", "sip3d", "miniRelIso", "relIso", "ptratio", "ptrel", "mva"]:
             biglist.append(("LepSel_" + var, "F", 4))
-        for var in ["pdgId", "isTight", "mcMatchId", "mcMatchAny", "mcPromptGamma", "mcUCSX", "trIdx", "isMVAM", "isMVAVT", "idIsoEmu"]:
+        for var in ["pdgId", "isTight", "mcMatchId", "mcMatchAny", "mcPromptGamma", "mcUCSX", "trIdx", "isMVAM", "isMVAVT", "idIsoEmu", "RA5multiIso"]:
             biglist.append(("LepSel_" + var, "I", 4))
   
         for var in self.systsJEC:
@@ -620,6 +621,8 @@ class LeptonBuilderRA7:
     def mtW(self, lep, var, useGenMet = False):
         if useGenMet: return self.mt(lep.conePt, self.metgen[var], lep.phi, self.metgenphi[var])
         return self.mt(lep.conePt, self.met[var], lep.phi, self.metphi[var])
+        #if len(self.lepSelFO) > 2: return self.mt(self.lepSelFO[2].conePt, self.met[var], self.lepSelFO[2].phi, self.metphi[var])
+        #else: return 0
 
 
     ## passCleverPtCut
@@ -692,7 +695,7 @@ class LeptonBuilderRA7:
         self.ret["nLepSel"] = 0
         for var in ["pt", "eta", "phi", "mass", "conePt", "dxy", "dz", "sip3d", "miniRelIso", "relIso", "ptratio", "ptrel", "mva"]:
             self.ret["LepSel_" + var] = [0.]*20
-        for var in ["pdgId", "isTight", "mcMatchId", "mcMatchAny", "mcPromptGamma", "mcUCSX", "trIdx", "isMVAM", "isMVAVT", "idIsoEmu"]:
+        for var in ["pdgId", "isTight", "mcMatchId", "mcMatchAny", "mcPromptGamma", "mcUCSX", "trIdx", "isMVAM", "isMVAVT", "idIsoEmu", "RA5multiIso"]:
             self.ret["LepSel_" + var] = [0 ]*20
 
         for var in self.systsJEC:
@@ -761,6 +764,7 @@ class LeptonBuilderRA7:
                 setattr(l, "isMVAM"       , _susyEWK_lepId_MVAmedium(l)         )
                 setattr(l, "isMVAVT"      , _susyEWK_lepId_MVAverytight(l)      )
                 setattr(l, "idIsoEmu"     , _susy3l_idIsoEmu_cuts(l)            )
+                setattr(l, "RA5multiIso"  , _susy2lss_multiIso(l)               )
 
 
     ## writeLepSel
@@ -772,7 +776,7 @@ class LeptonBuilderRA7:
             if i == 4: break # only keep the first 4 entries
             for var in ["pt", "eta", "phi", "mass", "conePt", "dxy", "dz", "sip3d", "miniRelIso", "relIso", "ptratio", "ptrel", "mva"]:
                 self.ret["LepSel_" + var][i] = getattr(l, var, 0)
-            for var in ["pdgId", "isTight", "mcMatchId", "mcMatchAny", "mcPromptGamma", "mcUCSX", "trIdx", "isMVAM", "isMVAVT", "idIsoEmu"]:
+            for var in ["pdgId", "isTight", "mcMatchId", "mcMatchAny", "mcPromptGamma", "mcUCSX", "trIdx", "isMVAM", "isMVAVT", "idIsoEmu", "RA5multiIso"]:
                 self.ret["LepSel_" + var][i] = int(getattr(l, var, 0))
 
         all = []
@@ -822,6 +826,12 @@ def _susy3l_multiIso(lep):
     if abs(lep.pdgId) == 13: A,B,C = (0.20,0.69,6.0)
     else:                    A,B,C = (0.16,0.76,7.2)
     return lep.miniRelIso < A and (lep.jetPtRatiov2 > B or lep.jetPtRelv2 > C)
+    
+def _susy2lss_multiIso(lep):
+    # CH: looser WP than for RA5 (electrons -> medium, muons -> loose)
+    if abs(lep.pdgId) == 13: A,B,C = (0.16,0.76,7.2)
+    else:                    A,B,C = (0.12,0.80,7.2)
+    return lep.miniRelIso < A and (lep.jetPtRatiov2 > B or lep.jetPtRelv2 > C) and lep.tightCharge>1
 
 
 def _susy3l_idEmu_cuts(lep):
