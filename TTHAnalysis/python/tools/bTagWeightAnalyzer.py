@@ -61,12 +61,15 @@ class bTagWeightAnalyzer():
     def collectObjects(self):
         goodJets  = [j for j in Collection(self.event, "Jet"    , "nJet"    )]
         discJets  = [j for j in Collection(self.event, "DiscJet", "nDiscJet")]
-        indices   = list(getattr(self.event, "iJSel" + self.recllabel))[0:int(getattr(self.event,"nJetSel"+self.recllabel))]
-        self.jets = []
-        for idx in indices:
-            if abs(idx)>99: continue
-            if idx >= 0: self.jets.append(goodJets[idx])
-            else       : self.jets.append(discJets[-idx-1])
+        if hasattr(self.event, "iJSel" + self.recllabel): 
+            self.jets = []
+            indices = list(getattr(self.event, "iJSel" + self.recllabel))[0:int(getattr(self.event,"nJetSel"+self.recllabel))]
+            for idx in indices:
+                if abs(idx)>99: continue
+                if idx >= 0: self.jets.append(goodJets[idx])
+                else       : self.jets.append(discJets[-idx-1])
+        else:
+            self.jets = goodJets
 
 
     ## computeWeights

@@ -16,7 +16,7 @@ parser.add_option("--maxmass", dest="maxmass", type="int", default=1200, help="M
 parser.add_option("--step"   , dest="step"   , type="int", default=None, help="Mass step of particle 1 (for parallel splitting)")
 parser.add_option("--dm"     , dest="deltam" , type="int", default=None, help="Mass difference between particle 1 and 2 (for parallel splitting)") 
 
-base = "python splitSMSTrees.py {O} {T} {GEN} {TMP} --tree {TREENAME} {MASS} {LSP}"
+base = "python splitSMSTrees.py {O} {T} {GEN} {TMP} --tree {TREENAME} {MASS} {LSP} {FLAGS}"
 (options, args) = parser.parse_args()
 options = maker.splitLists(options)
 mm      = maker.Maker("splitmaker", base, args, options, parser.defaults)
@@ -26,6 +26,8 @@ gen = "--gen" if options.gen else ""
 if options.gen:
 	gen += " --pdgId1 %d"%options.pdgId1 if options.pdgId1 else ""
 	gen += " --pdgId2 %d"%options.pdgId2 if options.pdgId2 else ""
+
+flags   = " ".join(mm.options.flags) ## we do not want to have all flags, only the additional ones given here
 
 
 ## loop over all directories in the input dir
@@ -48,12 +50,12 @@ for d in os.listdir(mm.treedir):
 		masses = [options.minmass + i*options.step for i in range((options.maxmass - options.minmass)/options.step+1)]
 		for mass in masses:
 			lsp = "--lsp "+str(mass-options.deltam) if options.deltam else ""
-			mm.submit([mm.outdir, dset, gen, tmp, mm.getVariable("treename","treeProducerSusyMultilepton"), "--mass "+str(mass), lsp],str(mass)+"_"+d,False)
+			mm.submit([mm.outdir, dset, gen, tmp, mm.getVariable("treename","treeProducerSusyMultilepton"), "--mass "+str(mass), lsp, flags],str(mass)+"_"+d,False)
 		mm.runJobs()
 		mm.clearJobs()
 	
 	## only one splitting job
 	else:
-		mm.submit([mm.outdir, dset, gen, tmp, mm.getVariable("treename","treeProducerSusyMultilepton"), "", ""], d)
+		mm.submit([mm.outdir, dset, gen, tmp, mm.getVariable("treename","treeProducerSusyMultilepton"), "", "", flags], d)
 
 

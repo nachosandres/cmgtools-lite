@@ -49,7 +49,7 @@ parser.add_option("--lspam", dest="lspam", type="string", default="Preliminary",
 parser.add_option("--noRatio", dest="ratio", action="store_false", default=True, help="Do NOT plot the ratio (i.e. give flag --showRatio)")
 parser.add_option("--dcc", dest="dcc", action="store_true", default=False, help="Run the double-count-checker after you have run all the plots.")
 
-base = "python mcPlots.py {MCA} {CUTS} {PLOTFILE} -P {T} --neg --s2v --tree {TREENAME} -f --cmsprel '{LSPAM}' --legendWidth 0.20 --legendFontSize 0.035 {MCCS} {MACROS} {RATIO} -l {LUMI} --pdir {O} {FRIENDS} {PROCS} {PLOTS} {FLAGS} --showMCError"
+base = "python mcPlots.py {MCA} {CUTS} {PLOTFILE} -P {T} --s2v --tree {TREENAME} -f --cmsprel '{LSPAM}' --legendWidth 0.20 --legendFontSize 0.035 {MCCS} {MACROS} {RATIO} -l {LUMI} --pdir {O} {FRIENDS} {PROCS} {PLOTS} {FLAGS}"
 baseDcc = "python mcDump.py {MCA} {CUTS} '{run:1d} {lumi:9d} {evt:12d}' -P {T} --tree {TREENAME} {MCCS} {MACROS} {FRIENDS} {PROCS} {FLAGS}" 
 (options, args) = parser.parse_args()
 options = maker.splitLists(options)

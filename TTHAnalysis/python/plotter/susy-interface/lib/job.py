@@ -57,6 +57,7 @@ class Job():
 			line = line.replace("[INST]"       , self.master.instance                      )
 			line = line.replace("[JOBDIR]"     , self.master.jobpath                       )
 			line = line.replace("[JOBID]"      , self.id                                   )
+			line = line.replace("[EMAIL]"      , self.master.options.email                 )
 			f.write(line+"\n")
 		f.close()
 	def prepareCommands(self):

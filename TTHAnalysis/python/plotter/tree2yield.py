@@ -262,7 +262,7 @@ class TreeToYield:
             if not basepath:
                 raise RuntimeError("%s -- ERROR: %s process not found in paths (%s)" % (__name__, cname, repr(options.path)))
 
-            tf_filename = tf_file.format(name=self._name, cname=self._cname, P=basepath)
+            tf_filename = tf_file.format(name=self._name, cname=self._cname, P=basepath, RP=self._fname[0:self._fname.rfind("/")])
             tf = self._tree.AddFriend(tf_tree, tf_filename),
             self._friends.append(tf)
         self._isInit = True

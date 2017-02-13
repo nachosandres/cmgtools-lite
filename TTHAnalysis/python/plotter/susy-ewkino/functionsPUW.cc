@@ -26,36 +26,20 @@ float puw_nInt_ICHEP(float nInt, int var=0) {
 }
 
 TFile* f_puw_nInt_Moriond    = new TFile(DATA_PUW+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Summer16_central.root", "read");
-TFile* f_puw_nInt_Moriond_Up = new TFile(DATA_PUW+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Summer16_up.root", "read");
-TFile* f_puw_nInt_Moriond_Dn = new TFile(DATA_PUW+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Summer16_down.root", "read");
+TFile* f_puw_nInt_Moriond_Up = new TFile(DATA_PUW+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Summer16_up.root"     , "read");
+TFile* f_puw_nInt_Moriond_Dn = new TFile(DATA_PUW+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Summer16_down.root"   , "read");
 TH1F* h_puw_nInt_Moriond    = (TH1F*) (f_puw_nInt_Moriond   ->Get("puw"));
 TH1F* h_puw_nInt_Moriond_Up = (TH1F*) (f_puw_nInt_Moriond_Up->Get("puw"));
 TH1F* h_puw_nInt_Moriond_Dn = (TH1F*) (f_puw_nInt_Moriond_Dn->Get("puw"));
 
 float puw_nInt_Moriond(float nInt, int var=0) { 
- 
+
   float puw = h_puw_nInt_Moriond->GetBinContent(h_puw_nInt_Moriond->FindBin(nInt)); 
   if(var== 0) return puw;
-  if(var== 1) return h_puw_nInt_Moriond_Up->GetBinContent(h_puw_nInt_Moriond_Up->FindBin(nInt)) / puw;
-  if(var==-1) return h_puw_nInt_Moriond_Dn->GetBinContent(h_puw_nInt_Moriond_Dn->FindBin(nInt)) / puw;
+  if(puw==0 ) return 0;
+  if(var== 1) return float(h_puw_nInt_Moriond_Up->GetBinContent(h_puw_nInt_Moriond_Up->FindBin(nInt))) / puw;
+  if(var==-1) return float(h_puw_nInt_Moriond_Dn->GetBinContent(h_puw_nInt_Moriond_Dn->FindBin(nInt))) / puw;
   cout <<"[WARNING!!!]  don't know what to do with PUweight, please check!! ";
   return -9999.;
 }
 
-// Fastsim is still Spring16 !!
-TFile* f_puw_nInt_MoriondFS    = new TFile(DATA_PUW+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Spring16_central.root", "read");
-TFile* f_puw_nInt_MoriondFS_Up = new TFile(DATA_PUW+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Spring16_up.root", "read");
-TFile* f_puw_nInt_MoriondFS_Dn = new TFile(DATA_PUW+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Spring16_down.root", "read");
-TH1F* h_puw_nInt_MoriondFS    = (TH1F*) (f_puw_nInt_MoriondFS   ->Get("puw"));
-TH1F* h_puw_nInt_MoriondFS_Up = (TH1F*) (f_puw_nInt_MoriondFS_Up->Get("puw"));
-TH1F* h_puw_nInt_MoriondFS_Dn = (TH1F*) (f_puw_nInt_MoriondFS_Dn->Get("puw"));
-
-float puw_nInt_Moriond_FS(float nInt, int var=0) { 
- 
-  float puw = h_puw_nInt_MoriondFS->GetBinContent(h_puw_nInt_MoriondFS->FindBin(nInt)); 
-  if(var== 0) return puw;
-  if(var== 1) return h_puw_nInt_MoriondFS_Up->GetBinContent(h_puw_nInt_MoriondFS_Up->FindBin(nInt)) / puw;
-  if(var==-1) return h_puw_nInt_MoriondFS_Dn->GetBinContent(h_puw_nInt_MoriondFS_Dn->FindBin(nInt)) / puw;
-  cout <<"[WARNING!!!]  don't know what to do with PUweight, please check!! ";
-  return -9999.;
-}

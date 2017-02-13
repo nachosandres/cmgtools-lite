@@ -147,7 +147,7 @@ float getLepSF(float pt, float eta, int pdgId, int isTight, int wp = 0, int var 
     if(!isTight) return 1.0;
     if(abs(pdgId) == 13) return (var==0)?getMuonSF    (pt, eta, wp):(1+getMuonUnc    (pt, var));
     if(abs(pdgId) == 11) return (var==0)?getElectronSF(pt, eta, wp):(1+getElectronUnc(pt, eta, wp, var));
-    if(abs(pdgId) == 15) return (var==0)?0.9:1.0;
+    if(abs(pdgId) == 15) return (var==0)?0.9:1.0; // we put flat uncertainty in the systs file
     return 1.0;
 }
 

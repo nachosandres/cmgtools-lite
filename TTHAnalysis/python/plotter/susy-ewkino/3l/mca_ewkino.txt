@@ -15,8 +15,9 @@ incl_sig_opt  : + ; IncludeMca="susy-ewkino/3l/includes/mca_sig_opt.txt"
 
 ## Data
 ## -----------------------------------------------------------
-incl_data : + ; IncludeMca="susy-ewkino/3l/includes/mca_data_M17.txt"
-incl_datanew : + ; IncludeMca="susy-ewkino/3l/includes/mca_data_M17_new.txt"
+incl_data      : + ; IncludeMca="susy-ewkino/3l/includes/mca_data_M17.txt"
+incl_dataAsBkg : + ; IncludeMca="susy-ewkino/3l/includes/mca_data_M17_asBkg.txt"
+#incl_data      : + ; IncludeMca="susy-ewkino/3l/includes/mca_data_ICHEP.txt"
 
 ## WZ (to keep the order)
 ## -----------------------------------------------------------

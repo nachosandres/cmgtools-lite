@@ -9,7 +9,7 @@ isFastSim = False
 
 # btag event weights in 80X
 from CMGTools.TTHAnalysis.tools.bTagEventWeights import BTagEventWeightFriend
-btagsf_payload = os.path.join(utility_files_dir, "btag", "CSVv2Moriond17_2017_1_26_BtoH.csv")
+btagsf_payload = os.path.join(utility_files_dir, "btag", "CSVv2_Moriond17_B_H.csv")
 btagsf_payload_fastsim = os.path.join(utility_files_dir, "btag", "fastsim_csvv2_ttbar_26_1_2017.csv")
 bTagEventWeight = lambda : BTagEventWeightFriend(csvfile=btagsf_payload, algo='csv', recllabel='Recl')
 btag_efficiency_file = os.path.join(utility_files_dir, "btag", "bTagEffs.root")
@@ -18,16 +18,14 @@ MODULES.append( ('eventBTagWeight', bTagEventWeight ))
 MODULES.append( ('bTagEventWeightFastSIM', bTagEventWeightFastSIM ))
 
 from CMGTools.TTHAnalysis.tools.bTagWeightAnalyzer import bTagWeightAnalyzer
-btagsf_payload_fullsim  = os.path.join(utility_files_dir, "btag", "CSVv2Moriond17_2017_1_26_BtoH.csv"                )
+btagsf_payload_fullsim  = os.path.join(utility_files_dir, "btag", "CSVv2_Moriond17_B_H.csv"                          )
 btagsf_payload_fastsim  = os.path.join(utility_files_dir, "btag", "fastsim_csvv2_ttbar_26_1_2017_fixed.csv"          )
 btag_efficiency_fullsim = os.path.join(utility_files_dir, "btag", "btageff__ttbar_powheg_pythia8_25ns_Moriond17.root")
 btag_efficiency_fastsim = os.path.join(utility_files_dir, "btag", "btageff__SMS-T1bbbb-T1qqqq_25ns_Moriond17.root"   )
-bTagEventWeightFullSim = lambda : bTagWeightAnalyzer(btagsf_payload_fullsim, btag_efficiency_fullsim, recllabel='Mini')
-bTagEventWeightFastSim = lambda : bTagWeightAnalyzer(btagsf_payload_fastsim, btag_efficiency_fastsim, recllabel='Mini', isFastSim=True)
-MODULES.append( ('bTagEventWeightFullSim', bTagEventWeightFullSim ))
-MODULES.append( ('bTagEventWeightFastSim', bTagEventWeightFastSim ))
-
-
+bTagEventWeightFullSim   = lambda : bTagWeightAnalyzer(btagsf_payload_fullsim, btag_efficiency_fullsim, recllabel='Mini')
+bTagEventWeightFastSim   = lambda : bTagWeightAnalyzer(btagsf_payload_fastsim, btag_efficiency_fastsim, recllabel='Mini', isFastSim=True)
+MODULES.append( ('bTagEventWeightFullSim'  , bTagEventWeightFullSim ))
+MODULES.append( ('bTagEventWeightFastSim'  , bTagEventWeightFastSim ))
 
 
 #--- Recleaner instances

@@ -63,36 +63,40 @@ def div(num, den):
 	if den==0: return 1
 	return float(num)/den
 
+def cutOff(value, up, down):
+	if value > up  : return up
+	if value < down: return down
+	return value
 
 def getWsum():
 	global file, treedir, treename
 	print "retrieving wsums"
-	wsums = []
-	fpath = None
-	if   os.path.exists(treedir+"/"+file+"/"+treename+"/tree.root"):
-		fpath = treedir+"/"+file+"/"+treename+"/tree.root"
-	elif os.path.exists(treedir+"/"+file+"/"+treename+"/tree.root.url"):
-		fpath = open(treedir+"/"+file+"/"+treename+"/tree.root.url").readlines[0].rstrip("\n")
-	else:
-		continue
-	f = ROOT.TFile.Open(fpath, "read")
-	if not f: return []
-	t = f.Get("tree")
-	if not t: return []
-	total = f.GetEntries()
-	upP   = f.GetEntries("nVert>20")
-	dnP   = f.GetEntries("nVert<20")
-	if total == 0: return []
-	upW = 0
-	dnW = 0
-	for evt in t:
-		upW += evt.LHEweight_wgt[4]/LHEweight_wgt[0]
-		dnW += evt.LHEweight_wgt[9]/LHEweight_wgt[0]
-	f.Close()
-	return [total, upW, dnW, upP, dnP]
+	wsums = [0,0,0,0,0]
+	for ff in file.split("+"):
+		fpath = None
+		if   os.path.exists(treedir+"/"+file+"/"+treename+"/tree.root"):
+			fpath = treedir+"/"+file+"/"+treename+"/tree.root"
+		elif os.path.exists(treedir+"/"+file+"/"+treename+"/tree.root.url"):
+			fpath = open(treedir+"/"+file+"/"+treename+"/tree.root.url","r").readlines()[0].rstrip("\n")
+		else:
+			continue
+		f = ROOT.TFile.Open(fpath, "read")
+		if not f: continue
+		t = f.Get("tree")
+		if not t: continue
+		if t.GetEntries() == 0: continue
+		wsums[0] += t.GetEntries()
+		wsums[1] += t.GetEntries("nVert>20")
+		wsums[2] += t.GetEntries("nVert<20")
+		for evt in t:
+			wsums[3] += evt.LHEweight_wgt[4]/LHEweight_wgt[0]
+			wsums[4] += evt.LHEweight_wgt[9]/LHEweight_wgt[0]
+		f.Close()
+	return wsums
+	#return [total, upP, dnP, upW, dnW]
 
 
-def doReweightingVariations(infile, outfile, procName, total, up, down):
+def doReweightingVariations(infile, outfile, procName, total = 0, up = 0, dn = 0):
 	global sig
 	f   = ROOT.TFile.Open(infile, "read")
 	hcn = f.Get("x_sig_{s}_central".format(s=sig))
@@ -100,41 +104,43 @@ def doReweightingVariations(infile, outfile, procName, total, up, down):
 	hdn = f.Get("x_sig_{s}_down"   .format(s=sig))
 	ff = ROOT.TFile.Open(outfile, "recreate")
 	ff.cd()
-	hOutUp = ROOT.TH1F(procName+"_Up",procName+"_Up",histos[0].GetNbinsX(),histos[0].GetXmin(),histos[0].GetXmax())
-	hOutDn = ROOT.TH1F(procName+"_Dn",procName+"_Dn",histos[0].GetNbinsX(),histos[0].GetXmin(),histos[0].GetXmax())
-	final.Write()
+	hOutUp = ROOT.TH1F(procName+"_Up",procName+"_Up",hcn.GetNbinsX(),hcn.GetXaxis().GetXmin(),hcn.GetXaxis().GetXmax())
+	hOutDn = ROOT.TH1F(procName+"_Dn",procName+"_Dn",hcn.GetNbinsX(),hcn.GetXaxis().GetXmin(),hcn.GetXaxis().GetXmax())
+	fUp = total/up if up>0 else 1.0
+	fDn = total/dn if dn>0 else 1.0
 	## loop over SR
-	for sr in range(1,h.GetNbinsX()+1):
-	    valZero = histos[ 0].GetBinContent(sr)
-	    errZero = histos[ 0].GetBinError  (sr)
-	    valUp   = histos[ 1].GetBinContent(sr)*total/up
-	    errUp   = histos[ 1].GetBinError  (sr)*total/up
-	    valDn   = histos[-1].GetBinContent(sr)*total/down
-	    errDn   = histos[-1].GetBinError  (sr)*total/down
+	for sr in range(1,hcn.GetNbinsX()+1):
+	    valZero = hcn.GetBinContent(sr)
+	    errZero = hcn.GetBinError  (sr)
+	    valUp   = hup.GetBinContent(sr)*fUp
+	    errUp   = hup.GetBinError  (sr)*fUp
+	    valDn   = hdn.GetBinContent(sr)*fDn
+	    errDn   = hdn.GetBinError  (sr)*fDn
 	    if valUp==0 or valDn==0 or valZero==0: continue
 	    sysUp  = valUp/valZero - 1.0;
 	    sysDn  = 1.0 - valZero/valDn
 	    #RMS    = sysUp*sysUp + sysDn*sysDn
-	    hOutUp = SetBinContent(sr, cutOff(1+sysUp if sysUp>0 else -1/(sysUp-1), 2, 0.5))
-	    hOutDn = SetBinContent(sr, cutOff(1+sysDn if sysDn>0 else -1/(sysDn-1), 2, 0.5))	
+	    hOutUp.SetBinContent(sr, cutOff(1+sysUp if sysUp>0 else -1/(sysUp-1), 2, 0.5))
+	    hOutDn.SetBinContent(sr, cutOff(1+sysDn if sysDn>0 else -1/(sysDn-1), 2, 0.5))	
 	hOutUp.Write()	
 	hOutDn.Write()	
+	hOutUp.SetDirectory(0)
+	hOutDn.SetDirectory(0)
 	ff.Close()
 	return [hOutUp, hOutDn]
 
-
 def doPuwVariation(infile, outfile, wsum):
 	## extracts relative correction for pileup according to susy recommendation
-    global sig, puw
+	global sig, puw
 	print "running pileup variation"
-	return doReweightingVariations(infile, outfile, sig, "x_sig_{s}_{j}_Up".format(s=sig, j=puw), wsum[0], wsum[3], wsum[4])
+	return doReweightingVariations(infile, outfile, "x_sig_{s}_{j}_Up".format(s=sig, j=puw), wsum[0], wsum[1], wsum[2])
 
 
-def doQ2Variation(infile, outfile, sig, wsum):
+def doQ2Variation(infile, outfile, wsum):
 	## extracts relative correction for Q2 Acceptance
 	global sig, q2acc
 	print "running q2 acceptance variation"
-	return doReweightingVariations(infile, outfile, sig, "x_sig_{s}_{j}_Up".format(s=sig, j=q2acc), wsum[0], wsum[1], wsum[2])
+	return doReweightingVariations(infile, outfile, "x_sig_{s}_{j}_Up".format(s=sig, j=q2acc), wsum[3], wsum[4])
 
 
 def doMetVariation(infile, outfile, sig, jec, met, wVars, q2vars = [], puwvars = []):
@@ -227,7 +233,7 @@ mkdir(q2dir )
 mkdir(accdir)
 mkdir(mpsdir)
 
-wsum = getWsum(sig)
+wsum = getWsum()
 
 ## first do pileup variation
 if puw:
@@ -240,7 +246,7 @@ if puw:
 	cmd(mybase.replace("[[","{").replace("]]","}") + " --asimov")
 
 	## get central value of acceptance 
-	puwvars = doPuwVariation(puwdir+"/common/SR.input.root", puwdir+"/puw_SR.input.root", sig, wsum)
+	puwvars = doPuwVariation(puwdir+"/common/SR.input.root", puwdir+"/puw_SR.input.root", wsum)
 
 
 ## then do Q2 acceptance variation
@@ -255,7 +261,7 @@ if q2acc:
 	cmd(mybase.replace("[[","{").replace("]]","}") + " --asimov")
 
 	## get central value of acceptance 
-	q2vars = doQ2Variation(q2dir+"/common/SR.input.root", q2dir+"/q2_SR.input.root", sig, wsum)
+	q2vars = doQ2Variation(q2dir+"/common/SR.input.root", q2dir+"/q2_SR.input.root", wsum)
 	
 
 
@@ -292,9 +298,12 @@ if len(frmet)==2:
 for k,vals in wVars.iteritems():
 	f.write(mcabase.format(name=sig+"_"+k+"_Up+", ws=makeWeight(wstr,vals[0]), FRfiles=makeFakeRate(frfiles)) + ",SkipMe=True\n")
 	f.write(mcabase.format(name=sig+"_"+k+"_Dn+", ws=makeWeight(wstr,vals[1]), FRfiles=makeFakeRate(frfiles)) + ",SkipMe=True\n")
-if q2file:
-	f.write(mcabase.format(name=sig+"_"+q2acc+"_Up+", ws=wstr, FRfiles=makeFakeRate(frfiles, frjec, 1)) + ",SkipMe=True\n")
-	f.write(mcabase.format(name=sig+"_"+q2acc+"_Dn+", ws=wstr, FRfiles=makeFakeRate(frfiles, frjec, 2)) + ",SkipMe=True\n")
+if len(q2vars)>0:
+	f.write(mcabase.format(name=sig+"_"+q2acc+"_Up+", ws=wstr, FRfiles=makeFakeRate(frfiles)) + ",SkipMe=True\n")
+	f.write(mcabase.format(name=sig+"_"+q2acc+"_Dn+", ws=wstr, FRfiles=makeFakeRate(frfiles)) + ",SkipMe=True\n")
+if len(puwvars)>0:
+	f.write(mcabase.format(name=sig+"_"+puw  +"_Up+", ws=wstr, FRfiles=makeFakeRate(frfiles)) + ",SkipMe=True\n")
+	f.write(mcabase.format(name=sig+"_"+puw  +"_Dn+", ws=wstr, FRfiles=makeFakeRate(frfiles)) + ",SkipMe=True\n")
 f.close()
 
 ## run the proper job, which is actually just making the cards

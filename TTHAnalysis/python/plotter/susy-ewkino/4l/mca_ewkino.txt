@@ -11,7 +11,8 @@ incl_sync  : + ; IncludeMca="susy-ewkino/4l/includes/mca_sync.txt"
 
 ## Data
 ## -----------------------------------------------------------
-incl_data : + ; IncludeMca="susy-ewkino/4l/includes/mca_data_M17.txt"
+incl_data      : + ; IncludeMca="susy-ewkino/4l/includes/mca_data_M17.txt"
+incl_dataAsBkg : + ; IncludeMca="susy-ewkino/4l/includes/mca_data_M17_asBkg.txt"
 #incl_data : + ; IncludeMca="susy-ewkino/4l/includes/mca_data_ICHEP.txt"
 
 ## WZ (to keep the order)

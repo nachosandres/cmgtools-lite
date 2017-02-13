@@ -3,18 +3,18 @@
 
 lumi          : sig_.*|prompt_.*|rares_.*|convs               : .*                : 1.062
 trigeff_ML    : sig_.*|prompt_.*|rares_.*|convs               : .*                : 1.04
-taueff_ML     : sig_.*|prompt_.*|rares_.*|convs               : .*3l[C,D,E].*     : 1.06
-taueff_ML     : sig_.*|prompt_.*|rares_.*|convs               : .*3lF.*           : 1.12
-taueff_ML     : sig_.*|prompt_.*|rares_.*|convs               : .*4lI.*           : 1.06
-taueff_ML     : sig_.*|prompt_.*|rares_.*|convs               : .*4l[J,K].*       : 1.12
+taueff_ML     : sig_.*|prompt_.*|rares_.*|convs               : .*3l[C,D,E].*     : 1.10
+taueff_ML     : sig_.*|prompt_.*|rares_.*|convs               : .*3lF.*           : 1.20
+taueff_ML     : sig_.*|prompt_.*|rares_.*|convs               : .*4lI.*           : 1.10
+taueff_ML     : sig_.*|prompt_.*|rares_.*|convs               : .*4l[J,K].*       : 1.20
 
 fakes_ML      : fakes_.*                                      : .*                : 1.3
-flips_ML      : flips_.*                                      : .*                : 1.3
+flips_ML      : flips_.*                                      : .*                : 1.2
 convs_ML      : convs                                         : .*                : 1.25
 #convs_ML      : convs                                         : .*3l.*            : 1.2
 #convs_ML      : convs                                         : .*2lss.*          : 1.5
 
-SFWZ_ML       : prompt_WZ                                     : .*crwz.*          : 1.09
+SFWZ_ML       : prompt_WZ                                     : .*crwz.*          : 1.10
 floatWZ_ML    : prompt_WZ                                     : .*crwz.*          : 100   : lnU
 floatWZ_ML    : prompt_WZ                                     : .*3lA.*           : 100   : lnU
 normWZ_ML     : prompt_WZ                                     : .*3l[B,C,D,E,F].* : 1.30
@@ -27,9 +27,8 @@ normVVV_ML    : rares_VVV                                     : .*              
 normTTX_ML    : rares_ttX                                     : .*                : 1.5
 theoTTV_ML    : rares_ttW|rares_ttZ                           : .*                : 1.15
 
-scale         : sig_.*                                        : .*                : 1.02
-signalcont_ML : sig_TChiNeuWZ                                 : .*crwz.*          : 1.05
-signalcont_ML : sig_TChiNeuWH|sig_TChiNeuSlep.*|sig_TNeuNeu.* : .*crwz.*          : 1.01
+#signalcont_ML : sig_TChiNeuWZ                                 : .*crwz.*          : 1.05
+#signalcont_ML : sig_TChiNeuWH|sig_TChiNeuSlep.*|sig_TNeuNeu.* : .*crwz.*          : 1.01
 
 
 ## shape uncertainties
@@ -72,14 +71,16 @@ ewksub_ML     : fakes_.*                          : .* : ewk        : templates
 JES           : sig_.*|prompt_.*|rares_.*|convs   : .* : jec        : templates
 MET           : sig_.*                            : .* : met        : templates
 ISR           : sig_.*                            : .* : isr        : templates
+#scale         : sig_.*                                        : .*                : 1.02
+scale         : sig_.*                            : .* : q2acc      : templates
 
 PUreweighting : sig_.*|prompt_.*|rares_.*|convs   : .* : puw        : templates
 
 lepton_idiso  : sig_.*|prompt_.*|rares_.*|convs   : .* : lepSF      : templates
 lepton_FSsfs  : sig_.*                            : .* : lepSFFS    : templates
 
-btag_HF       : prompt_.*|rares_.*|convs          : .* : bTagHF     : templates
-btag_LF       : prompt_.*|rares_.*|convs          : .* : bTagLF     : templates
+btag_HF       : sig_.*|prompt_.*|rares_.*|convs   : .* : bTagHF     : templates
+btag_LF       : sig_.*|prompt_.*|rares_.*|convs   : .* : bTagLF     : templates
 btag_FS_HF_ML : sig_.*                            : .* : bTagFSHF   : templates
 btag_FS_LF_ML : sig_.*                            : .* : bTagFSLF   : templates
 

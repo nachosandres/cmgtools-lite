@@ -1,7 +1,7 @@
 import os, datetime, subprocess
 
 T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-01-27_ewkskims80X_M17_MERGED"
-O="/afs/cern.ch/user/c/cheidegg/www/heppy/2017-01-27_ewk80X_freezingSSR/" # Do NOT give a trailing /
+O="/afs/cern.ch/user/c/cheidegg/www/heppy/2017-02-01_ewk80X_preapprovalSSR" # Do NOT give a trailing /
 L=36.5
 
 ## below is the most crucial part: the base command for plotting
@@ -49,9 +49,10 @@ def bash(cmd):
 
 def mkdir(path, clean=False):
 	path = path.rstrip("/")
-	if os.path.isdir(path): return
+	if os.path.isdir(path): 
+		os.system("rm -rf "+path+"/*")
+		return
 	os.system("mkdir -p "+path)
-	os.system("rm -rf "+path+"/*")
 
 def unwrap(exprs, varys):
 	unwrapped = []

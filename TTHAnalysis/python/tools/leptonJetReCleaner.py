@@ -236,7 +236,8 @@ class LeptonJetReCleaner:
         if not hasattr(event, name+"_corr_JECUp") or not hasattr(event, name+"_corr_JECDown") or not hasattr(event, name+"_CorrFactor_L1L2L3Res"): return corrected
         for jet in corrected:
             corr = getattr(jet, "corr_JECUp") if var == 1 else getattr(jet, "corr_JECDown")
-            jet.pt = jet.pt * corr / getattr(jet, "CorrFactor_L1L2L3Res")
+            quot = getattr(jet, "CorrFactor_L1L2L3Res") if getattr(jet, "CorrFactor_L1L2L3Res") > 0 else getattr(jet, "CorrFactor_L1L2L3")
+            jet.pt = jet.pt * corr / quot
         return corrected
 
     def __call__(self, event):
