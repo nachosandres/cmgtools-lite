@@ -5,8 +5,8 @@ filters: $DATA{(Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_HBHENoiseIsoFilt
 trigger: $DATA{(Triggers_iso || Triggers_noniso)} $MC{(Triggers_iso || Triggers_noniso)} 
 pt101010: LepSel1_conePt>10 && LepSel2_conePt>10 && LepSel3_conePt>10 && LepSel1_pt>10 && LepSel2_pt>10 && LepSel3_pt>10
 cleanup: minMllSFOS == -1 || minMllSFOS > 12
-tight:  nLepSel>=3 && LepSel1_isTight && LepSel2_isTight && LepSel3_isTight
-3light:  abs(LepSel1_pdgId)<14 && abs(LepSel2_pdgId)<14 && abs(LepSel3_pdgId)<14
+3light:  nLepSel>=3 && abs(LepSel1_pdgId)<14 && abs(LepSel2_pdgId)<14 && abs(LepSel3_pdgId)<14
+tight:   LepSel1_isTight && LepSel2_isTight && LepSel3_isTight
 pt2x1x10: LepSel1_conePt>(10+5*(abs(LepSel1_pdgId)==11)) && (htJet30j > 400 || (LepSel1_conePt>(20+5*(abs(LepSel1_pdgId)==11)))) && LepSel2_conePt>(10+5*(abs(LepSel2_pdgId)==11)) && LepSel3_conePt>10
 muee: !(abs(LepSel1_pdgId)==13 && abs(LepSel2_pdgId)==11 && abs(LepSel3_pdgId)==11) || (LepSel1_conePt>25 || htJet30j > 400)
 idIsoEmu: htJet30j > 300 || (LepSel1_idIsoEmu && LepSel2_idIsoEmu && LepSel3_idIsoEmu); Disable=True
