@@ -1,8 +1,8 @@
 BEGIN::2lss
   firstCut     := alwaystrue
-  mcafile      := susy-ewkino/2lss/mca-2lss_susy-int.txt
-  cutfile      := susy-ewkino/2lss/cuts_susy-int.txt
-  plotfile     := susy-ewkino/2lss/plots_susy-int.txt
+  mcafile      := susy-ewkino/2lss/mca-2lss.txt
+  cutfile      := susy-ewkino/2lss/cuts_2lss.txt
+  plotfile     := susy-ewkino/2lss/plots_2lss.txt
   sysfile      := susy-ewkino/systs_ewkino.txt
   friendConn  #:= {leptonJetReCleanerSusyEWK2L :                             }
   friendConn  #:= {leptonBuilderEWK            : leptonJetReCleanerSusyEWK2L }
