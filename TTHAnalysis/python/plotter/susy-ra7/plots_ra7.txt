@@ -127,7 +127,7 @@ MET_WZ     : met_pt               : 7,30,100    ; XTitle="E_{T}^{miss} [GeV]", L
 mll_3l     : mll_3l: 30,76,106; XTitle="best m_{Z} [GeV]", LegendCutoff=1e-5, Legend='TL'
 mT_3l      : mT_3l: 10,50,100; XTitle="M_{T}^{W} [GeV]", LegendCutoff=1e-5, Legend='TR', XNDiv=510, MoreY=1.8
 nJet30_WZ 	   : nJet30               : 4,-0.5,3.5  ; XTitle='N_{jet}', LegendCutoff=1e-5, XNDiv=004, Legend='TR'
-nBJet25_WZ    : nBJetMedium25        : 3,-0.5,2.5   ; XTitle='N(b-jet\, p_{T} > 25\, CSVM)', LegendCutoff=1e-5, XNDiv=003, Legend='TR'
+nBJet25_WZ    : nBJetMedium25        : 3,-0.5,2.5   ; XTitle='N(b-jet\, p_{T} > 25\, CSVM)', LegendCutoff=1e-5, XNDiv=003, Legend='TR', xBinLabels="0\,1\,#geq2"
 
 LongMET_WZ     : met_pt               : 20,0,200    ; XTitle="E_{T}^{miss} [GeV]", LegendCutoff=1e-5, XNDiv=805
 LongmT_3l      : mT_3l: 20,0,200; XTitle="M_{T}^{W} [GeV]", LegendCutoff=1e-5, Legend='TR', XNDiv=805

@@ -37,3 +37,4 @@ mTW\b: mTcalc(mT_3l, mT_4l, mT_fo_3l, mT_fo_4l, LepSel_isTight[0]+LepSel_isTight
 mass12\b: mass_2(LepSel_conePt[0], LepSel_eta[0], LepSel_phi[0], lepMass(LepSel_pdgId[0]), LepSel_conePt[1], LepSel_eta[1], LepSel_phi[1], lepMass(LepSel_pdgId[1])); AlsoData
 mass13\b: mass_2(LepSel_conePt[0], LepSel_eta[0], LepSel_phi[0], lepMass(LepSel_pdgId[0]), LepSel_conePt[2], LepSel_eta[2], LepSel_phi[2], lepMass(LepSel_pdgId[2])); AlsoData
 mass23\b: mass_2(LepSel_conePt[1], LepSel_eta[1], LepSel_phi[1], lepMass(LepSel_pdgId[1]), LepSel_conePt[2], LepSel_eta[2], LepSel_phi[2], lepMass(LepSel_pdgId[2])); AlsoData
+nBJetTTZCR\b: if3(nBJetMedium25_Mini<2,nBJetMedium25_Mini,2); AlsoData

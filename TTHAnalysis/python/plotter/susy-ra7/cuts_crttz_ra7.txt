@@ -14,6 +14,7 @@ muee: !(abs(LepSel1_pdgId)==13 && abs(LepSel2_pdgId)==11 && abs(LepSel3_pdgId)==
 idIsoEmu: htJet30j > 400 || (LepSel1_idIsoEmu && LepSel2_idIsoEmu && LepSel3_idIsoEmu); Disable=True
 lownjet: nJet30 > 2
 met: 30 <= met_pt && met_pt <= 70
+orthogonal: if3(nBJetMedium25<2 && htJet30j<400, met<=70, met<=50)
 onZ: nOSSF_3l>0 && abs(mll_3l-91)<15
 ht60: htJet30j>60
 #inBR: BR == 1
