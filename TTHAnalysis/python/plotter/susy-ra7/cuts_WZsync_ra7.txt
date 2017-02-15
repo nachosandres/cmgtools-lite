@@ -6,13 +6,13 @@ cleanup: minMllSFOS == -1 || minMllSFOS > 12
 3light:  nLepSel==3 && abs(LepSel1_pdgId)<14 && abs(LepSel2_pdgId)<14 && abs(LepSel3_pdgId)<14
 pt101010: LepSel1_conePt>10 && LepSel2_conePt>10 && LepSel3_conePt>10
 tight:  LepSel1_isTight && LepSel2_isTight && LepSel3_isTight
-RA5multiIso:  LepSel1_multiRA5 && LepSel2_multiRA5 && LepSel3_multiRA5
-idIsoEmu: LepSel1_idIsoEmu && LepSel2_idIsoEmu && LepSel3_idIsoEmu
+#RA5multiIso:  LepSel1_multiRA5 && LepSel2_multiRA5 && LepSel3_multiRA5
+#idIsoEmu: LepSel1_idIsoEmu && LepSel2_idIsoEmu && LepSel3_idIsoEmu
 eee: abs(LepSel1_pdgId)+abs(LepSel2_pdgId)+abs(LepSel3_pdgId)==33; Disable=True
 eem: abs(LepSel1_pdgId)+abs(LepSel2_pdgId)+abs(LepSel3_pdgId)==35; Disable=True
 emm: abs(LepSel1_pdgId)+abs(LepSel2_pdgId)+abs(LepSel3_pdgId)==37; Disable=True
 mmm: abs(LepSel1_pdgId)+abs(LepSel2_pdgId)+abs(LepSel3_pdgId)==39; Disable=True
-pt2x1x10: LepSel1_conePt>25 && LepSel2_conePt>20 && LepSel3_conePt>20
+pt252020: LepSel1_conePt>25 && LepSel2_conePt>20 && LepSel3_conePt>20
 #muee: !(abs(LepSel1_pdgId)==13 && abs(LepSel2_pdgId)==11 && abs(LepSel3_pdgId)==11) || (LepSel1_conePt>25 || htJet30j > 400)
 lownjet: nJet30 < 2
 bveto: nBJetMedium25==0

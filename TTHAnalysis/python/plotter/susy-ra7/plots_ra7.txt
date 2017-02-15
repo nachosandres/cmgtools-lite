@@ -49,6 +49,7 @@ nLepLoose    : nLepLoose : 7,-0.5,6.5; XTitle="Number of loose leptons", LegendC
 #mZ1     : mZ1: 30,75,105; XTitle="best m_{Z} [GeV]", LegendCutoff=1e-5
 #bestmZ  : bestmzTL : 30,75,105; XTitle="best m_{Z} [GeV]", LegendCutoff=1e-5 #with old WZCRvars FT
 mZ     : ((nLepTight_Mini>3)*mll_4l+(nLepTight_Mini==3)*mll_3l): 50,0,200; XTitle="best m_{Z} [GeV]", LegendCutoff=1e-5, Legend='TR'
+mass12  : mass12 : 120,76,106; XTitle="best m_{Z} [GeV]", LegendCutoff=1e-5, Legend='TL'
 
 eta1     : LepSel1_eta          : 10,-2.5,2.5     ; XTitle="#eta (leading reco lep)", LegendCutoff=1e-5
 eta2     : LepSel2_eta          : 10,-2.5,2.5     ; XTitle="#eta (subleading reco lep)", LegendCutoff=1e-5
