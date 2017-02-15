@@ -21,6 +21,36 @@ TH2 * FR_tau = 0;
 TH2 * FR2_tau = 0;
 TH2 * FR3_tau = 0;
 
+TH2 * FRW_mu = 0;
+TH2 * FRW2_mu = 0;
+TH2 * FRW3_mu = 0;
+TH2 * FRW4_mu = 0;
+TH2 * FRW5_mu = 0;
+TH2 * FRW_el = 0;
+TH2 * FRW2_el = 0;
+TH2 * FRW3_el = 0;
+TH2 * FRW4_el = 0;
+TH2 * FRW5_el = 0;
+TH2 * FRWi_mu[6], *FRWi_el[6], *FRWi_tau[6];
+TH2 * FRW_tau = 0;
+TH2 * FRW2_tau = 0;
+TH2 * FRW3_tau = 0;
+
+TH2 * FRZ_mu = 0;
+TH2 * FRZ2_mu = 0;
+TH2 * FRZ3_mu = 0;
+TH2 * FRZ4_mu = 0;
+TH2 * FRZ5_mu = 0;
+TH2 * FRZ_el = 0;
+TH2 * FRZ2_el = 0;
+TH2 * FRZ3_el = 0;
+TH2 * FRZ4_el = 0;
+TH2 * FRZ5_el = 0;
+TH2 * FRZi_mu[6], *FRZi_el[6], *FRZi_tau[6];
+TH2 * FRZ_tau = 0;
+TH2 * FRZ2_tau = 0;
+TH2 * FRZ3_tau = 0;
+
 TH2 * FR_mu_FO1_QCD    = 0;
 TH2 * FR_mu_FO1_insitu = 0;
 TH2 * FR_mu_FO2_QCD    = 0;
@@ -70,6 +100,32 @@ bool loadFRHisto(const std::string &histoName, const char *file, const char *nam
     else if (histoName == "FR4_el") { histo = & FR4_el; hptr2 = & FRi_el[4]; }
     else if (histoName == "FR5_mu") { histo = & FR5_mu; hptr2 = & FRi_mu[5]; }
     else if (histoName == "FR5_el") { histo = & FR5_el; hptr2 = & FRi_el[5]; }
+    else if (histoName == "FRW_tau") { histo = & FRW_tau; hptr2 = & FRWi_tau[0]; }
+    else if (histoName == "FRW_mu")  { histo = & FRW_mu;  hptr2 = & FRWi_mu[0]; }
+    else if (histoName == "FRW_el")  { histo = & FRW_el;  hptr2 = & FRWi_el[0]; }
+    else if (histoName == "FRW2_mu") { histo = & FRW2_mu; hptr2 = & FRWi_mu[2]; }
+    else if (histoName == "FRW2_el") { histo = & FRW2_el; hptr2 = & FRWi_el[2]; }
+    else if (histoName == "FRW2_tau"){ histo = & FRW2_tau; hptr2 = & FRWi_tau[2]; }
+    else if (histoName == "FRW3_mu") { histo = & FRW3_mu; hptr2 = & FRWi_mu[3]; }
+    else if (histoName == "FRW3_el") { histo = & FRW3_el; hptr2 = & FRWi_el[3]; }
+    else if (histoName == "FRW3_tau"){ histo = & FRW3_tau; hptr2 = & FRWi_tau[3]; }
+    else if (histoName == "FRW4_mu") { histo = & FRW4_mu; hptr2 = & FRWi_mu[4]; }
+    else if (histoName == "FRW4_el") { histo = & FRW4_el; hptr2 = & FRWi_el[4]; }
+    else if (histoName == "FRW5_mu") { histo = & FRW5_mu; hptr2 = & FRWi_mu[5]; }
+    else if (histoName == "FRW5_el") { histo = & FRW5_el; hptr2 = & FRWi_el[5]; }
+    else if (histoName == "FRZ_tau") { histo = & FRZ_tau; hptr2 = & FRZi_tau[0]; }
+    else if (histoName == "FRZ_mu")  { histo = & FRZ_mu;  hptr2 = & FRZi_mu[0]; }
+    else if (histoName == "FRZ_el")  { histo = & FRZ_el;  hptr2 = & FRZi_el[0]; }
+    else if (histoName == "FRZ2_mu") { histo = & FRZ2_mu; hptr2 = & FRZi_mu[2]; }
+    else if (histoName == "FRZ2_el") { histo = & FRZ2_el; hptr2 = & FRZi_el[2]; }
+    else if (histoName == "FRZ2_tau"){ histo = & FRZ2_tau; hptr2 = & FRZi_tau[2]; }
+    else if (histoName == "FRZ3_mu") { histo = & FRZ3_mu; hptr2 = & FRZi_mu[3]; }
+    else if (histoName == "FRZ3_el") { histo = & FRZ3_el; hptr2 = & FRZi_el[3]; }
+    else if (histoName == "FRZ3_tau"){ histo = & FRZ3_tau; hptr2 = & FRZi_tau[3]; }
+    else if (histoName == "FRZ4_mu") { histo = & FRZ4_mu; hptr2 = & FRZi_mu[4]; }
+    else if (histoName == "FRZ4_el") { histo = & FRZ4_el; hptr2 = & FRZi_el[4]; }
+    else if (histoName == "FRZ5_mu") { histo = & FRZ5_mu; hptr2 = & FRZi_mu[5]; }
+    else if (histoName == "FRZ5_el") { histo = & FRZ5_el; hptr2 = & FRZi_el[5]; }
     else if (histoName == "QF_el") histo = & QF_el;
     else if (histoName == "FR_mu_FO1_QCD")  { histo = &FR_mu_FO1_QCD ;  hptr2 = & FRi_FO_mu[0]; }
     else if (histoName == "FR_mu_FO1_insitu")  { histo = &FR_mu_FO1_insitu ;  hptr2 = & FRi_FO_mu[1]; }
@@ -686,6 +742,19 @@ float fakeRateWeight_3lCB(float l1pt, float l1eta, int l1pdgId, float l1relIso,
 float fetchFR_i(float l1pt, float l1eta, int l1pdgId, int iFR) 
 {
     TH2 *hist1 = (abs(l1pdgId) == 11 ? FRi_el[iFR] : FRi_mu[iFR]);
+    if (hist1 == 0) { std::cerr << "ERROR, missing FR for pdgId " << l1pdgId << ", iFR " << iFR << std::endl; std::abort(); }
+    int ptbin1  = std::max(1, std::min(hist1->GetNbinsX(), hist1->GetXaxis()->FindBin(l1pt)));
+    int etabin1 = std::max(1, std::min(hist1->GetNbinsY(), hist1->GetYaxis()->FindBin(std::abs(l1eta))));
+    double fr1 = hist1->GetBinContent(ptbin1,etabin1);
+    if (fr1 <= 0)  { std::cerr << "WARNING, FR is " << fr1 << " for " << hist1->GetName() << ", pt " << l1pt << " eta " << l1eta << std::endl; if (fr1<0) std::abort(); }
+    return fr1;
+}
+
+float fetchFRWZ_i(float l1pt, float l1eta, int l1pdgId, int iFR, int wp) 
+{
+    TH2 *hist1 = 0;
+    if (wp==1) {hist1 = (abs(l1pdgId) == 11 ? FRWi_el[iFR] : FRWi_mu[iFR]);}
+    else if (wp==0) {hist1 = (abs(l1pdgId) == 11 ? FRZi_el[iFR] : FRZi_mu[iFR]);}
     if (hist1 == 0) { std::cerr << "ERROR, missing FR for pdgId " << l1pdgId << ", iFR " << iFR << std::endl; std::abort(); }
     int ptbin1  = std::max(1, std::min(hist1->GetNbinsX(), hist1->GetXaxis()->FindBin(l1pt)));
     int etabin1 = std::max(1, std::min(hist1->GetNbinsY(), hist1->GetYaxis()->FindBin(std::abs(l1eta))));
