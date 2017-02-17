@@ -146,15 +146,15 @@ class LeptonBuilderWZSM:
         self.metphi[1]  = getattr(event, "met_jecUp_phi"  , event.met_phi)
         self.metphi[-1] = getattr(event, "met_jecDown_phi", event.met_phi)
 
-        self.metgen        = {}
-        self.metgen[0]     = event.met_genPt if not event.isData else event.met_pt
-        self.metgen[1]     = getattr(event, "met_jecUp_genPt"  , event.met_genPt if not event.isData else event.met_pt)
-        self.metgen[-1]    = getattr(event, "met_jecDown_genPt", event.met_genPt if not event.isData else event.met_pt)
+        self.metgen        = self.met
+        #self.metgen[0]     = event.met_genPt if not event.isData else event.met_pt
+        #self.metgen[1]     = getattr(event, "met_jecUp_genPt"  , event.met_genPt if not event.isData else event.met_pt)
+        #self.metgen[-1]    = getattr(event, "met_jecDown_genPt", event.met_genPt if not event.isData else event.met_pt)
 
-        self.metgenphi     = {}
-        self.metgenphi[0]  = event.met_genPhi if not event.isData else event.met_phi
-        self.metgenphi[1]  = getattr(event, "met_jecUp_genPhi"  , event.met_genPhi if not event.isData else event.met_phi)
-        self.metgenphi[-1] = getattr(event, "met_jecDown_genPhi", event.met_genPhi if not event.isData else event.met_phi)
+        self.metgenphi     = self.metphi
+        #self.metgenphi[0]  = event.met_genPhi if not event.isData else event.met_phi
+        #self.metgenphi[1]  = getattr(event, "met_jecUp_genPhi"  , event.met_genPhi if not event.isData else event.met_phi)
+        #self.metgenphi[-1] = getattr(event, "met_jecDown_genPhi", event.met_genPhi if not event.isData else event.met_phi)
 
         self.OS = []
 
