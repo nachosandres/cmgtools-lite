@@ -1,0 +1,27 @@
+## WZ
+## -----------------------------------------------------------
+prompt_WZ               : WZTo3LNu                        : xsec : LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0            ; FillColor=ROOT.kOrange  , Label="WZ", NormSystematic=0.1
+
+rares_tZq     : tZq_ll                      : xsec : LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0 ; FillColor=ROOT.kCyan-7, Label="tZq", NormSystematic=0.2
+
+rares_ttX    : TTWToLNu_ext1+TTWToLNu_ext2_part1+TTWToLNu_ext2_part2                    : xsec : LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0 ; FillColor=ROOT.kViolet-3, Label="ttX", NormSystematic=0.2
+rares_ttX     : TTHnobb_pow                 : xsec : LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0 ; FillColor=ROOT.kViolet-3, Label="ttX", NormSystematic=0.2
+rares_ttX     : TTZToLLNuNu                 : xsec : LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0 ; FillColor=ROOT.kViolet-3, Label="ttX", NormSystematic=0.2
+rares_ttX     : TTLLJets_m1to10             : 0.0493 : LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0 ; FillColor=ROOT.kViolet-3, Label="ttX", NormSystematic=0.2
+rares_ttX     : tZW_ll                      : xsec : LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0 ; FillColor=ROOT.kViolet-3, Label="ttX", NormSystematic=0.2
+
+rares_VVV : WWW       : xsec : LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0 ; FillColor=ROOT.kRed+1 , Label="VVV", NormSystematic=0.5
+rares_VVV : WWZ       : xsec : LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0 ; FillColor=ROOT.kRed+1 , Label="VVV", NormSystematic=0.5
+rares_VVV : WZZ       : xsec : LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0 ; FillColor=ROOT.kRed+1 , Label="VVV", NormSystematic=0.5
+rares_VVV : ZZZ       : xsec : LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0 ; FillColor=ROOT.kRed+1 , Label="VVV", NormSystematic=0.5
+rares_VVV : WZG       : xsec : LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0 ; FillColor=ROOT.kRed+1 , Label="VVV", NormSystematic=0.5
+
+convs  : TTGJets  : xsec : ((LepSel1_mcUCSX==0 || LepSel1_mcUCSX==4) && (LepSel2_mcUCSX==0 || LepSel2_mcUCSX==4) && (LepSel3_mcUCSX==0 || LepSel3_mcUCSX==4)) ; FillColor=ROOT.kOrange+7, Label="X+\#gamma", NormSystematic=0.5
+convs  : ZGTo2LG  : xsec : ((LepSel1_mcUCSX==0 || LepSel1_mcUCSX==4) && (LepSel2_mcUCSX==0 || LepSel2_mcUCSX==4) && (LepSel3_mcUCSX==0 || LepSel3_mcUCSX==4)) ; FillColor=ROOT.kOrange+7, Label="X+\#gamma", NormSystematic=0.5
+convs  : WGToLNuG : xsec : ((LepSel1_mcUCSX==0 || LepSel1_mcUCSX==4) && (LepSel2_mcUCSX==0 || LepSel2_mcUCSX==4) && (LepSel3_mcUCSX==0 || LepSel3_mcUCSX==4)) ; FillColor=ROOT.kOrange+7, Label="X+\#gamma", NormSystematic=0.5
+convs  : TGJets   : xsec : ((LepSel1_mcUCSX==0 || LepSel1_mcUCSX==4) && (LepSel2_mcUCSX==0 || LepSel2_mcUCSX==4) && (LepSel3_mcUCSX==0 || LepSel3_mcUCSX==4)) ; FillColor=ROOT.kOrange+7, Label="X+\#gamma", NormSystematic=0.5
+
+prompt_ZZH : GGHZZ4L   : xsec : LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0 ; FillColor=ROOT.kGreen+1, Label="ZZ/H", NormSystematic=0.25
+prompt_ZZH : ZZTo4L_part1+ZZTo4L_part2    : xsec : LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0 ; FillColor=ROOT.kGreen+1, Label="ZZ/H", NormSystematic=0.25
+prompt_ZZH : VHToNonbb : xsec : LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0 ; FillColor=ROOT.kGreen+1, Label="ZZ/H", NormSystematic=0.25
+

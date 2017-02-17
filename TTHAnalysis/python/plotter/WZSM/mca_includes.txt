@@ -1,0 +1,22 @@
+## Data
+## -----------------------------------------------------------
+incl_data : + ; IncludeMca="WZSM/includes/mca_data.txt"
+
+
+
+## MC WZ and backgrounds
+## -----------------------------------------------------------
+incl_prompts            : + ; IncludeMca="WZSM/includes/mca_prompts.txt"
+
+incl_fakes_appldata     : + ; IncludeMca="WZSM/includes/mca_fakesappl.txt"
+incl_promptsub          : + ; IncludeMca="WZSM/includes/mca_promptsub.txt"
+
+
+## Systematics
+## -----------------------------------------------------------
+incl_sys_puw            : + ; IncludeMca="WZSM/includes/mca_sys_puw.txt"
+incl_sys_ewk            : + ; IncludeMca="WZSM/includes/mca_sys_ewk.txt"
+incl_sys_jec            : + ; IncludeMca="WZSM/includes/mca_sys_jec.txt"
+incl_sys_lepSF          : + ; IncludeMca="WZSM/includes/mca_sys_lepSF.txt"
+incl_sys_bTagHF         : + ; IncludeMca="WZSM/includes/mca_sys_bTagHF.txt"
+incl_sys_bTagLF         : + ; IncludeMca="WZSM/includes/mca_sys_bTagLF.txt"
