@@ -1,0 +1,12 @@
+## Base (data, fakes, prompt)
+## -----------------------------------------------------------
+incl_base : + ; IncludeMca="susy-ra7/mca_PreApp_ra7.txt"
+
+## Systematics
+## -----------------------------------------------------------
+incl_sys_puw            : + ; IncludeMca="susy-ra7/includes/mca_sys_puw.txt"
+incl_sys_ewk            : + ; IncludeMca="susy-ra7/includes/mca_sys_ewk.txt"
+incl_sys_jec            : + ; IncludeMca="susy-ra7/includes/mca_sys_jec.txt"
+incl_sys_lepSF          : + ; IncludeMca="susy-ra7/includes/mca_sys_lepSF.txt"
+incl_sys_bTagHF         : + ; IncludeMca="susy-ra7/includes/mca_sys_bTagHF.txt"
+incl_sys_bTagLF         : + ; IncludeMca="susy-ra7/includes/mca_sys_bTagLF.txt"
