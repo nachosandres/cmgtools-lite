@@ -42,7 +42,7 @@ float getLeptonSF_mu_Unc(float pt, int var) {
   if (pt<20) 
     return var*TMath::Sqrt(0.03*0.03+0.01*0.01+0.01*0.01);
   else 
-    return var*TMath::Sqrt(0.02*0.02+0.01*0.01);  
+    return var*0.03; //TMath::Sqrt(0.02*0.02+0.01*0.01);  
 }
 
 
@@ -63,21 +63,18 @@ float getUnc(TH2F* hist, float pt, float eta){
 
 TFile *_file_reco_leptonSF_mu = NULL;
 TFile *_file_recoToMedium_leptonSF_mu = NULL;
-TFile *_file_MediumToMVA_leptonSF_mu = NULL;
 TFile *_file_MediumToMultiIso_leptonSF_mu = NULL;
-TFile *_file_recoToMVA_leptonSF_el = NULL;
+TFile *_file_recoToTight_leptonSF_el = NULL;
 TFile *_file_reco_leptonSF_el = NULL;
 
 TGraphAsymmErrors *_histo_reco_leptonSF_mu = NULL;
 TH2F *_histo_recoToMedium_leptonSF_mu = NULL;
-TH2F *_histo_MediumToMVA_leptonSF_mu = NULL;
 TH2F *_histo_MediumToMultiIso_leptonSF_mu = NULL;
-TH2F *_histo_recoToMVA_leptonSF_el = NULL;
-TH2F *_histo_reco_leptonSF_el = NULL;
 
+TH2F *_histo_reco_leptonSF_el = NULL;
 TH2F *_histo_recoToTight_leptonSF_el = NULL;
 TH2F *_histo_TightToMultiIso_leptonSF_el = NULL;
-
+TH2F *_histo_TightToHitsConv_leptonSF_el = NULL;
 
 
 TString CMSSW_BASE_RA7 = gSystem->ExpandPathName("${CMSSW_BASE}");
@@ -96,9 +93,10 @@ float leptonSF_ra7(int pdgid, float pt, float eta, int var=0){
      _histo_MediumToMultiIso_leptonSF_mu = (TH2F*)(_file_MediumToMultiIso_leptonSF_mu->Get("SF"));
    }
    if (!_histo_recoToTight_leptonSF_el) {
-     _file_recoToMVA_leptonSF_el = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/electrons/scaleFactors.root", "read");
-     _histo_recoToTight_leptonSF_el = (TH2F*)(_file_recoToMVA_leptonSF_el->Get("GsfElectronToMVATightIDEmuTightIP2DSIP3D4"));
-     _histo_TightToMultiIso_leptonSF_el = (TH2F*)(_file_recoToMVA_leptonSF_el->Get("MVATightElectronToMultiIsoM"));
+     _file_recoToTight_leptonSF_el = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/electrons/scaleFactors.root", "read");
+     _histo_recoToTight_leptonSF_el = (TH2F*)(_file_recoToTight_leptonSF_el->Get("GsfElectronToMVATightIDEmuTightIP2DSIP3D4"));
+     _histo_TightToMultiIso_leptonSF_el = (TH2F*)(_file_recoToTight_leptonSF_el->Get("MVATightElectronToMultiIsoM"));
+     _histo_TightToHitsConv_leptonSF_el = (TH2F*)(_file_recoToTight_leptonSF_el->Get("MVATightElectronToConvVetoIHit0"));
      
      _file_reco_leptonSF_el = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/electrons/egammaEffi.txt_EGM2D.root", "read");
      _histo_reco_leptonSF_el = (TH2F*) (_file_reco_leptonSF_el->Get("EGamma_SF2D"));
@@ -109,11 +107,11 @@ float leptonSF_ra7(int pdgid, float pt, float eta, int var=0){
      TH2F *hist = _histo_recoToMedium_leptonSF_mu;
      int ptbin  = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt)));
      int etabin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(fabs(eta))));
-     /*out *= hist->GetBinContent(ptbin,etabin);
+     out *= hist->GetBinContent(ptbin,etabin);
      hist = _histo_MediumToMultiIso_leptonSF_mu;
      ptbin  = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt)));
      etabin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(fabs(eta))));
-     out *= hist->GetBinContent(ptbin,etabin);*/
+     out *= hist->GetBinContent(ptbin,etabin);
      return out + out*getLeptonSF_mu_Unc(pt,var);
    }
    float err = 0.;
@@ -123,6 +121,11 @@ float leptonSF_ra7(int pdgid, float pt, float eta, int var=0){
      int etabin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(fabs(eta))));
      out = hist->GetBinContent(ptbin,etabin);
      err = hist->GetBinError(ptbin,etabin)*hist->GetBinError(ptbin,etabin);
+     hist = _histo_TightToHitsConv_leptonSF_el;
+     ptbin  = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(pt)));
+     etabin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(eta)));
+     out *= hist->GetBinContent(etabin,ptbin);
+     err += hist->GetBinError(etabin,ptbin)*hist->GetBinError(etabin,ptbin);
      hist = _histo_TightToMultiIso_leptonSF_el;
      ptbin  = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(pt)));
      etabin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(eta)));
@@ -154,9 +157,9 @@ float leptonSF_ra5(int pdgid, float pt, float eta, int var=0){
      _histo_MediumToMultiIso_leptonSF_mu = (TH2F*)(_file_MediumToMultiIso_leptonSF_mu->Get("SF"));
    }
    if (!_histo_recoToTight_leptonSF_el) {
-     _file_recoToMVA_leptonSF_el = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/electrons/scaleFactors.root", "read");
-     _histo_recoToTight_leptonSF_el = (TH2F*)(_file_recoToMVA_leptonSF_el->Get("GsfElectronToMVATightIDEmuTightIP2DSIP3D4"));
-     _histo_TightToMultiIso_leptonSF_el = (TH2F*)(_file_recoToMVA_leptonSF_el->Get("MVATightElectronToMultiIsoTISOEmu"));
+     _file_recoToTight_leptonSF_el = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/electrons/scaleFactors.root", "read");
+     _histo_recoToTight_leptonSF_el = (TH2F*)(_file_recoToTight_leptonSF_el->Get("GsfElectronToMVATightIDEmuTightIP2DSIP3D4"));
+     _histo_TightToMultiIso_leptonSF_el = (TH2F*)(_file_recoToTight_leptonSF_el->Get("MVATightElectronToMultiIsoTISOEmu"));
      
      _file_reco_leptonSF_el = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/electrons/egammaEffi.txt_EGM2D.root", "read");
      _histo_reco_leptonSF_el = (TH2F*) (_file_reco_leptonSF_el->Get("EGamma_SF2D"));
@@ -167,11 +170,11 @@ float leptonSF_ra5(int pdgid, float pt, float eta, int var=0){
      TH2F *hist = _histo_recoToMedium_leptonSF_mu;
      int ptbin  = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt)));
      int etabin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(fabs(eta))));
-     /*out *= hist->GetBinContent(ptbin,etabin);
+     out *= hist->GetBinContent(ptbin,etabin);
      hist = _histo_MediumToMultiIso_leptonSF_mu;
      ptbin  = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt)));
      etabin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(fabs(eta))));
-     out *= hist->GetBinContent(ptbin,etabin);*/
+     out *= hist->GetBinContent(ptbin,etabin);
      return out + out*getLeptonSF_mu_Unc(pt,var);
    }
    float err = 0.;
@@ -211,9 +214,9 @@ float OLDleptonSF_ra7(int pdgid, float pt, float eta, int var=0){
      _histo_MediumToMultiIso_leptonSF_mu = (TH2F*)(_file_MediumToMultiIso_leptonSF_mu->Get("pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_Medium2016_pass"));
    }
    if (!_histo_recoToTight_leptonSF_el) {
-     _file_recoToMVA_leptonSF_el = new TFile("/nfs/fanae/user/nachos/leptonSF/sf_el_susy_ICHEP.root", "read");
-     _histo_recoToTight_leptonSF_el = (TH2F*)(_file_recoToMVA_leptonSF_el->Get("GsfElectronToTightID2D3D"));
-     _histo_TightToMultiIso_leptonSF_el = (TH2F*)(_file_recoToMVA_leptonSF_el->Get("MVATightElectronToMultiIsoM"));
+     _file_recoToTight_leptonSF_el = new TFile("/nfs/fanae/user/nachos/leptonSF/sf_el_susy_ICHEP.root", "read");
+     _histo_recoToTight_leptonSF_el = (TH2F*)(_file_recoToTight_leptonSF_el->Get("GsfElectronToTightID2D3D"));
+     _histo_TightToMultiIso_leptonSF_el = (TH2F*)(_file_recoToTight_leptonSF_el->Get("MVATightElectronToMultiIsoM"));
      
      _file_reco_leptonSF_el = new TFile("/nfs/fanae/user/nachos/leptonSF/sf_el_trk_susy_ICHEP.root", "read");
      _histo_reco_leptonSF_el = (TH2F*) (_file_reco_leptonSF_el->Get("EGamma_SF2D"));
