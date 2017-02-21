@@ -25,7 +25,13 @@ m3l : m3L : 21, 80, 500; XTitle="m(3L) [GeV]", LegendCutoff=1e-5
 nLepTight    : nLepTight : 8,-0.5,7.5; XTitle="Number of tight leptons", LegendCutoff=1e-5
 nLepLoose    : nLepLoose : 7,-0.5,6.5; XTitle="Number of loose leptons", LegendCutoff=1e-5
 
+isTightZ1     : LepZ1_isTight          : 2,-0.5,1.5     ; XTitle="isTight(leading Z lepton)", LegendCutoff=1e-5, Legend='TL', XNDiv=002, YMin=0.0, YMax=4000.
+isTightZ2     : LepZ2_isTight          : 2,-0.5,1.5     ; XTitle="isTight(subleading Z lepton)", LegendCutoff=1e-5, Legend='TL', XNDiv=002, YMin=0.0, YMax=4000.
+isTightW      : LepW_isTight           : 2,-0.5,1.5     ; XTitle="isTight(W lepton)", LegendCutoff=1e-5, Legend='TL', XNDiv=002, YMin=0.0, YMax=4000.
 
+isTightZ1_log     : LepZ1_isTight          : 2,-0.5,1.5     ; XTitle="isTight(leading Z lepton)", LegendCutoff=1e-5, Legend='TL', XNDiv=002, YMin=1.0, YMax=4000., Logy
+isTightZ2_log     : LepZ2_isTight          : 2,-0.5,1.5     ; XTitle="isTight(subleading Z lepton)", LegendCutoff=1e-5, Legend='TL', XNDiv=002, YMin=1.0, YMax=4000., Logy
+isTightW_log      : LepW_isTight           : 2,-0.5,1.5     ; XTitle="isTight(W lepton)", LegendCutoff=1e-5, Legend='TL', XNDiv=002, YMin=1.0, YMax=4000., Logy
 
 #mZ1     : mZ1: 30,75,105; XTitle="best m_{Z} [GeV]", LegendCutoff=1e-5
 #bestmZ  : bestmzTL : 30,75,105; XTitle="best m_{Z} [GeV]", LegendCutoff=1e-5 #with old WZCRvars FT
