@@ -1,5 +1,10 @@
+## Few signals (sig_ICHEP_.* , sig_M17_.* )
+## -----------------------------------------------------------
+incl_sigs : + ; IncludeMca="susy-ra7/includes/mca_sigs.txt"
+
 ## Base (data, fakes, prompt)
 ## -----------------------------------------------------------
+incl_fakesMC : + ; IncludeMca="susy-ra7/includes/mca_fakesMC.txt"
 incl_base : + ; IncludeMca="susy-ra7/mca_PreApp_ra7.txt"
 
 ## Systematics
