@@ -85,10 +85,10 @@ TString DATA_RA7 = CMSSW_BASE_RA7+"/src/CMGTools/TTHAnalysis/data";
 float leptonSF_ra7(int pdgid, float pt, float eta, int var=0){
   
   if (!_histo_reco_leptonSF_mu) {
-     _file_reco_leptonSF_mu = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/muons/sf_mu_trk_susy_ICHEP.root", "data");
+     _file_reco_leptonSF_mu = new TFile(DATA_RA7+"/leptonSF/muonSF_trk_EWKino_fullsim_M17_36p5fb.root", "data");
      _file_recoToMedium_leptonSF_mu = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/muons/TnP_NUM_MediumID_DENOM_generalTracks_VAR_map_pt_eta.root", "read");
      _file_MediumToMultiIso_leptonSF_mu = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/muons/TnP_NUM_MultiIsoLoose_DENOM_MediumID_VAR_map_pt_eta.root", "read");
-     _histo_reco_leptonSF_mu = (TGraphAsymmErrors*)(_file_reco_leptonSF_mu->Get("ratio_eta"));
+     _histo_reco_leptonSF_mu = (TGraphAsymmErrors*)(_file_reco_leptonSF_mu->Get("ratio_eff_eta3_dr030e030_corr"));
      _histo_recoToMedium_leptonSF_mu = (TH2F*)(_file_recoToMedium_leptonSF_mu->Get("SF"));
      _histo_MediumToMultiIso_leptonSF_mu = (TH2F*)(_file_MediumToMultiIso_leptonSF_mu->Get("SF"));
    }
