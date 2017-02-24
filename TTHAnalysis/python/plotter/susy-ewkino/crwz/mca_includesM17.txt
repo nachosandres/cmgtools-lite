@@ -1,0 +1,24 @@
+## Few signals (sig_ICHEP_.* , sig_M17_.* )
+## -----------------------------------------------------------
+#incl_sigs : + ; IncludeMca="susy-ewkino/crwz/includes/mca_sigs.txt"
+
+## Base (data, fakes, prompt)
+## -----------------------------------------------------------
+incl_data      : + ; IncludeMca="susy-ewkino/crwz/mca_data.txt"
+
+prompt_WZ               : WZTo3LNu_ext                        : 58.59*0.7 : ((LepGood1_mcUCSXMatchId==0 || LepGood1_mcUCSXMatchId==1) && (LepGood2_mcUCSXMatchId==0 || LepGood2_mcUCSXMatchId==1) && (LepGood3_mcUCSXMatchId==0 || LepGood3_mcUCSXMatchId==1))            ; FillColor=ROOT.kOrange  , Label="WZ", NormSystematic=0.1
+
+
+incl_MC        : + ; IncludeMca="susy-ewkino/crwz/mca_MC.txt"
+incl_fakesdata : + ; IncludeMca="susy-ewkino/crwz/mca_fakesdata.txt"
+incl_promptsub : + ; IncludeMca="susy-ewkino/crwz/mca_promptsub.txt"
+#incl_fakesMC : + ; IncludeMca="susy-ewkino/crwz/includes/mca_fakesMC.txt"
+
+## Systematics
+## -----------------------------------------------------------
+incl_sys_puw            : + ; IncludeMca="susy-ewkino/crwz/includes/mca_sys_puw.txt"
+incl_sys_ewk            : + ; IncludeMca="susy-ewkino/crwz/includes/mca_sys_ewk.txt"
+incl_sys_jec            : + ; IncludeMca="susy-ewkino/crwz/includes/mca_sys_jec.txt"
+incl_sys_lepSF          : + ; IncludeMca="susy-ewkino/crwz/includes/mca_sys_lepSF.txt"
+incl_sys_bTagHF         : + ; IncludeMca="susy-ewkino/crwz/includes/mca_sys_bTagHF.txt"
+incl_sys_bTagLF         : + ; IncludeMca="susy-ewkino/crwz/includes/mca_sys_bTagLF.txt"
