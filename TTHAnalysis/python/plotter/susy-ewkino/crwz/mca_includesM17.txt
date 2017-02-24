@@ -6,7 +6,7 @@
 ## -----------------------------------------------------------
 incl_data      : + ; IncludeMca="susy-ewkino/crwz/mca_data.txt"
 
-prompt_WZ               : WZTo3LNu_ext                        : 58.59*0.7 : ((LepGood1_mcUCSXMatchId==0 || LepGood1_mcUCSXMatchId==1) && (LepGood2_mcUCSXMatchId==0 || LepGood2_mcUCSXMatchId==1) && (LepGood3_mcUCSXMatchId==0 || LepGood3_mcUCSXMatchId==1))            ; FillColor=ROOT.kOrange  , Label="WZ", NormSystematic=0.1
+prompt_WZ               : WZTo3LNu                        : xsec : ((LepGood1_mcUCSXMatchId==0 || LepGood1_mcUCSXMatchId==1) && (LepGood2_mcUCSXMatchId==0 || LepGood2_mcUCSXMatchId==1) && (LepGood3_mcUCSXMatchId==0 || LepGood3_mcUCSXMatchId==1))            ; FillColor=ROOT.kOrange  , Label="WZ", NormSystematic=0.1
 
 
 incl_MC        : + ; IncludeMca="susy-ewkino/crwz/mca_MC.txt"
