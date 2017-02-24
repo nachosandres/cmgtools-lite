@@ -5,9 +5,9 @@ T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-01-24_signalSplitter/done"
 #T="/mnt/t3nfs01/data01/shome/cheidegg/o/Signals26Jan"
 #T="/mnt/t3nfs01/data01/shome/cheidegg/o/Signals05Feb"
 #T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-01-27_ewkskims80X_M17_MERGED/"
-#T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-01-27_ewkskims80X_M17_WZCR"
+T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-01-27_ewkskims80X_M17_WZCR"
 #T="/mnt/t3nfs01/data01/shome/cheidegg/o/2015-11-29_ewktrees80X_M17"
-F="-F --direct -q all.q --nosplit"
+F="-F --direct -q all.q"
 #F="--direct --nosplit -q all.q"
 #F="-F --accept DoubleMuon_Run2016F_23Sep2016_v1_runs_271036_284044 --direct"
 #F="--accept TChiNeuSlepSneu_FD --direct --nosplit -q all.q" #"-F" 
@@ -18,9 +18,11 @@ F="-F --direct -q all.q --nosplit"
 #python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules eventBTagWeight             --pretend
 
 #python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules leptonJetReCleanerSusyEWK2L
-python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules ISRWeightModule
-#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules bTagEventWeightFullSim --flags "-F sf/t {P}/leptonJetReCleanerSusyEWK2L/evVarFriend_{cname}.root" --accept TChi
-#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules bTagEventWeightFastSim --flags "-F sf/t {P}/leptonJetReCleanerSusyEWK2L/evVarFriend_{cname}.root" --accept TChi
+#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules ISRWeightModule
+#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules bTagEventWeightFullSim --flags "-F sf/t {P}/leptonJetReCleanerSusyEWK3L/evVarFriend_{cname}.root" 
+#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules bTagEventWeightFastSim --flags "-F sf/t {P}/leptonJetReCleanerSusyEWK3L/evVarFriend_{cname}.root" 
+python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules bTagEventWeightFullSim2L --flags "-F sf/t {P}/leptonJetReCleanerSusyEWK2L/evVarFriend_{cname}.root" 
+#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules bTagEventWeightFastSim2L --flags "-F sf/t {P}/leptonJetReCleanerSusyEWK2L/evVarFriend_{cname}.root" 
 
 
 

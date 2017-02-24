@@ -2,8 +2,8 @@
 
 T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-01-27_ewkskims80X_M17_MERGED"
 O="/afs/cern.ch/user/c/cheidegg/www/heppy/2017-02-01_ewk80X_preapproval_oldFilters" # Do NOT give a trailing /
-L=36.5
-FL=36.5
+L=35.9
+FL=35.9
 QUEUE="" #"-q all.q"
 BLIND="-X blinding -R filters filters '\$DATA{METfiltersOld} \$MC{1} \$FASTSIM{1}'" #""
 

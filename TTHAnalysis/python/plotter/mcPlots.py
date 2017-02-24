@@ -395,7 +395,7 @@ def doNormFit(pspec,pmap,mca,saveScales=False):
 def doRatioHists(pspec,pmap,total,totalSyst,maxRange,fixRange=False,fitRatio=None,errorsOnRef=True,ratioNums="signal",ratioDen="background",ylabel="Data/pred.",doWide=False,showStatTotLegend=False):
     numkeys = [ "data" ]
     if "data" not in pmap: 
-        if ratioDen in pmap:
+        if ratioDen in pmap or ratioDen=="total":
         #if len(pmap) >= 4 and ratioDen in pmap:
             numkeys = []
             for p in pmap.iterkeys():
@@ -414,8 +414,9 @@ def doRatioHists(pspec,pmap,total,totalSyst,maxRange,fixRange=False,fitRatio=Non
             total.GetYaxis().SetLabelOffset(0.007)
             # then we can overwrite total with background
             numkey = 'signal'
-            total     = pmap[ratioDen]
-            totalSyst = pmap[ratioDen]
+            if ratioDen!="total":
+                total     = pmap[ratioDen]
+                totalSyst = pmap[ratioDen]
         else:    
             return (None,None,None,None)
     ratios = [] #None
@@ -588,7 +589,7 @@ def doStatTests(total,data,test,legendCorner):
 
 
 legend_ = None;
-def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,mcStyle="F",legWidth=0.18,legBorder=True,signalPlotScale=None,totalError=None,header="",doWide=False):
+def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,mcStyle="F",legWidth=0.18,legBorder=True,signalPlotScale=None,totalError=None,header="",doWide=False,options=None):
         if (corner == None): return
         total = sum([x.Integral() for x in pmap.itervalues()])
         sigEntries = []; bgEntries = []
@@ -604,6 +605,7 @@ def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,
         backgrounds = mca.listBackgrounds(allProcs=True)
         for p in backgrounds:
             if mca.getProcessOption(p,'HideInLegend',False): continue
+            if options.plotmode == "closure" and p == options.numerator: continue
             if p in pmap and pmap[p].Integral() >= cutoff*total: 
                 lbl = mca.getProcessOption(p,'Label',p)
                 myStyle = mcStyle if type(mcStyle) == str else mcStyle[1]
@@ -635,6 +637,8 @@ def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,
         leg.SetTextSize(textSize)
         if 'data' in pmap: 
             leg.AddEntry(pmap['data'], mca.getProcessOption('data','Label','Data', noThrow=True), 'LPE')
+        if options.plotmode == "closure" and options.numerator in pmap: 
+            leg.AddEntry(pmap[options.numerator], mca.getProcessOption(options.numerator,'Label','Data', noThrow=True), 'LPE')
         total = sum([x.Integral() for x in pmap.itervalues()])
         for (plot,label,style) in sigEntries: leg.AddEntry(plot,label,style)
         for (plot,label,style) in  bgEntries: leg.AddEntry(plot,label,style)
@@ -689,11 +693,12 @@ class PlotMaker:
                 pmap = mca.getPlots(pspec,cut,makeSummary=True,closeTreeAfter=False)
                 if len(options.addHistos)>0:
                     for theFile in options.addHistos:
-                        if not os.path.exists(theFile): continue
-                        tf = ROOT.TFile.Open(theFile, "read")
+                        if not os.path.exists(theFile[0]): continue
+                        tf = ROOT.TFile.Open(theFile[0], "read")
                         for proc in pmap.keys():
-                            toAdd = tf.Get(pspec.name+"_"+proc)
-                            print pspec.name+"_"+proc
+                            theDir = theFile[1]+"/" if len(theFile)>0 and theFile[1] else ""
+                            toAdd  = tf.Get(theDir+pspec.name+"_"+proc)
+                            print theDir+pspec.name+"_"+proc
                             print toAdd
                             if toAdd: pmap[proc].Add(toAdd)
                             if not toAdd and proc=="fakes_appldata":
@@ -820,7 +825,7 @@ class PlotMaker:
                             plot.SetLineWidth(3)
                             plot.SetLineColor(plot.GetFillColor())
                             continue 
-                        if plotmode == "stack":
+                        if plotmode == "stack" or (plotmode=="closure" and not p in [options.numerator]):
                             stack.Add(plot)
                             total.Add(plot)
                             totalSyst.Add(plot)
@@ -829,7 +834,7 @@ class PlotMaker:
                                 if "TH1" in plot.ClassName():
                                     for b in xrange(1,plot.GetNbinsX()+1):
                                         totalSyst.SetBinError(b, hypot(totalSyst.GetBinError(b), syst*plot.GetBinContent(b)))
-                        else:
+                        elif not plotmode in ["stack", "closure"]:
                             plot.SetLineColor(plot.GetFillColor())
                             plot.SetLineWidth(3)
                             plot.SetFillStyle(0)
@@ -838,10 +843,12 @@ class PlotMaker:
                                 plot.Scale(ref/plot.Integral())
                             stack.Add(plot)
                             total.SetMaximum(max(total.GetMaximum(),1.3*plot.GetMaximum()))
-                        if self._options.errors and plotmode != "stack":
+                        if self._options.errors and (not plotmode in ["stack","closure"] or (plotmode=="closure" and p==self._options.numerator)):
                             plot.SetMarkerColor(plot.GetFillColor())
                             plot.SetMarkerStyle(21)
                             plot.SetMarkerSize(1.5)
+                            plot.SetMarkerStyle(20)
+                            plot.SetMarkerSize(1.0)
                         else:
                             plot.SetMarkerStyle(0)
 
@@ -879,7 +886,10 @@ class PlotMaker:
                 total.GetYaxis().SetTitle(pspec.getOption('YTitle',ytitle))
                 total.GetXaxis().SetTitle(pspec.getOption('XTitle',outputName))
                 total.GetXaxis().SetNdivisions(pspec.getOption('XNDiv',510))
-                if outputDir: outputDir.WriteTObject(stack)
+                if outputDir: 
+                    outputDir.WriteTObject(stack)
+                    outputDir.WriteTObject(total)
+                    outputDir.WriteTObject(totalSyst)
                 # 
                 if not makeCanvas and not self._options.printPlots: return
                 doRatio = self._options.showRatio and ('data' in pmap or (plotmode != "stack")) and ("TH2" not in total.ClassName())
@@ -919,7 +929,7 @@ class PlotMaker:
                 if islog: total.SetMaximum(2*total.GetMaximum())
                 if not islog: total.SetMinimum(0)
                 total.Draw("HIST")
-                if plotmode == "stack":
+                if plotmode in ["stack","closure"]:
                     stack.Draw("SAME HIST")
                     total.Draw("AXIS SAME")
                 else: 
@@ -934,6 +944,14 @@ class PlotMaker:
                 if options.showMCError:
                     totalError = doShadedUncertainty(totalSyst)
                 is2D = total.InheritsFrom("TH2")
+                if plotmode == "closure":
+                    if options.poisson and not is2D:
+                        pdatalike = getDataPoissonErrors(pmap[options.numerator], False, True)
+                        pdatalike.Draw("PZ SAME")
+                        pmap[options.numerator].poissonGraph = pdatalike ## attach it so it doesn't get deleted
+                    else:
+                        pmap[options.numerator].Draw("E SAME")
+                    reMax(total,pmap[options.numerator],islog,doWide=doWide)
                 if 'data' in pmap: 
                     if options.poisson and not is2D:
                         pdata = getDataPoissonErrors(pmap['data'], False, True)
@@ -964,7 +982,7 @@ class PlotMaker:
                         reMax(total,signorm,islog,doWide=doWide)
                 legendCutoff = pspec.getOption('LegendCutoff', 1e-5 if c1.GetLogy() else 1e-2)
                 if plotmode == "norm": legendCutoff = 0 
-                if plotmode == "stack":
+                if plotmode in ["stack","closure"]:
                     if options.noStackSig: mcStyle = ("L","F")
                     else:                  mcStyle = "F"
                 else: mcStyle = "L"
@@ -974,7 +992,7 @@ class PlotMaker:
                                   textSize=( (0.045 if doRatio else 0.022) if options.legendFontSize <= 0 else options.legendFontSize ),
                                   legWidth=options.legendWidth, legBorder=options.legendBorder, signalPlotScale=options.signalPlotScale,
                                   header=self._options.legendHeader if self._options.legendHeader else pspec.getOption("LegendHeader", ""),
-                                  doWide=doWide, totalError=totalError)
+                                  doWide=doWide, totalError=totalError, options=options)
                 if self._options.doOfficialCMS:
                     CMS_lumi.lumi_13TeV = "%.1f fb^{-1}" % self._options.lumi
                     CMS_lumi.extraText  = self._options.cmsprel
@@ -1012,10 +1030,12 @@ class PlotMaker:
                                 break
                 rdata,rnorm,rnorm2,rline = (None,None,None,None)
                 if doRatio:
-                    p2.cd(); 
+                    p2.cd();
+                    rn = options.numerator if plotmode in ["closure"] else options.ratioNums 
+                    rd = "total" if plotmode in ["closure"] else options.ratioDen
                     rdata,rnorm,rnorm2,rline = doRatioHists(pspec,pmap,total,totalSyst, maxRange=options.maxRatioRange, fixRange=options.fixRatioRange,
                                                             fitRatio=options.fitRatio, errorsOnRef=options.errorBandOnRatio, 
-                                                            ratioNums=options.ratioNums, ratioDen=options.ratioDen, ylabel=options.ratioYLabel, doWide=doWide, showStatTotLegend=True)
+                                                            ratioNums=rn, ratioDen=rd, ylabel=options.ratioYLabel, doWide=doWide, showStatTotLegend=True)
                 if makeCanvas and outputDir: outputDir.WriteTObject(c1) # should be here to include ratio pad in saved canvas
                 if self._options.printPlots:
                     for ext in self._options.printPlots.split(","):
@@ -1165,7 +1185,8 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--maxRatioRange", dest="maxRatioRange", type="float", nargs=2, default=(0.0, 5.0), help="Min and max for the ratio")
     parser.add_option("--fixRatioRange", dest="fixRatioRange", action="store_true", default=False, help="Fix the ratio range to --maxRatioRange")
     parser.add_option("--doStatTests", dest="doStatTests", type="string", default=None, help="Do this stat test: chi2p (Pearson chi2), chi2l (binned likelihood equivalent of chi2)")
-    parser.add_option("--plotmode", dest="plotmode", type="string", default="stack", help="Show as stacked plot (stack), a non-stacked comparison (nostack) and a non-stacked comparison of normalized shapes (norm)")
+    parser.add_option("--plotmode", dest="plotmode", type="string", default="stack", help="Show as stacked plot (stack), a stacked comparison of MC-only (closure), a non-stacked comparison (nostack), and a non-stacked comparison of normalized shapes (norm)")
+    parser.add_option('--numerator', dest='numerator' , type='string', default=None, help='Name of the process to plot as data on top of stacked MC in plotmode "closure".')
     parser.add_option("--rebin", dest="globalRebin", type="int", default="0", help="Rebin all plots by this factor")
     parser.add_option("--poisson", dest="poisson", action="store_true", default=True, help="Draw Poisson error bars (default)")
     parser.add_option("--no-poisson", dest="poisson", action="store_false", default=True, help="Don't draw Poisson error bars")
@@ -1191,7 +1212,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--cmssqrtS", dest="cmssqrtS", type="string", default="13 TeV", help="Sqrt of s to be written in the official CMS text.")
     parser.add_option("--printBin", dest="printBinning", type="string", default=None, help="Write 'Events/xx' instead of 'Events' on the y axis")
     parser.add_option('--env',      dest='env'         , type='string', default="", help='Set environment (currently supported: "oviedo")')
-    parser.add_option('--add-histos', dest='addHistos' , type='string', action="append", default=[], help='File path to load and add histograms from to the ones that are newly made.')
+    parser.add_option('--add-histos', dest='addHistos' , type='string', action="append", nargs=2, default=[], help='File path to load and add histograms from to the ones that are newly made.')
 
 if __name__ == "__main__":
     from optparse import OptionParser

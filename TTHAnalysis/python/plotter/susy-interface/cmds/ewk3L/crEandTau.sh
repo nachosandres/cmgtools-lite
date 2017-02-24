@@ -6,8 +6,9 @@ O="/afs/cern.ch/user/c/cheidegg/www/heppy/2016-12-13_ewk80X_eAndTau"
 #O="/afs/cern.ch/user/c/cheidegg/www/heppy/2016-12-07_ewk80X_eAndTau"
 PLOTS="all"
 QUEUE="" #"-q all.q"
+LUMI=35.9
 
 O="/afs/cern.ch/user/c/cheidegg/www/heppy/2016-12-13_ewk80X_eAndTauUCSX"
-python susy-interface/plotmaker.py cretau cretau $T $O -l 36.5 --make data --plots $PLOTS -o SR --flags '-X blinding --perBin' -p "fakes_matched_DY;data" --noWeight $QUEUE
-#python susy-interface/plotmaker.py cretau cretau $T $O -l 36.5 --make data --plots $PLOTS -o SR --flags '-X blinding --perBin' $QUEUE
+python susy-interface/plotmaker.py cretau cretau $T $O -l $LUMI --make data --plots $PLOTS -o SR --flags '-X blinding --perBin' -p "fakes_matched_DY;data" --noWeight $QUEUE
+#python susy-interface/plotmaker.py cretau cretau $T $O -l $LUMI --make data --plots $PLOTS -o SR --flags '-X blinding --perBin' $QUEUE
 

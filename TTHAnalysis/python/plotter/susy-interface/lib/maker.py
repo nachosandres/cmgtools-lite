@@ -71,8 +71,9 @@ class Maker():
 		configsC = Collection(self.dir+"/env/configs")
 		self.config  = configsC.get(self.args[0])
 		self.loadRegions()
-		self.treedir = self.args[2].rstrip("/")
-		self.outdir  = self.args[3].rstrip("/")
+		self.treedir  = self.args[2].rstrip("/")
+		self.treedirs = " ".join(["-P "+tt.rstrip("/") for tt in self.treedir.split(";")])
+		self.outdir   = self.args[3].rstrip("/")
 	def addToTalk(self, message):
 		print message # placeholder for now
 	def clearJobs(self):

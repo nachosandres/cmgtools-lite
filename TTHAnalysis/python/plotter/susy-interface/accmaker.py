@@ -8,8 +8,8 @@ parser.add_option("--perBin"     , dest="perBin", type="string", default=None, h
 parser.add_option("-f", "--final", dest="final" , action="store_true", default=False, help="Only total yield")
 parser.add_option("--fom",         dest="fom"   , type="string", default=None, help="Figure of merit (S/B, S/sqrB, S/sqrSB)")
 
-baseAll = "python mcAnalysis.py {MCA} {CUTS} -P {T} --neg --s2v --tree {TREENAME} {FINAL} {MCCS} {MACROS} -l {LUMI} {FRIENDS} {PROCS} {FLAGS} {FOM} >> {O}/{FILENAME}"
-baseBin = "python mcPlots.py {MCA} {CUTS} {PLOTFILE} -P {T} --neg --s2v --tree {TREENAME} {FINAL} {MCCS} {MACROS} -l {LUMI} --pdir {O} {FRIENDS} {PROCS} {PLOTS} {FLAGS} --perBin --print txt"
+baseAll = "python mcAnalysis.py {MCA} {CUTS} {T} --neg --s2v --tree {TREENAME} {FINAL} {MCCS} {MACROS} -l {LUMI} {FRIENDS} {PROCS} {FLAGS} {FOM} >> {O}/{FILENAME}"
+baseBin = "python mcPlots.py {MCA} {CUTS} {PLOTFILE} {T} --neg --s2v --tree {TREENAME} {FINAL} {MCCS} {MACROS} -l {LUMI} --pdir {O} {FRIENDS} {PROCS} {PLOTS} {FLAGS} --perBin --print txt"
 (options, args) = parser.parse_args()
 options = maker.splitLists(options)
 mm      = maker.Maker("accmaker", baseAll, args, options, parser.defaults)
@@ -34,9 +34,9 @@ for r in range(len(mm.regions)):
 	fom      = options.fom if options.fom else ""
 	
 	if options.perBin:
-		mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("plotfile",""), mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), final, mccs, macros, mm.getVariable("lumi","12.9"), output, friends, procs, options.perBin, flags],mm.region.name,False)
+		mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("plotfile",""), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), final, mccs, macros, mm.getVariable("lumi","12.9"), output, friends, procs, options.perBin, flags],mm.region.name,False)
 	else:
-		mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), final, mccs, macros, mm.getVariable("lumi","12.9"), friends, procs, flags, fom, output, "accmap_%s_%s.txt"%(scenario,mm.region.name)],mm.region.name,False)
+		mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), final, mccs, macros, mm.getVariable("lumi","12.9"), friends, procs, flags, fom, output, "accmap_%s_%s.txt"%(scenario,mm.region.name)],mm.region.name,False)
 
 mm.runJobs()
 mm.clearJobs()

@@ -13,7 +13,7 @@ O="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-02-02_ewk80X_preapprovalScans"
 QUEUE="-q all.q" #"-q all.q"
 #QUEUE="-q all.q@t3wn20.psi.ch all.q@t3wn22.psi.ch all.q@t3wn26.psi.ch all.q@t3wn21.psi.ch all.q@t3wn10.psi.ch"
 #QUEUE="-q all.q@t3wn20.psi.ch all.q@t3wn22.psi.ch all.q@t3wn26.psi.ch all.q@t3wn21.psi.ch all.q@t3wn10.psi.ch all.q@t3wn16.psi.ch all.q@t3wn17.psi.ch all.q@t3wn29.psi.ch all.q@t3wn11.psi.ch all.q@t3wn36.psi.ch all.q@t3wn13.psi.ch all.q@t3wn14.psi.ch all.q@t3wn25.psi.ch all.q@t3wn37.psi.ch all.q@t3wn40.psi.ch all.q@t3wn35.psi.ch all.q@t3wn27.psi.ch all.q@t3wn38.psi.ch all.q@t3wn33.psi.ch all.q@t3wn31.psi.ch all.q@t3wn39.psi.ch all.q@t3wn32.psi.ch"
-LUMI=36.5
+LUMI=35.9
 
 #QUEUE="--pretend"
 

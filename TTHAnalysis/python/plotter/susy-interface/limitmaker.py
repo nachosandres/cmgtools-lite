@@ -8,7 +8,7 @@ parser = maker.addMakerOptions(parser)
 parser.add_option("--perBin"  ,  dest="perBin"  , action="store_true", default=False, help="Run every value of the bin separately.")
 parser.add_option("--finalize",  dest="finalize", action="store_true", default=False, help="After running, tidy up output directory like scanmaker")
 
-base = "python makeShapeCardsSusy.py {MCA} {CUTS} \"{EXPR}\" \"{BINS}\" {SYS} -o SR -P {T} --tree {TREENAME} {MCCS} {MACROS} --neg --s2v -f -l {LUMI} --od {O} {FRIENDS} {PROCS} {FLAGS}"
+base = "python makeShapeCardsSusy.py {MCA} {CUTS} \"{EXPR}\" \"{BINS}\" {SYS} -o SR {T} --tree {TREENAME} {MCCS} {MACROS} --neg --s2v -f -l {LUMI} --od {O} {FRIENDS} {PROCS} {FLAGS}"
 (options, args) = parser.parse_args()
 options = maker.splitLists(options)
 mm      = maker.Maker("limitmaker", base, args, options, parser.defaults)
@@ -40,7 +40,7 @@ for r in range(len(mm.regions)):
 	
 		flags += " "+mm.getExprCut()
 		
-		mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("expr",""), mm.getVariable("bins",""), mm.getVariable("sysfile",""), mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), output, friends, procs, flags], mm.region.name, False)
+		mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("expr",""), mm.getVariable("bins",""), mm.getVariable("sysfile",""), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), output, friends, procs, flags], mm.region.name, False)
 
 mm.runJobs()
 mm.clearJobs()

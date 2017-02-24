@@ -2,8 +2,8 @@
 
 T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-01-27_ewkskims80X_M17_MERGED"
 O="/afs/cern.ch/user/c/cheidegg/www/heppy/2017-02-01_ewk80X_preapproval" # Do NOT give a trailing /
-L=36.5
-FL=36.5
+L=35.9
+FL=35.9
 QUEUE="" #"-q all.q"
 BLIND="-X blinding" #""
 
@@ -13,9 +13,10 @@ BLIND="-X blinding" #""
 ## signal regions and baseline regions plots
 ## -----------------------------------------------------------------
 
-python susy-interface/plotmaker.py 3l "4lG" $T $O -l $L  --make data --selPlots met      -o SR   --flags "--perBin $BLIND" $QUEUE
+#python susy-interface/plotmaker.py 3l "4lG" $T $O -l $L  --make data --selPlots met      -o SR   --flags "--perBin $BLIND" $QUEUE
 
 ## data fakes
+python susy-interface/plotmaker.py 3l "3lA" $T $O -l $L  --make data --plots perCateg -o SR   --flags "--perBin $BLIND" $QUEUE
 #python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L  --make data --plots perCateg -o SR   --flags "--perBin $BLIND" $QUEUE
 #python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L  --make data --plots evt      -o SR   --flags "--perBin $BLIND" $QUEUE
 #python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L  --make data --plots lep      -o SR   --flags "--perBin $BLIND" $QUEUE
