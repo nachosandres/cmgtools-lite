@@ -11,6 +11,6 @@ weight: fakeRateWeight_3l(fetchFR_i(LepSel_conePt[0],LepSel_eta[0],LepGood_pdgId
                           fetchFR_i(LepSel_conePt[2],LepSel_eta[2],LepGood_pdgId[2],4), LepSel_isTight[2] )
 
 #FOR 80X
-load-histo: FR4_mu : $CMSSW_BASE/src/CMGTools/TTHAnalysis/data/fakerate/fr_susy_data_v2.2_310117.root : FR_susy_RA7_mu_data_comb_down
-load-histo: FR4_el : $CMSSW_BASE/src/CMGTools/TTHAnalysis/data/fakerate/fr_susy_data_v2.2_310117.root : FR_susy_RA7_el_data_comb_down
+load-histo: FR4_mu : $CMSSW_BASE/src/CMGTools/TTHAnalysis/data/fakerate/fakerate_light_RA7EWKino_Moriond2017_36p5fb.root : FR_susy_RA7_mu_data_comb_down
+load-histo: FR4_el : $CMSSW_BASE/src/CMGTools/TTHAnalysis/data/fakerate/fakerate_light_RA7EWKino_Moriond2017_36p5fb.root : FR_susy_RA7_el_data_comb_down
 
