@@ -61,7 +61,7 @@ float getUnc(TH2F* hist, float pt, float eta){
 }
 
 
-/*
+
 TFile *_file_reco_leptonSF_mu = NULL;
 TFile *_file_recoToMedium_leptonSF_mu = NULL;
 TFile *_file_MediumToMultiIso_leptonSF_mu = NULL;
@@ -76,7 +76,7 @@ TH2F *_histo_reco_leptonSF_el = NULL;
 TH2F *_histo_recoToTight_leptonSF_el = NULL;
 TH2F *_histo_TightToMultiIso_leptonSF_el = NULL;
 TH2F *_histo_TightToHitsConv_leptonSF_el = NULL;
-*/
+
 
 
 TString CMSSW_BASE_RA7 = gSystem->ExpandPathName("${CMSSW_BASE}");
@@ -152,17 +152,17 @@ float leptonSF_ra7(int pdgid, float pt, float eta, int var=0){
 
 
 // electrons
-TFile* f_elSF_id   = new TFile(DATA_SF+"/leptonSF/electronSF_id_EWKino_fullsim_M17_36p5fb.root"    , "read");
-TFile* f_elSF_eff  = new TFile(DATA_SF+"/leptonSF/electronSF_trkEff_EWKino_fullsim_M17_36p5fb.root", "read");
+TFile* f_elSF_id   = new TFile(DATA_RA7+"/leptonSF/electronSF_id_EWKino_fullsim_M17_36p5fb.root"    , "read");
+TFile* f_elSF_eff  = new TFile(DATA_RA7+"/leptonSF/electronSF_trkEff_EWKino_fullsim_M17_36p5fb.root", "read");
 TH2F* h_elSF_cvhit = (TH2F*) f_elSF_id ->Get("MVATightElectronToConvVetoIHit0");
 TH2F* h_elSF_mIso  = (TH2F*) f_elSF_id ->Get("MVATightElectronToMultiIsoM");
 TH2F* h_elSF_mva   = (TH2F*) f_elSF_id ->Get("GsfElectronToMVATightIDEmuTightIP2DSIP3D4");
 TH2F* h_elSF_trk   = (TH2F*) f_elSF_eff->Get("EGamma_SF2D");
 
 // muons
-TFile* f_muSF_mIso  = new TFile(DATA_SF+"/leptonSF/ra7_lepsf_fullsim/muons/TnP_NUM_MultiIsoLoose_DENOM_MediumID_VAR_map_pt_eta.root" , "read");
-TFile* f_muSF_id    = new TFile(DATA_SF+"/leptonSF/ra7_lepsf_fullsim/muons/TnP_NUM_MediumID_DENOM_generalTracks_VAR_map_pt_eta.root"   , "read");
-TFile* f_muSF_trk   = new TFile(DATA_SF+"/leptonSF/muonSF_trk_EWKino_fullsim_M17_36p5fb.root"  , "read"); 
+TFile* f_muSF_mIso  = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/muons/TnP_NUM_MultiIsoLoose_DENOM_MediumID_VAR_map_pt_eta.root" , "read");
+TFile* f_muSF_id    = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/muons/TnP_NUM_MediumID_DENOM_generalTracks_VAR_map_pt_eta.root"   , "read");
+TFile* f_muSF_trk   = new TFile(DATA_RA7+"/leptonSF/muonSF_trk_EWKino_fullsim_M17_36p5fb.root"  , "read"); 
 TH2F* h_muSF_mIso  = (TH2F*) f_muSF_mIso ->Get("SF" );
 TH2F* h_muSF_id    = (TH2F*) f_muSF_id   ->Get("SF" );
 TGraphAsymmErrors* h_muSF_trk = (TGraphAsymmErrors*) f_muSF_trk->Get("ratio_eff_eta3_dr030e030_corr");
@@ -449,9 +449,9 @@ float puw_nInt_ICHEP(float nInt, int var=0) {
   return -9999.;
 }
 
-TFile* f_puw_nInt_Moriond    = new TFile(DATA_PUW+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Summer16_69mb_central.root", "read");
-TFile* f_puw_nInt_Moriond_Up = new TFile(DATA_PUW+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Summer16_69mb_up.root"     , "read");
-TFile* f_puw_nInt_Moriond_Dn = new TFile(DATA_PUW+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Summer16_69mb_down.root"   , "read");
+TFile* f_puw_nInt_Moriond    = new TFile(DATA_RA7+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Summer16_69mb_central.root", "read");
+TFile* f_puw_nInt_Moriond_Up = new TFile(DATA_RA7+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Summer16_69mb_up.root"     , "read");
+TFile* f_puw_nInt_Moriond_Dn = new TFile(DATA_RA7+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Summer16_69mb_down.root"   , "read");
 TH1F* h_puw_nInt_Moriond    = (TH1F*) (f_puw_nInt_Moriond   ->Get("puw"));
 TH1F* h_puw_nInt_Moriond_Up = (TH1F*) (f_puw_nInt_Moriond_Up->Get("puw"));
 TH1F* h_puw_nInt_Moriond_Dn = (TH1F*) (f_puw_nInt_Moriond_Dn->Get("puw"));
