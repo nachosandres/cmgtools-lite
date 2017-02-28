@@ -12,4 +12,4 @@ change: nBJetMedium25\b: nBJetMedium25_Mini
 
 load-histo     : FR_el        : $DATA/fakerate/fakerate_light_EWKino_Moriond2017_36p5fb.root        : FR_susy_wpM_el_data_comb
 load-histo     : FR_mu        : $DATA/fakerate/fakerate_light_EWKino_Moriond2017_36p5fb.root        : FR_susy_wpM_mu_data_comb
-load-histo     : FR_tau       : $DATA/fakerate/fakerate_tau_EWKino_Moriond2017_36p5fb_Summer16.root : data_ratio
+load-histo     : FR_tau       : $DATA/fakerate/fakerate_tau_EWKino_Moriond2017_36p5fb_Final.root    : data_ratio

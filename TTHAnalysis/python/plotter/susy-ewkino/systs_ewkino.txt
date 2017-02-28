@@ -22,22 +22,41 @@ theoTTV_ML    : rares_ttW|rares_ttZ               : .*                : 1.15
 
 ## shape uncertainties
 
-shapeWZ_ML    : prompt_WZ                         : .*2lss.* : 1.05 : lnN_in_shape_bins : 1,6,11,14,16,21,26,29
-shapeWZ_ML    : prompt_WZ                         : .*2lss.* : 1.10 : lnN_in_shape_bins : 2,3,7,8,17,18,22,23
-shapeWZ_ML    : prompt_WZ                         : .*2lss.* : 1.20 : lnN_in_shape_bins : 4,9,19,24
-shapeWZ_ML    : prompt_WZ                         : .*2lss.* : 1.30 : lnN_in_shape_bins : 5,10,12,13,15,20,25,27,28,30
+shapeWZ_ML    : prompt_WZ                         : .*2lss.* : 1.05 : lnN_in_shape_bins : 1,2,3,6,7,8,11,16,17,18,21,22,23,26
+shapeWZ_ML    : prompt_WZ                         : .*2lss.* : 1.10 : lnN_in_shape_bins : 4,5,9,10,14,19,20,24,25,29
+shapeWZ_ML    : prompt_WZ                         : .*2lss.* : 1.25 : lnN_in_shape_bins : 12,13,27,28
+shapeWZ_ML    : prompt_WZ                         : .*2lss.* : 1.35 : lnN_in_shape_bins : 15,30
 
-shapeWZ_ML    : prompt_WZ                         : .*3lA1.* : 1.05 : lnN_in_shape_bins : 1,6,8,10,13,14
-shapeWZ_ML    : prompt_WZ                         : .*3lA1.* : 1.10 : lnN_in_shape_bins : 2,12
-shapeWZ_ML    : prompt_WZ                         : .*3lA1.* : 1.20 : lnN_in_shape_bins : 3,
-shapeWZ_ML    : prompt_WZ                         : .*3lA1.* : 1.30 : lnN_in_shape_bins : 4,5,7,9
-shapeWZ_ML    : prompt_WZ                         : .*3lA1.* : 1.40 : lnN_in_shape_bins : 11
+shapeWZ_ML    : prompt_WZ                         : .*3lA1.* : 1.05 : lnN_in_shape_bins : 1,2,6,12,13,14
+shapeWZ_ML    : prompt_WZ                         : .*3lA1.* : 1.10 : lnN_in_shape_bins : 3,4,5,8
+shapeWZ_ML    : prompt_WZ                         : .*3lA1.* : 1.25 : lnN_in_shape_bins : 7
+shapeWZ_ML    : prompt_WZ                         : .*3lA1.* : 1.30 : lnN_in_shape_bins : 10
+shapeWZ_ML    : prompt_WZ                         : .*3lA1.* : 1.35 : lnN_in_shape_bins : 9
+shapeWZ_ML    : prompt_WZ                         : .*3lA1.* : 1.50 : lnN_in_shape_bins : 11
 
-shapeWZ_ML    : prompt_WZ                         : .*3lA2.* : 1.05 : lnN_in_shape_bins : 7,9,11,14,15,16,17,22,24,26,29
-shapeWZ_ML    : prompt_WZ                         : .*3lA2.* : 1.10 : lnN_in_shape_bins : 1,18,13,28
-shapeWZ_ML    : prompt_WZ                         : .*3lA2.* : 1.20 : lnN_in_shape_bins : 2,19
-shapeWZ_ML    : prompt_WZ                         : .*3lA2.* : 1.30 : lnN_in_shape_bins : 3,4,5,6,8,10,20,21,23,25
-shapeWZ_ML    : prompt_WZ                         : .*3lA2.* : 1.40 : lnN_in_shape_bins : 12,27
+shapeWZ_ML    : prompt_WZ                         : .*3lA2.* : 1.05 : lnN_in_shape_bins : 1,7,17,18,19,20,21,22,13,14,15,16,28,29
+shapeWZ_ML    : prompt_WZ                         : .*3lA2.* : 1.10 : lnN_in_shape_bins : 2,3,4,5,6,9,24
+shapeWZ_ML    : prompt_WZ                         : .*3lA2.* : 1.25 : lnN_in_shape_bins : 8,23
+shapeWZ_ML    : prompt_WZ                         : .*3lA2.* : 1.30 : lnN_in_shape_bins : 11,26
+shapeWZ_ML    : prompt_WZ                         : .*3lA2.* : 1.35 : lnN_in_shape_bins : 10,25
+shapeWZ_ML    : prompt_WZ                         : .*3lA2.* : 1.50 : lnN_in_shape_bins : 12,27
+
+##shapeWZ_ML    : prompt_WZ                         : .*2lss.* : 1.05 : lnN_in_shape_bins : 1,6,11,14,16,21,26,29
+##shapeWZ_ML    : prompt_WZ                         : .*2lss.* : 1.10 : lnN_in_shape_bins : 2,3,7,8,17,18,22,23
+##shapeWZ_ML    : prompt_WZ                         : .*2lss.* : 1.20 : lnN_in_shape_bins : 4,9,19,24
+##shapeWZ_ML    : prompt_WZ                         : .*2lss.* : 1.30 : lnN_in_shape_bins : 5,10,12,13,15,20,25,27,28,30
+##
+##shapeWZ_ML    : prompt_WZ                         : .*3lA1.* : 1.05 : lnN_in_shape_bins : 1,6,8,10,13,14
+##shapeWZ_ML    : prompt_WZ                         : .*3lA1.* : 1.10 : lnN_in_shape_bins : 2,12
+##shapeWZ_ML    : prompt_WZ                         : .*3lA1.* : 1.20 : lnN_in_shape_bins : 3,
+##shapeWZ_ML    : prompt_WZ                         : .*3lA1.* : 1.30 : lnN_in_shape_bins : 4,5,7,9
+##shapeWZ_ML    : prompt_WZ                         : .*3lA1.* : 1.40 : lnN_in_shape_bins : 11
+##
+##shapeWZ_ML    : prompt_WZ                         : .*3lA2.* : 1.05 : lnN_in_shape_bins : 7,9,11,14,15,16,17,22,24,26,29
+##shapeWZ_ML    : prompt_WZ                         : .*3lA2.* : 1.10 : lnN_in_shape_bins : 1,18,13,28
+##shapeWZ_ML    : prompt_WZ                         : .*3lA2.* : 1.20 : lnN_in_shape_bins : 2,19
+##shapeWZ_ML    : prompt_WZ                         : .*3lA2.* : 1.30 : lnN_in_shape_bins : 3,4,5,6,8,10,20,21,23,25
+##shapeWZ_ML    : prompt_WZ                         : .*3lA2.* : 1.40 : lnN_in_shape_bins : 12,27
 
 ewksub_ML     : fakes_.*                          : .* : ewk        : templates
 

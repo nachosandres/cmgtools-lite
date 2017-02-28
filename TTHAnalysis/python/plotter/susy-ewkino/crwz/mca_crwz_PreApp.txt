@@ -66,7 +66,7 @@ data : SingleMuon_Run2016H-PromptReco-v3_runs_284036_284044
 
 ## WZ
 ## -----------------------------------------------------------
-prompt_WZ               : WZTo3LNu_ext                        : 58.59*0.7 : ((LepGood1_mcUCSXMatchId==0 || LepGood1_mcUCSXMatchId==1) && (LepGood2_mcUCSXMatchId==0 || LepGood2_mcUCSXMatchId==1) && (LepGood3_mcUCSXMatchId==0 || LepGood3_mcUCSXMatchId==1))            ; FillColor=ROOT.kOrange  , Label="WZ", NormSystematic=0.1
+prompt_WZ               : WZTo3LNu                        : xsec : ((LepGood1_mcUCSXMatchId==0 || LepGood1_mcUCSXMatchId==1) && (LepGood2_mcUCSXMatchId==0 || LepGood2_mcUCSXMatchId==1) && (LepGood3_mcUCSXMatchId==0 || LepGood3_mcUCSXMatchId==1))            ; FillColor=ROOT.kOrange  , Label="WZ", NormSystematic=0.1
 
 
 fakes_appldata : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_part1; FakeRate="susy-ewkino/crwz/fakeRate-2lss-frdata.txt", FillColor=ROOT.kAzure+1, Label="Nonprompt", NormSystematic=0.3
@@ -125,7 +125,7 @@ fakes_appldata : SingleMuon_Run2016H-PromptReco-v3_runs_284036_284044; FakeRate=
 
 
 
-promptsub               : WZTo3LNu_ext                        : (-1)*58.59*0.7 : ((LepGood1_mcUCSXMatchId==0 || LepGood1_mcUCSXMatchId==1) && (LepGood2_mcUCSXMatchId==0 || LepGood2_mcUCSXMatchId==1) && (LepGood3_mcUCSXMatchId==0 || LepGood3_mcUCSXMatchId==1))            ; FakeRate="susy-ewkino/crwz/fakeRate-2lss-frdata.txt", FillColor=ROOT.kAzure+1, Label="Nonprompt", NormSystematic=0.3
+promptsub               : WZTo3LNu                        : (-1)*xsec : ((LepGood1_mcUCSXMatchId==0 || LepGood1_mcUCSXMatchId==1) && (LepGood2_mcUCSXMatchId==0 || LepGood2_mcUCSXMatchId==1) && (LepGood3_mcUCSXMatchId==0 || LepGood3_mcUCSXMatchId==1))            ; FakeRate="susy-ewkino/crwz/fakeRate-2lss-frdata.txt", FillColor=ROOT.kAzure+1, Label="Nonprompt", NormSystematic=0.3
 promptsub    : TTWToLNu_ext1+TTWToLNu_ext2_part1+TTWToLNu_ext2_part2                    : (-1)*xsec : ((LepGood1_mcUCSXMatchId==0 || LepGood1_mcUCSXMatchId==1) && (LepGood2_mcUCSXMatchId==0 || LepGood2_mcUCSXMatchId==1) && (LepGood3_mcUCSXMatchId==0 || LepGood3_mcUCSXMatchId==1)) ; FakeRate="susy-ewkino/crwz/fakeRate-2lss-frdata.txt", FillColor=ROOT.kAzure+1, Label="Nonprompt", NormSystematic=0.3
 promptsub     : TTHnobb_pow                 : (-1)*xsec : ((LepGood1_mcUCSXMatchId==0 || LepGood1_mcUCSXMatchId==1) && (LepGood2_mcUCSXMatchId==0 || LepGood2_mcUCSXMatchId==1) && (LepGood3_mcUCSXMatchId==0 || LepGood3_mcUCSXMatchId==1)) ; FakeRate="susy-ewkino/crwz/fakeRate-2lss-frdata.txt", FillColor=ROOT.kAzure+1, Label="Nonprompt", NormSystematic=0.3
 promptsub     : TTZToLLNuNu                 : (-1)*xsec : ((LepGood1_mcUCSXMatchId==0 || LepGood1_mcUCSXMatchId==1) && (LepGood2_mcUCSXMatchId==0 || LepGood2_mcUCSXMatchId==1) && (LepGood3_mcUCSXMatchId==0 || LepGood3_mcUCSXMatchId==1)) ; FakeRate="susy-ewkino/crwz/fakeRate-2lss-frdata.txt", FillColor=ROOT.kAzure+1, Label="Nonprompt", NormSystematic=0.3
@@ -526,9 +526,6 @@ rares_ttX_bTagLF_Dn       : tZW_ll                          : xsec : bTagWeight_
 
 
 
-
-
-
 ## SYSTEMATIC VARIATION: PILEUP UP
 ## ===========================================================
 prompt_WZ_puw_Up       : WZTo3LNu                         : xsec : puw_nInt_Moriond(nTrueInt,1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0 && LepGood3_mcUCSXMatchId)             ; FillColor=ROOT.kOrange  , Label="WZ", NormSystematic=0.25,  SkipMe=True
@@ -630,13 +627,6 @@ rares_ttX_lepSF_Dn       : TTJets_SingleLeptonFromTbar     : xsec : (getLepSF(Le
 rares_ttX_lepSF_Dn       : TTTT                            : xsec : (getLepSF(LepGood1_pt,LepGood1_eta,LepGood1_pdgId,LepGood1_isTight,1,-1)*getLepSF(LepGood2_pt,LepGood2_eta,LepGood2_pdgId,LepGood2_isTight,1,-1)*getLepSF(LepGood3_pt,LepGood3_eta,LepGood3_pdgId,LepGood3_isTight,1,-1))*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0 && LepGood3_mcUCSXMatchId)             ; FillColor=ROOT.kViolet-3, Label="t\#bar{t}X", NormSystematic=0.2,  SkipMe=True
 rares_ttX_lepSF_Dn       : tZq_ll                          : xsec : (getLepSF(LepGood1_pt,LepGood1_eta,LepGood1_pdgId,LepGood1_isTight,1,-1)*getLepSF(LepGood2_pt,LepGood2_eta,LepGood2_pdgId,LepGood2_isTight,1,-1)*getLepSF(LepGood3_pt,LepGood3_eta,LepGood3_pdgId,LepGood3_isTight,1,-1))*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0 && LepGood3_mcUCSXMatchId)             ; FillColor=ROOT.kViolet-3, Label="t\#bar{t}X", NormSystematic=0.2,  SkipMe=True
 rares_ttX_lepSF_Dn       : tZW_ll                          : xsec : (getLepSF(LepGood1_pt,LepGood1_eta,LepGood1_pdgId,LepGood1_isTight,1,-1)*getLepSF(LepGood2_pt,LepGood2_eta,LepGood2_pdgId,LepGood2_isTight,1,-1)*getLepSF(LepGood3_pt,LepGood3_eta,LepGood3_pdgId,LepGood3_isTight,1,-1))*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0 && LepGood3_mcUCSXMatchId)             ; FillColor=ROOT.kViolet-3, Label="t\#bar{t}X", NormSystematic=0.2,  SkipMe=True
-
-
-
-
-
-
-
 
 
 

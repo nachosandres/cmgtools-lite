@@ -1,7 +1,8 @@
 #!/bin/bash
 
-T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-01-27_ewkskims80X_M17_MERGED/"
-O="/afs/cern.ch/user/c/cheidegg/www/heppy/2017-02-07_ewk80X_frTau" # Do NOT give a trailing /
+T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-02-23_ewkskims80X_M17_3l_bkg;/mnt/t3nfs01/data01/shome/cheidegg/o/2017-02-23_ewkskims80X_M17_3l_data"
+#T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-01-27_ewkskims80X_M17_MERGED/"
+O="/afs/cern.ch/user/c/cheidegg/www/heppy/2017-02-24_ewk80X_frTau_reminiAOD" # Do NOT give a trailing /
 L=35.9
 FL=35.9
 QUEUE="" #"-q all.q"
