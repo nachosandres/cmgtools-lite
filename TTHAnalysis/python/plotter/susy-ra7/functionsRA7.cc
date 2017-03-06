@@ -38,6 +38,29 @@ float mTcalc(float mT_3l, float mT_4l, float mT_fo_3l, float mT_fo_4l, int nLepT
 }
 
 
+int SR1b2b(int SRorig, float mT) {
+    // Start from M17 SRs
+    int SR = SRorig;
+    
+    // Push SRs to make room for the new bins
+    if (SRorig>12) SR+=4;  // (offZ 8)
+    if (SRorig>16) SR+=4; // (offZ 12)
+    if (SRorig>35) SR+=4;  // (onZ 5)
+    if (SRorig>39) SR+=4;  // (onZ 6)
+
+
+    // Now split interesting SRs according to mT
+    if ((SRorig>=9 && SRorig<=16) || (SRorig>=32 && SRorig<=39)) {
+      if (mT > 120.) SR+=4;
+    }
+
+    return SR;
+}
+
+////////////////////////
+// Lepton SF material //
+////////////////////////
+
 float getLeptonSF_mu_Unc(float pt, int var) {
   if (pt<20) 
     return var*TMath::Sqrt(0.03*0.03+0.01*0.01+0.01*0.01);
@@ -428,7 +451,9 @@ float triggerSF(int BR, float pt1, int pdg1,
 
 
 
-
+//////////////////
+// PUW material //
+//////////////////
 
 
 
