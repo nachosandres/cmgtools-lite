@@ -19,6 +19,8 @@ SR_log         : SR    : 46,0.5,46.5; XTitle="SR", LegendCutoff=1e-5, IncludeOve
 SSR            : SSR   : 4,0.5,4.5; XTitle="SSR", LegendCutoff=1e-5, IncludeOverflows=False, xBinLabels="SSR1\,SSR2\,SSR3\,SSR4", Legend='TL'
 SSR_log        : SSR   : 4,0.5,4.5; XTitle="SSR", LegendCutoff=1e-5, IncludeOverflows=False, xBinLabels="SSR1\,SSR2\,SSR3\,SSR4", Legend='TL', YMin=0.1, YMax=90., Logy
 
+SR1b2b_offZ_log         : SR1b2b(SR,mTW)    : 31,0.5,31.5; XTitle="SR (off-Z)", LegendCutoff=1e-5, IncludeOverflows=False, xBinLabels="1a\,2a\,3a\,4a\,1b\,2b\,3b\,4b\,5a\,6a\,7a\,8a\,5b\,6b\,7b\,8b\,9a\,10a\,11a\,12a\,9b\,10b\,11b\,12b\,13\,14a\,15a\,14b\,15b\,16a\,16b", Wide=True, Logy, YMin=0.1, YMax=8000.
+SR1b2b_onZ_log          : SR1b2b(SR,mTW)-31 : 31,0.5,31.5; XTitle="SR (on-Z)",  LegendCutoff=1e-5, IncludeOverflows=False, xBinLabels="1a\,2a\,3a\,4a\,1b\,2b\,3b\,4b\,5a\,6a\,7a\,8a\,5b\,6b\,7b\,8b\,9a\,10a\,11a\,12a\,9b\,10b\,11b\,12b\,13\,14a\,15a\,14b\,15b\,16a\,16b", Wide=True, Logy, YMin=0.1, YMax=8000.
 
 
 
@@ -91,7 +93,7 @@ nJet40 	   : nJet40               : 3,-0.5,2.5  ; XTitle='N(jet\, p_{T} > 40)', 
 nJet40_log : nJet40 : 10,-0.5,9.5 ; XTitle='N(jet\, p_{T} > 40)', Logy
 
 nJet30 	   : nJet30               : 9,-0.5,8.5  ; XTitle='N_{jet}', LegendCutoff=1e-5, XNDiv=011
-nJet30_log 	   : nJet30               : 11,-0.5,10.5  ; XTitle='N_{jet}', LegendCutoff=1e-5, XNDiv=011, Logy
+nJet30_log 	   : nJet30               : 11,-0.5,10.5  ; XTitle='N_{jet}', LegendCutoff=1e-5, XNDiv=111, Logy
 
 nBJet25    : nBJetMedium25        : 6,-0.5,5.5   ; XTitle='N(b-jet\, p_{T} > 25\, CSVM)', LegendCutoff=1e-5, XNDiv=006
 nBJet25_log    : nBJetMedium25        : 6,-0.5,5.5   ; XTitle='N(b-jet\, p_{T} > 25\, CSVM)', LegendCutoff=1e-5, Logy, XNDiv=006
@@ -99,8 +101,8 @@ nBJet25_log    : nBJetMedium25        : 6,-0.5,5.5   ; XTitle='N(b-jet\, p_{T} >
 htJet40j:   htJet40j: 40,0,400    ; XTitle="H_{T}(jet p_{T} > 40)  [GeV]"
 htJet40j_log:   htJet40j: 40,0,400    ; XTitle="H_{T}(jet p_{T} > 40)  [GeV]", Logy
 
-htJet30j:   htJet30j: 10,0,2000    ; XTitle="H_{T}(jet p_{T} > 30)  [GeV]", LegendCutoff=1e-5
-htJet30j_log:   htJet30j: 10,0,2000    ; XTitle="H_{T}(jet p_{T} > 30)  [GeV]", LegendCutoff=1e-5, Logy
+htJet30j:   htJet30j: [0., 60.,100.,200.,300.,400.,500.,600.,700.,800.,900.,1000.]    ; XTitle="H_{T}(jet p_{T} > 30)  [GeV]", LegendCutoff=1e-5, XNDiv=806
+htJet30j_log:   htJet30j: [0., 60.,100.,200.,300.,400.,500.,600.,700.,800.,900.,1000.]    ; XTitle="H_{T}(jet p_{T} > 30)  [GeV]", LegendCutoff=1e-5, Logy, XNDiv=806, YMin=1., YMax=500.
 
 jet1Pt:  Jet_pt[iJSel_Mini[0]]: 16,0,160; XTitle="Leading jet p_{T}  [GeV]", Legend='TR', LegendCutoff=1e-5
 jet2Pt:  Jet_pt[iJSel_Mini[1]]: 16,0,160; XTitle="Subleading jet p_{T}  [GeV]", Legend='TR', LegendCutoff=1e-5
@@ -115,8 +117,8 @@ MET_SR_log : met_pt               : [60.,100.,150.,500]; XTitle="E_{T}^{miss} [G
 MET_JetRatio:      met_pt/Jet1_pt : 20,0,10; XTitle="E_{T}^{miss} / jet p_{T}  [GeV]"
 MET_JetRatio_log:  met_pt/Jet1_pt : 20,0,10; XTitle="E_{T}^{miss} / jet p_{T}  [GeV]", Logy
 
-mT         : mTW  : 20,0,200; XTitle="M_{T}^{min} [GeV]", LegendCutoff=1e-5, Legend='TR'
-mT_log     : mTW  : 20,0,200; XTitle="M_{T}^{min} [GeV]", LegendCutoff=1e-5, Legend='TR', Logy
+mT         : mTW  : 20,0,200; XTitle="M_{T}^{min} [GeV]", LegendCutoff=1e-5, Legend='TR', XNDiv=806
+mT_log     : mTW  : 20,0,200; XTitle="M_{T}^{min} [GeV]", LegendCutoff=1e-5, Legend='TR', Logy, XNDiv=806, Logy, YMin=1., YMax=300.
 mTW	       : mTW  : 12,0,120; XTitle="M_{T}^{W} [GeV]", LegendCutoff=1e-5, Legend='TL'
 
 
