@@ -13,8 +13,8 @@ tight:  LepGood1_isTight && LepGood2_isTight && LepGood3_isTight
 0or1jet: nJet40<=1
 0bjet: nBJetMedium25 == 0
 mZ_WZCR:  mll_3l > 75 && mll_3l < 105
-mtw_WZCR: mT_3l > 50 && mT_3l < 100
-met_WZCR: met_pt > 30 && met_pt < 100
+mtw_WZCR: mT    > 50 && mT    < 100
+met_WZCR: metPt  > 30 && metPt  < 100
 
 
 # some cuts that are off by default but can be turned on with -E
