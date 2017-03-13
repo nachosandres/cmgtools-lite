@@ -1,6 +1,7 @@
-## Few signals (sig_ICHEP_.* , sig_M17_.* )
+## Few signals (sig_ICHEP_.* , sig_M17_.*, sig_heavyH_.*, sig_heavyA_.* )
 ## -----------------------------------------------------------
-incl_sigs : + ; IncludeMca="susy-ra7/includes/mca_sigs.txt"
+incl_sigs  : + ; IncludeMca="susy-ra7/includes/mca_sigs.txt"
+incl_heavy : + ; IncludeMca="susy-ra7/includes/mca_heavy.txt"
 
 ## Base (data, fakes, prompt)
 ## -----------------------------------------------------------
