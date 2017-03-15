@@ -2,6 +2,7 @@
 ## -----------------------------------------------------------
 incl_sigs  : + ; IncludeMca="susy-ra7/includes/mca_sigs.txt"
 incl_heavy : + ; IncludeMca="susy-ra7/includes/mca_heavy.txt"
+incl_Plotheavy : + ; IncludeMca="susy-ra7/includes/mca_Plot_heavy.txt"
 
 ## Base (data, fakes, prompt)
 ## -----------------------------------------------------------
@@ -20,3 +21,5 @@ incl_sys_jec            : + ; IncludeMca="susy-ra7/includes/mca_sys_jec.txt"
 incl_sys_lepSF          : + ; IncludeMca="susy-ra7/includes/mca_sys_lepSF.txt"
 incl_sys_bTagHF         : + ; IncludeMca="susy-ra7/includes/mca_sys_bTagHF.txt"
 incl_sys_bTagLF         : + ; IncludeMca="susy-ra7/includes/mca_sys_bTagLF.txt"
+
+incl_sys_heavy          : + ; IncludeMca="susy-ra7/includes/mca_heavy_sys.txt"
