@@ -98,15 +98,23 @@ class LeptonBuilderWZSM:
 
         #self.passCleverPtCut()
         #if not self.passPtAndMll(): return
-        if len(self.lepSelFO) < 2: return
+        if len(self.lepSelFO)>=3: self.ret["is_3l"] = 1
+        if len(self.lepSelFO)>=4: self.ret["is_4l"] = 1
+        if len(self.lepSelFO)>=5: self.ret["is_5l"] = 1
 
-        if len(self.lepSelFO) > 2: self.ret["is_3l"] = 1 # the sanity bit
         self.collectOSpairs(3)
         self.makeMass(3)
-        self.makeMt2(2)
+        self.makeMt2(3)
         self.findBestOSpair(3)
         self.findMtMin(3)
+        self.makeMassMET(3)
 
+        self.collectOSpairs(4, True)
+        self.makeMass(4)
+        self.makeMt2(4)
+        self.findBestOSpair(4)
+        self.findMtMin(4)
+        self.makeMassMET(4)
 
 
     ## collectObjects
@@ -322,13 +330,24 @@ class LeptonBuilderWZSM:
     def listBranches(self):
 
         biglist = [
-            ("is_3l"       , "I"),
-            ("nOSSF_3l"    , "I"),
-            ("nOSLF_3l"    , "I"),
-            ("nOSTF_3l"    , "I"),
-            ("mll_3l"      , "F"),
-            ("m3L"         , "F")]
-
+            ("is_3l"            , "I"),
+            ("is_4l"            , "I"),
+            ("is_5l"            , "I"),
+            ("nOSSF_3l"         , "I"),
+            ("nOSLF_3l"         , "I"),
+            ("nOSTF_3l"         , "I"),
+            ("mll_3l"           , "F"),
+            ("m3L"              , "F"),
+            ("nOSSF_4l"         , "I"),
+            ("nOSLF_4l"         , "I"),
+            ("nOSTF_4l"         , "I"),
+            ("mll_4l"           , "F"),
+            ("m4L"              , "F"),
+            ("minDeltaR_3l"     , "F"),
+            ("minDeltaR_4l"     , "F"),
+            ("minDeltaR_3l_mumu", "F"),
+            ("minDeltaR_4l_mumu", "F")]
+            
         biglist.append(("nOS"   , "I"))
         biglist.append(("mll"   , "F", 20, "nOS"))
         biglist.append(("mll_i1", "I", 20, "nOS"))
@@ -353,11 +372,19 @@ class LeptonBuilderWZSM:
   
         for var in self.systsJEC:
             biglist.append(("mT_3l"       + self.systsJEC[var], "F"))
+            biglist.append(("mT2L_3l"     + self.systsJEC[var], "F"))
+            biglist.append(("mT2T_3l"     + self.systsJEC[var], "F"))
+            biglist.append(("mT_4l"       + self.systsJEC[var], "F"))
+            biglist.append(("mT2L_4l"     + self.systsJEC[var], "F"))
+            biglist.append(("mT2T_4l"     + self.systsJEC[var], "F"))
+            biglist.append(("m3Lmet"      + self.systsJEC[var], "F"))
             biglist.append(("mT_3l_gen"   + self.systsJEC[var], "F"))
-            biglist.append(("mT2L_2l"     + self.systsJEC[var], "F"))
-            biglist.append(("mT2T_2l"     + self.systsJEC[var], "F"))
-            biglist.append(("mT2L_2l_gen" + self.systsJEC[var], "F"))
-            biglist.append(("mT2T_2l_gen" + self.systsJEC[var], "F"))
+            biglist.append(("mT2L_3l_gen" + self.systsJEC[var], "F"))
+            biglist.append(("mT2T_3l_gen" + self.systsJEC[var], "F"))
+            biglist.append(("mT_4l_gen"   + self.systsJEC[var], "F"))
+            biglist.append(("mT2L_4l_gen" + self.systsJEC[var], "F"))
+            biglist.append(("mT2T_4l_gen" + self.systsJEC[var], "F"))
+            biglist.append(("m4Lmet"      + self.systsJEC[var], "F"))
 
         return biglist
 
@@ -369,9 +396,22 @@ class LeptonBuilderWZSM:
         if len(self.lepSelFO) < 3: return 
         sum = self.lepSelFO[0].p4()
         for i in range(1,min(max,len(self.lepSelFO))):
-            sum += self.lepSelFO[i].p4()
+            sum += self.lepSelFO[i].p4(self.lepSelFO[i].conePt)
         self.ret["m" + str(max) + "L"] = sum.M()
 
+    ## makeMassMET (leptons and MET)
+    ## _______________________________________________________________
+    def makeMassMET(self, max):
+           
+        if len(self.lepSelFO) < 3: return 
+        sumlep = self.lepSelFO[0].p4()
+        metp4 = ROOT.TLorentzVector()
+        for i in range(1,min(max,len(self.lepSelFO))):
+            sumlep += self.lepSelFO[i].p4(self.lepSelFO[i].conePt) 
+        for var in self.systsJEC:
+            metp4.SetPtEtaPhiM(self.met[var],0,self.metphi[var],0)
+            sumtot = sumlep + metp4
+            self.ret["m" + str(max) + "Lmet" + self.systsJEC[var]] = sumtot.M()
 
     ## makeMt2
     ## _______________________________________________________________
@@ -485,11 +525,22 @@ class LeptonBuilderWZSM:
         self.ret = {};
 
         self.ret["is_3l"                ] = 0
+        self.ret["is_4l"                ] = 0
+        self.ret["is_5l"                ] = 0
         self.ret["nOSSF_3l"             ] = 0
         self.ret["nOSLF_3l"             ] = 0
         self.ret["nOSTF_3l"             ] = 0
-        self.ret["mll_3l"               ] = 0.
-        self.ret["m3L"                  ] = 0.
+        self.ret["mll_3l"               ] = 0
+        self.ret["m3L"                  ] = 0
+        self.ret["nOSSF_4l"             ] = 0
+        self.ret["nOSLF_4l"             ] = 0
+        self.ret["nOSTF_4l"             ] = 0
+        self.ret["mll_4l"               ] = 0
+        self.ret["m4L"                  ] = 0
+        self.ret["minDeltaR_3l"         ] = -1
+        self.ret["minDeltaR_4l"         ] = -1
+        self.ret["minDeltaR_3l_mumu"    ] = -1
+        self.ret["minDeltaR_4l_mumu"    ] = -1
 
         self.ret["nOS"   ] = 0
         self.ret["mll"   ] = [0.]*20
@@ -515,11 +566,19 @@ class LeptonBuilderWZSM:
 
         for var in self.systsJEC:
             self.ret["mT_3l"       + self.systsJEC[var]] = 0.
+            self.ret["mT2L_3l"     + self.systsJEC[var]] = 0.  
+            self.ret["mT2T_3l"     + self.systsJEC[var]] = 0. 
+            self.ret["mT_4l"       + self.systsJEC[var]] = 0.
+            self.ret["mT2L_4l"     + self.systsJEC[var]] = 0.  
+            self.ret["mT2T_4l"     + self.systsJEC[var]] = 0. 
+            self.ret["m3Lmet"      + self.systsJEC[var]] = 0. 
             self.ret["mT_3l_gen"   + self.systsJEC[var]] = 0.
-            self.ret["mT2L_2l"     + self.systsJEC[var]] = 0.  
-            self.ret["mT2T_2l"     + self.systsJEC[var]] = 0.
-            self.ret["mT2L_2l_gen" + self.systsJEC[var]] = 0.  
-            self.ret["mT2T_2l_gen" + self.systsJEC[var]] = 0. 
+            self.ret["mT2L_3l_gen" + self.systsJEC[var]] = 0.  
+            self.ret["mT2T_3l_gen" + self.systsJEC[var]] = 0. 
+            self.ret["mT_4l_gen"   + self.systsJEC[var]] = 0.
+            self.ret["mT2L_4l_gen" + self.systsJEC[var]] = 0.  
+            self.ret["mT2T_4l_gen" + self.systsJEC[var]] = 0. 
+            self.ret["m4Lmet"      + self.systsJEC[var]] = 0. 
 
 
     ## setAttributes 
