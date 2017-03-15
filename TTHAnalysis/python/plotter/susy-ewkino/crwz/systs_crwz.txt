@@ -1,18 +1,20 @@
 
 ## flat uncertainties
 
-lumi       : sig_.*|prompt_.*|rares_.*|convs   : .* : 1.027
+lumi       : sig_.*|prompt_.*|rares_.*|convs   : .* : 1.026
 #lepeff     : sig_.*|prompt_.*|rares_.*|convs   : .* : 1.02
 trigeff    : sig_.*|prompt_.*|rares_.*|convs   : .* : 1.03
 
 fakes      : fakes_.*                          : .* : 1.3
-flips      : flips                             : .* : 1.3
-convs      : convs                             : .* : 1.5
+#flips      : flips                             : .* : 1.3
+convs      : convs                             : .* : 1.15
 
-normWZ     : prompt_WZ                         : .* : 1.12
+#normWZ     : prompt_WZ                         : .* : 1.12
 normZZH    : prompt_ZZH                        : .* : 1.25
 normVVV    : rares_VVV                        : .* : 1.5
 normTTX    : rares_ttX                        : .* : 1.5
+normTTW    : rares_ttW                        : .* : 1.15
+normTTZ    : rares_ttZ                        : .* : 1.15
 #normWWss   : prompt_WWss                       : .* : 1.3
 
 
@@ -29,25 +31,12 @@ JES        : sig_.*|prompt_.*|rares_.*|convs_.*   : .* : jec        : templates
 lepSF      : sig_.*|prompt_.*|rares_.*|convs_.*   : .* : lepSF      : templates
 puw        : sig_.*|prompt_.*|rares_.*|convs_.*   : .* : puw        : templates
 
-#bTag_BC    : sig_.*                 : .* : bTag_hf    : templates
-#bTag_BC    : prompt_.*              : .* : bTag_hf    : templates
-#bTag_Light : sig_.*                 : .* : bTag_lf    : templates
-#bTag_Light : prompt_.*              : .* : bTag_lf    : templates
+btag_HF       : sig_.*|prompt_.*|rares_.*|convs   : .* : bTagHF     : templates
+btag_LF       : sig_.*|prompt_.*|rares_.*|convs   : .* : bTagLF     : templates
 
 
-## theoretical stuff
 
-pdfTTX     : rares_ttW             : .* : 1.04
-pdfTTX     : rares_ttZ             : .* : 1.08
-pdfTTX     : rares_ttX             : .* : 1.08
 
-q2xsecTTX  : rares_ttW             : .* : 1.13
-q2xsecTTX  : rares_ttZ             : .* : 1.11
-q2xsecTTX  : rares_ttX             : .* : 1.11
-
-q2accTTX   : rares_ttW             : .* : 1.05
-q2accTTX   : rares_ttZ             : .* : 1.05
-q2accTTX   : rares_ttX             : .* : 1.05
 
 statcrwzsig   : sig_.*                            : .* : 1.0 : stat_foreach_shape_bins : .*
 statcrwzWZ    : prompt_WZ                         : .* : 1.0 : stat_foreach_shape_bins : .*
@@ -58,7 +47,7 @@ statcrwzconvs : convs                             : .* : 1.0 : stat_foreach_shap
 statcrwzfakes : fakes_appldata                    : .* : 1.0 : stat_foreach_shape_bins : .*
 
 
-WZ_SF         : prompt_WZ                         : .* : 100 : lnU
+#WZ_SF         : prompt_WZ                         : .* : 100 : lnU
 
 #for TChiNeuWZ
 #signalcont    : prompt_WZ                         : .* : 1.06

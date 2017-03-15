@@ -1,27 +1,38 @@
-## NEW DATA
-#T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-01-24_signalMerger"
-T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-01-24_signalSplitter/done"
-#T="/mnt/t3nfs01/data01/shome/cheidegg/o/Prod23Jan"
-#T="/mnt/t3nfs01/data01/shome/cheidegg/o/Signals26Jan"
-#T="/mnt/t3nfs01/data01/shome/cheidegg/o/Signals05Feb"
-#T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-01-27_ewkskims80X_M17_MERGED/"
-#T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-01-27_ewkskims80X_M17_WZCR"
-#T="/mnt/t3nfs01/data01/shome/cheidegg/o/2015-11-29_ewktrees80X_M17"
-F="-F --direct -q all.q --nosplit"
-#F="--direct --nosplit -q all.q"
-#F="-F --accept DoubleMuon_Run2016F_23Sep2016_v1_runs_271036_284044 --direct"
-#F="--accept TChiNeuSlepSneu_FD --direct --nosplit -q all.q" #"-F" 
-#F="--accept DoubleEG_Run2016C_23Sep2016_v1_runs_271036_284044_part2 --exclude MET --exclude Tau --exclude JetHT -q 8nh --direct" #"-F" 
+S="/scratch/cheidegg"
 
-#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules leptonJetReCleanerSusyEWK3L
-#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules leptonBuilderEWK
-#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules eventBTagWeight             --pretend
+#T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-02-25_ewktrees80X_M17_bkg"
+#F="-q all.q --direct"
+#R="/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/11/2017-02-25-10-00-00"
 
-#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules leptonJetReCleanerSusyEWK2L
+T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-02-18_ewktrees80X_M17_signals"
+F="-q all.q --nosplit --direct --exclude TChi"
+#F="-F -q all.q --nosplit --direct --exclude T1 --exclude T6 --exclude T5 --exclude TChiSlepSnux0p"
+#R="/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/11/2017-02-05-11-37-00"
+#
+#F="-F -q all.q --nosplit --direct --accept T1 --accept T5 --accept T6ttWW"
+#R="/pnfs/psi.ch/cms/trivcat/store/user/cheidegg/sea/11/2017-02-18-17-00-00"
+
+#T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-02-23_ewkskims80X_M17_3l_data"
+#F="-q all.q --nosplit --direct"
+
+#T="/mnt/t3nfs01/data01/shome/cheidegg/o/2017-02-25_ewkskims80X_M17_2lss_bkg"
+#F="-F -q all.q --nosplit --direct --accept WZTo"
+
+#python susy-interface/friendmaker.py 3l 3lA $T $S --bk --log $F --flags "--remote '$R'" --modules leptonJetReCleanerSusyEWK3L
+#python susy-interface/friendmaker.py 3l 3lA $T $S --bk --log $F --flags "--remote '$R'" --modules leptonBuilderEWK
+#python susy-interface/friendmaker.py 3l 3lA $T $S --bk --log $F --flags "--remote '$R'" --modules leptonJetReCleanerSusyEWK2L
+#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules TrivialPUWModule
 python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules ISRWeightModule
-#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules bTagEventWeightFullSim --flags "-F sf/t {P}/leptonJetReCleanerSusyEWK2L/evVarFriend_{cname}.root" --accept TChi
-#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules bTagEventWeightFastSim --flags "-F sf/t {P}/leptonJetReCleanerSusyEWK2L/evVarFriend_{cname}.root" --accept TChi
+#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules ISRPtWeightModule
+#python susy-interface/friendmaker.py 3l 3lA $T $S --bk --log $F --modules bTagEventWeightFullSim3L --flags "-F sf/t {RP}/leptonJetReCleanerSusyEWK3L/evVarFriend_{cname}.root --remote '$R'" 
+#python susy-interface/friendmaker.py 3l 3lA $T $S --bk --log $F --modules bTagEventWeightFastSim3L --flags "-F sf/t {RP}/leptonJetReCleanerSusyEWK3L/evVarFriend_{cname}.root --remote '$R'" 
+#python susy-interface/friendmaker.py 3l 3lA $T $S --bk --log $F --modules bTagEventWeightFullSim2L --flags "-F sf/t {RP}/leptonJetReCleanerSusyEWK2L/evVarFriend_{cname}.root --remote '$R'" 
+#python susy-interface/friendmaker.py 3l 3lA $T $S --bk --log $F --modules bTagEventWeightFastSim2L --flags "-F sf/t {RP}/leptonJetReCleanerSusyEWK2L/evVarFriend_{cname}.root --remote '$R'" 
 
+
+#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules PUWProducer2L --flags "-F sf/t {RP}/leptonJetReCleanerSusyEWK2L/evVarFriend_{cname}.root" --exclude "-99" --accept TChiSlepSnux0p -q all.q
+#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules PUWProducer3L --flags "-F sf/t {RP}/leptonJetReCleanerSusyEWK3L/evVarFriend_{cname}.root -F sf/t {RP}/leptonBuilderEWK/evVarFriend_{cname}.root" --exclude "-99" --accept TChi
+#python susy-interface/friendmaker.py 3l 3lA $T $T --bk --log $F --modules PUWProducer4L --flags "-F sf/t {RP}/leptonJetReCleanerSusyEWK3L/evVarFriend_{cname}.root -F sf/t {RP}/leptonBuilderEWK/evVarFriend_{cname}.root" --exclude "-99" --accept TChiZZ --accept TChiH
 
 
 #T="/mnt/t3nfs01/data01/shome/cheidegg/o/2016-10-04_leptonMVAtraining/trees_80X/"

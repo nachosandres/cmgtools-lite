@@ -5,7 +5,7 @@ from lib import functions as func
 
 def collectFriends(modulelist):
 	if len(modulelist)==0: return ""
-	return " ".join(["-F sf/t {P}/"+m+"/evVarFriend_{cname}.root" for m in modulelist])
+	return " ".join(["-F sf/t {RP}/"+m+"/evVarFriend_{cname}.root" for m in modulelist])
 
 def getFriendConn(mm, module):
 	friendConn = mm.getVariable("friendConn", {})
@@ -70,13 +70,13 @@ for module in mm.getFriendModules():
 		if options.exclude != [] and any([d.find(e) >  -1 for e in options.exclude]): continue
 
 		## check if required friend trees exist
-		passed = True
-		for req in requires:
-			if req and not os.path.exists(mm.treedir +"/"+ req +"/evVarFriend_"+d+".root"): 
-				mm.talk("WARNING: required friend tree module '"+req+"' for module '"+module+"' does not exist for sample '"+d+"'")
-				print "Skipping..."
-				passed = False
-		if not passed: continue
+		##passed = True
+		##for req in requires:
+		##	if req and not os.path.exists(mm.treedir +"/"+ req +"/evVarFriend_"+d+".root"): 
+		##		mm.talk("WARNING: required friend tree module '"+req+"' for module '"+module+"' does not exist for sample '"+d+"'")
+		##		print "Skipping..."
+		##		passed = False
+		##if not passed: continue
 
 		## skip if exists (and not force recreation)
 		if not options.force and os.path.exists(output +"/evVarFriend_"+d+".root"): continue

@@ -3,6 +3,11 @@ import os, sys
 
 # usage: python skimFTrees.py BIGTREE_DIR FTREE_DIR outdir DATASET_NAME ...
 
+def goodPath(thePath):
+	if "/pnfs/psi.ch" in thePath:
+		return "dcap://t3se01.psi.ch:22125/"+thePath
+	return thePath 
+
 dsets = sys.argv[4:]
 if len(sys.argv)<5:
     dsets = [d.replace('evVarFriend_','').replace('.root','') for d in os.listdir(sys.argv[2]) if 'evVarFriend' in d]
@@ -14,7 +19,7 @@ for dset in dsets:
     print dset
     fsel = ROOT.TFile.Open(sys.argv[1]+'/'+dset+'/selection_eventlist.root')
     elist = fsel.elist
-    f_f = ROOT.TFile.Open(sys.argv[2]+'/evVarFriend_'+dset+'.root')
+    f_f = ROOT.TFile.Open(goodPath(sys.argv[2]+'/evVarFriend_'+dset+'.root'))
     t_f = f_f.Get("sf/t")
     t_f.SetEventList(elist)
     os.system('mkdir -p %s/%s'%(sys.argv[3],fname))

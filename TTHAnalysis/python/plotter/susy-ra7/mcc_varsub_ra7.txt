@@ -42,3 +42,7 @@ LepGood1_(\w+) : LepGood_\1[iF_Mini[0]]; AlsoData
 LepGood2_(\w+) : LepGood_\1[iF_Mini[1]]; AlsoData
 LepGood3_(\w+) : LepGood_\1[iF_Mini[2]]; AlsoData
 LepGood4_(\w+) : LepGood_\1[iF_Mini[3]]; AlsoData
+Jet1_(\w+) : Jet_\1[iJSel_Mini[0]]; AlsoData
+Jet2_(\w+) : Jet_\1[iJSel_Mini[1]]; AlsoData
+Jet3_(\w+) : Jet_\1[iJSel_Mini[2]]; AlsoData
+Jet4_(\w+) : Jet_\1[iJSel_Mini[3]]; AlsoData

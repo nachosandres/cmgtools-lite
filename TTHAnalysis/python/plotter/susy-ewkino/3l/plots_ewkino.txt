@@ -114,6 +114,10 @@ lep4_mva         : LepSel4_mva         : 20,0,1     ; YTitle="Leptons", XTitle="
 ## event observables
 ## ----------------------------------------------------------
 
+nInt       : nTrueInt       : 50,0,50     ; XTitle="N(TrueInt)"                  , LegendCutoff=1e-4
+nVert      : nVert          : 50,0,50     ; XTitle="N(PV)"                       , LegendCutoff=1e-4
+puw        : puw_nInt_Moriond(nTrueInt,0,evt) : 60,-1,2   ; XTitle="puw"                       , LegendCutoff=1e-4
+
 met        : met_pt         : 10,50,300   ; XTitle="E_{T}^{miss}  [GeV]"         , LegendCutoff=1e-4, Logy, YMin=0.7, YMax=100000, Legend="TR"
 htJet30j   : htJet30j       : 20,0,200    ; XTitle="H_{T}(jet p_{T} > 30) [GeV]" , LegendCutoff=1e-4, Logy
 nJet30     : nJet30         : 10,-0.5,9.5 ; XTitle="N(jet\, p_{T} > 30)"         , LegendCutoff=1e-4, Logy

@@ -28,7 +28,8 @@ lep4_pt          : LepSel4_conePt      : 20,0,200   ; YTitle="Leptons", XTitle="
 ## basic event observables
 ## ----------------------------------------------------------
 
-met       : met_pt         : 10,50,300  ; XTitle="E_{T}^{miss}  [GeV]"         , LegendCutoff=1e-4, Logy, YMin=0.7, YMax=100000, Legend="TR"
+nVert     : nVert          : 50,0,50     ; XTitle="N(PV)"                       , LegendCutoff=1e-4
+met       : met_pt         : 10,50,300   ; XTitle="E_{T}^{miss}  [GeV]"         , LegendCutoff=1e-4, Logy, YMin=0.7, YMax=100000, Legend="TR"
 htJet30j  : htJet30j       : 20,0,200    ; XTitle="H_{T}(jet p_{T} > 30) [GeV]" , LegendCutoff=1e-4
 nJet30    : nJet30         : 10,-0.5,9.5 ; XTitle="N(jet\, p_{T} > 30)"         , LegendCutoff=1e-4
 nBJet25   : nBJetMedium25  : 5,-0.5,4.5  ; XTitle="N(b-jet\, p_{T} > 25\, CSVM)", LegendCutoff=1e-4

@@ -11,24 +11,26 @@ incl_sync  : + ; IncludeMca="susy-ewkino/4l/includes/mca_sync.txt"
 
 ## Data
 ## -----------------------------------------------------------
-incl_data      : + ; IncludeMca="susy-ewkino/4l/includes/mca_data_M17.txt"
-incl_dataAsBkg : + ; IncludeMca="susy-ewkino/4l/includes/mca_data_M17_asBkg.txt"
+incl_data      : + ; IncludeMca="susy-ewkino/4l/includes/mca_data_M17_reminiAOD.txt"
+#incl_data      : + ; IncludeMca="susy-ewkino/4l/includes/mca_data_M17.txt"
+#incl_dataAsBkg : + ; IncludeMca="susy-ewkino/4l/includes/mca_data_M17_asBkg.txt"
 #incl_data : + ; IncludeMca="susy-ewkino/4l/includes/mca_data_ICHEP.txt"
 
 ## WZ (to keep the order)
 ## -----------------------------------------------------------
-prompt_WZ : WZTo3LNu : 1.02*xsec ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/4l/fakerate_load_isprompt.txt", Label="WZ", NormSystematic=0.3
-bare_WZ   : WZTo3LNu : 1.02*xsec ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt", Label="WZ", NormSystematic=0.3
+prompt_WZ : WZTo3LNu : 1.12*xsec ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/4l/fakerate_standard_central.txt\,susy-ewkino/4l/fakerate_load_isprompt.txt", Label="WZ", NormSystematic=0.3
+bare_WZ   : WZTo3LNu : 1.12*xsec ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/4l/fakerate_standard_central.txt", Label="WZ", NormSystematic=0.3
 
 ## ZZ (first in conference mode)
 ## -----------------------------------------------------------
-conf_ZZH  : VHToNonbb                   : xsec ; FillColor=ROOT.kGreen+1 , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/4l/fakerate_load_isprompt.txt", Label="ZZ/H", NormSystematic=0.25
-conf_ZZH  : GGHZZ4L                     : xsec ; FillColor=ROOT.kGreen+1 , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/4l/fakerate_load_isprompt.txt", Label="ZZ/H", NormSystematic=0.25
-conf_ZZH  : ZZTo4L                      : xsec ; FillColor=ROOT.kGreen+1 , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/4l/fakerate_load_isprompt.txt", Label="ZZ/H", NormSystematic=0.25
+conf_ZZH  : VHToNonbb                   : xsec ; FillColor=ROOT.kGreen+1 , FakeRate="susy-ewkino/4l/fakerate_standard_central.txt\,susy-ewkino/4l/fakerate_load_isprompt.txt", Label="ZZ/H", NormSystematic=0.25
+conf_ZZH  : GGHZZ4L                     : xsec ; FillColor=ROOT.kGreen+1 , FakeRate="susy-ewkino/4l/fakerate_standard_central.txt\,susy-ewkino/4l/fakerate_load_isprompt.txt", Label="ZZ/H", NormSystematic=0.25
+conf_ZZH  : ZZTo4L                      : xsec ; FillColor=ROOT.kGreen+1 , FakeRate="susy-ewkino/4l/fakerate_standard_central.txt\,susy-ewkino/4l/fakerate_load_isprompt.txt", Label="ZZ/H", NormSystematic=0.25
 
 ## Backgrounds
 ## -----------------------------------------------------------
-incl_fakes_appldata : + ; IncludeMca="susy-ewkino/4l/includes/mca_fakes_appldata_M17.txt"
+incl_fakes_appldata : + ; IncludeMca="susy-ewkino/4l/includes/mca_fakes_appldata_M17_reminiAOD.txt"
+#incl_fakes_appldata : + ; IncludeMca="susy-ewkino/4l/includes/mca_fakes_appldata_M17.txt"
 #incl_fakes_appldata : + ; IncludeMca="susy-ewkino/4l/includes/mca_fakes_appldata_ICHEP.txt"
 incl_promptsub      : + ; IncludeMca="susy-ewkino/4l/includes/mca_promptsub.txt"
 incl_fakes_bare     : + ; IncludeMca="susy-ewkino/4l/includes/mca_fakes_bare.txt"

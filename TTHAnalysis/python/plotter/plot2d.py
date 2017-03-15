@@ -6,7 +6,7 @@ ROOT.gStyle.SetOptTitle(0)
 
 parser = OptionParser(usage="%prog rootfile histogram")
 parser.add_option("-e"    , "--energy", dest="energy"  , type="float", default=13, help="Energy to plot");
-parser.add_option("-l"    , "--lumi", dest="lumi"  , type="float", default=36.5, help="Luminosity to plot");
+parser.add_option("-l"    , "--lumi", dest="lumi"  , type="float", default=35.9, help="Luminosity to plot");
 parser.add_option("-x"    , dest="xlabel", type="string", default=None        , help="Label of the x axis");
 parser.add_option("-y"    , dest="ylabel", type="string", default=None        , help="Label of the y axis");
 parser.add_option("-z"    , dest="zlabel", type="string", default="fake ratio", help="Label of the z axis");
