@@ -20,7 +20,10 @@ PtRatio3: LepSel3_ptratio: 30,0,1.5; XTitle="Lep3 Jet p_{T} Ratiov2 ", Legend='T
 mll   : mass_2(LepSel1_pt,LepSel1_eta,LepSel1_phi,LepSel1_mass, LepSel2_pt,LepSel2_eta,LepSel2_phi,LepSel2_mass): 50,0,200; XTitle="m(ll) [GeV]"
 m3e:  mass_3_cheap(LepSel1_pt,LepSel1_eta,LepSel2_pt,LepSel2_eta,deltaPhi(LepSel1_phi,LepSel2_phi),LepSel3_pt,LepSel3_eta,deltaPhi(LepSel1_phi,LepSel3_phi)): 20, 60, 120; XTitle="m(eee) [GeV]"
 m3mu: mass_3_cheap(LepSel1_pt,LepSel1_eta,LepSel2_pt,LepSel2_eta,deltaPhi(LepSel1_phi,LepSel2_phi),LepSel3_pt,LepSel3_eta,deltaPhi(LepSel1_phi,LepSel3_phi)): 20, 60, 120; XTitle="m(#mu #mu #mu) [GeV]"
-m3l : m3L : 21, 80, 500; XTitle="m(3L) [GeV]", LegendCutoff=1e-5
+m3l    : m3L    : 21, 80, 500; XTitle="M_{3L} [GeV]", LegendCutoff=1e-5
+m3lmet : m3Lmet : 27, 75, 750; XTitle="M_{WZ} [GeV]", LegendCutoff=1e-5
+m3l_l    : m3L    : 25, 0, 2500; XTitle="M_{3L} [GeV]", LegendCutoff=1e-5, Logy, YMin=0.01, YMax=5000.
+m3lmet_l : m3Lmet : 50, 0, 2500; XTitle="M_{WZ} [GeV]", LegendCutoff=1e-5, Logy, YMin=0.01, YMax=5000.
 
 nLepTight    : nLepTight : 8,-0.5,7.5; XTitle="Number of tight leptons", LegendCutoff=1e-5
 nLepLoose    : nLepLoose : 7,-0.5,6.5; XTitle="Number of loose leptons", LegendCutoff=1e-5

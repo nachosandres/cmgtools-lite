@@ -6,10 +6,14 @@ incl_data : + ; IncludeMca="WZSM/includes/mca_data.txt"
 
 ## MC WZ and backgrounds
 ## -----------------------------------------------------------
-incl_prompts            : + ; IncludeMca="WZSM/includes/mca_prompts.txt"
+prompt_WZ               : WZTo3LNu                        : xsec : ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1))            ; FillColor=ROOT.kOrange  , Label="WZ", NormSystematic=0.1
 
 incl_fakes_appldata     : + ; IncludeMca="WZSM/includes/mca_fakesappl.txt"
 incl_promptsub          : + ; IncludeMca="WZSM/includes/mca_promptsub.txt"
+
+incl_prompts            : + ; IncludeMca="WZSM/includes/mca_prompts.txt"
+
+
 
 
 ## Systematics

@@ -20,7 +20,7 @@ convs_sys_Up  : WGToLNuG : xsec : ((LepSel1_mcUCSX==0 || LepSel1_mcUCSX==4) && (
 convs_sys_Up  : TGJets   : xsec : ((LepSel1_mcUCSX==0 || LepSel1_mcUCSX==4) && (LepSel2_mcUCSX==0 || LepSel2_mcUCSX==4) && (LepSel3_mcUCSX==0 || LepSel3_mcUCSX==4)) ; FillColor=ROOT.kOrange+7, Label="X+\#gamma", NormSystematic=0.5 , SkipMe=True
 
 prompt_ZZH_sys_Up : GGHZZ4L   : xsec : (LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0) ; FillColor=ROOT.kGreen+1, Label="ZZ/H", NormSystematic=0.25 , SkipMe=True
-prompt_ZZH_sys_Up : ZZTo4L_part1+ZZTo4L_part2    : xsec : (LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0) ; FillColor=ROOT.kGreen+1, Label="ZZ/H", NormSystematic=0.25 , SkipMe=True
+prompt_ZZH_sys_Up : ZZTo4L    : xsec : (LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0) ; FillColor=ROOT.kGreen+1, Label="ZZ/H", NormSystematic=0.25 , SkipMe=True
 prompt_ZZH_sys_Up : VHToNonbb : xsec : (LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0) ; FillColor=ROOT.kGreen+1, Label="ZZ/H", NormSystematic=0.25 , SkipMe=True
 
 
@@ -47,6 +47,6 @@ convs_sys_Dn  : WGToLNuG : xsec : ((LepSel1_mcUCSX==0 || LepSel1_mcUCSX==4) && (
 convs_sys_Dn  : TGJets   : xsec : ((LepSel1_mcUCSX==0 || LepSel1_mcUCSX==4) && (LepSel2_mcUCSX==0 || LepSel2_mcUCSX==4) && (LepSel3_mcUCSX==0 || LepSel3_mcUCSX==4)) ; FillColor=ROOT.kOrange+7, Label="X+\#gamma", NormSystematic=0.5 , SkipMe=True
 
 prompt_ZZH_sys_Dn : GGHZZ4L   : xsec : (LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0) ; FillColor=ROOT.kGreen+1, Label="ZZ/H", NormSystematic=0.25 , SkipMe=True
-prompt_ZZH_sys_Dn : ZZTo4L_part1+ZZTo4L_part2    : xsec : (LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0) ; FillColor=ROOT.kGreen+1, Label="ZZ/H", NormSystematic=0.25 , SkipMe=True
+prompt_ZZH_sys_Dn : ZZTo4L    : xsec : (LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0) ; FillColor=ROOT.kGreen+1, Label="ZZ/H", NormSystematic=0.25 , SkipMe=True
 prompt_ZZH_sys_Dn : VHToNonbb : xsec : (LepSel1_mcUCSX==0 && LepSel2_mcUCSX==0 && LepSel3_mcUCSX==0) ; FillColor=ROOT.kGreen+1, Label="ZZ/H", NormSystematic=0.25 , SkipMe=True
 
