@@ -112,11 +112,11 @@ TH2F* h_elSF_trk   = (TH2F*) f_elSF_eff->Get("EGamma_SF2D");
 TFile* f_muSF_mvaVT = new TFile(DATA_SF+"/leptonSF/muonSF_mvaVT_EWKino_fullsim_M17_36p5fb.root", "read");
 TFile* f_muSF_mvaM  = new TFile(DATA_SF+"/leptonSF/muonSF_mvaM_EWKino_fullsim_M17_36p5fb.root" , "read");
 TFile* f_muSF_id    = new TFile(DATA_SF+"/leptonSF/muonSF_id_EWKino_fullsim_M17_36p5fb.root"   , "read");
-//TFile* f_muSF_eff   = new TFile(DATA_SF+"/leptonSF/muonSF_trk_EWKino_fullsim_ICHEP2016_12p9fb.root"  , "read"); 
+TFile* f_muSF_eff   = new TFile(DATA_SF+"/leptonSF/muonSF_trk_EWKino_fullsim_M17_36p5fb.root"  , "read"); 
 TH2F* h_muSF_mvaVT = (TH2F*) f_muSF_mvaVT->Get("SF" );
 TH2F* h_muSF_mvaM  = (TH2F*) f_muSF_mvaM ->Get("SF" );
 TH2F* h_muSF_id    = (TH2F*) f_muSF_id   ->Get("SF" );
-//TGraphAsymmErrors* h_muSF_trk = (TGraphAsymmErrors*) f_muSF_eff->Get("ratio_eta");
+TGraphAsymmErrors* h_muSF_trk = (TGraphAsymmErrors*) f_muSF_eff->Get("ratio_eff_eta3_dr030e030_corr");
 
 float getElectronSF(float pt, float eta, int wp = 0){
     TH2F* hist = (wp == 1)?h_elSF_mvaVT:h_elSF_mvaM;
@@ -128,28 +128,29 @@ float getElectronUnc(float pt, float eta, int wp = 0, int var = 0){
     float error1 = getUnc(hist      , pt , abs(eta));
     float error2 = getUnc(h_elSF_id , pt , abs(eta));
     float error3 = getUnc(h_elSF_trk, eta, pt);
-    return var*TMath::Sqrt(error1*error1 + error2*error2 + error3*error3);
+    return TMath::Sqrt(error1*error1 + error2*error2 + error3*error3);
 }
 
 float getMuonSF(float pt, float eta, int wp = 0){
     TH2F* hist = (wp == 1)?h_muSF_mvaVT:h_muSF_mvaM;
-    return getSF(hist, pt, abs(eta))*getSF(h_muSF_id, pt, abs(eta)); 
-    //return h_muSF_trk->Eval(eta)*getSF(hist, pt, abs(eta))*getSF(h_muSF_id, pt, abs(eta)); 
+    return h_muSF_trk->Eval(eta)*getSF(hist, pt, abs(eta))*getSF(h_muSF_id, pt, abs(eta)); 
 }
 
 float getMuonUnc(float pt, int var = 0) {
-    //if (pt<20)  //FIXME: check uncertainty on tracking efficiency once it is available
-         //return var*TMath::Sqrt(0.03*0.03+0.01*0.01+0.01*0.01);
-    //return var*TMath::Sqrt(0.02*0.02+0.01*0.01); 
-    return var*0.03; 
+    if (pt<20)  //FIXME: check uncertainty on tracking efficiency once it is available
+         return TMath::Sqrt(0.03*0.03+0.01*0.01+0.01*0.01);
+    return TMath::Sqrt(0.02*0.02+0.01*0.01);  
 }
 
 float getLepSF(float pt, float eta, int pdgId, int isTight, int wp = 0, int var = 0){
     if(!isTight) return 1.0;
-    if(abs(pdgId) == 13) return (var==0)?getMuonSF    (pt, eta, wp):(1+getMuonUnc    (pt, var));
-    if(abs(pdgId) == 11) return (var==0)?getElectronSF(pt, eta, wp):(1+getElectronUnc(pt, eta, wp, var));
-    if(abs(pdgId) == 15) return (var==0)?0.9:1.0; // we put flat uncertainty in the systs file
-    return 1.0;
+    float sf  = 1.0; 
+    float err = 0.0;
+    if(abs(pdgId) == 11) { sf = getElectronSF(pt, eta, wp); err = getElectronUnc(pt, eta, wp, var); }
+    if(abs(pdgId) == 13) { sf = getMuonSF    (pt, eta, wp); err = sf*getMuonUnc (pt, var);          } // only relative error
+    if(abs(pdgId) == 15) { sf = 0.95                      ; err = 0.05;                             }
+    return (var==0)?sf:(sf+var*err)/sf;
+
 }
 
 float leptonSF(float lepSF1, float lepSF2, float lepSF3 = 1, float lepSF4 = 1){
