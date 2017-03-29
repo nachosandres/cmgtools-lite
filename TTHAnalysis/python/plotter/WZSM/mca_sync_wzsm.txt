@@ -7,4 +7,6 @@ prompt_WZ               : WZTo3LNu                        : xsec : (LepSel_mcUCS
 data    :   MuonEG_Run2016B_PromptReco_v2_runs_273150_275125;   Label="Data"
 data    :   MuonEG_Run2016B_PromptReco_v2_runs_275126_275783;   Label="Data"
 
+TTJetsDiLep  :   TTJetsDiLeptonNacho : xsec ;   Label="TTDiLep", FillColor=ROOT.kRed
+
 dummy   :   WZTo3LNu    : 0 : 0 ; FillColor=ROOT.kWhite
