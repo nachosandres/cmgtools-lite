@@ -11,6 +11,10 @@ mhtJet30\b: mhtJet30_Recl; AlsoData
 nJet40\b: nJet40_Recl; AlsoData
 htJet40j\b: htJet40j_Recl; AlsoData
 mhtJet40\b: mhtJet40_Recl; AlsoData
+nLepLoose\b : nLepLoose_Recl; AlsoData
+nLepCleaning\b : nLepCleaning_Recl; AlsoData
+nLepFO\b : nLepFO_Recl; AlsoData
+nLepTight\b : nLepTight_Recl; AlsoData
 nBJetLoose25\b: nBJetLoose25_Recl; AlsoData
 nBJetMedium25\b: nBJetMedium25_Recl; AlsoData
 nBJetTight25\b: nBJetTight25_Recl; AlsoData

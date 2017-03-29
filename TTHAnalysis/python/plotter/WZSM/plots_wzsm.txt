@@ -22,7 +22,7 @@ m3e:  mass_3_cheap(LepSel1_pt,LepSel1_eta,LepSel2_pt,LepSel2_eta,deltaPhi(LepSel
 m3mu: mass_3_cheap(LepSel1_pt,LepSel1_eta,LepSel2_pt,LepSel2_eta,deltaPhi(LepSel1_phi,LepSel2_phi),LepSel3_pt,LepSel3_eta,deltaPhi(LepSel1_phi,LepSel3_phi)): 20, 60, 120; XTitle="m(#mu #mu #mu) [GeV]"
 m3l    : m3L    : 21, 80, 500; XTitle="M_{3L} [GeV]", LegendCutoff=1e-5
 m3lmet : m3Lmet : 27, 75, 750; XTitle="M_{WZ} [GeV]", LegendCutoff=1e-5
-m3l_l    : m3L    : 25, 0, 2500; XTitle="M_{3L} [GeV]", LegendCutoff=1e-5, Logy, YMin=0.01, YMax=5000.
+m3l_l    : m3L    : 50, 0, 2500; XTitle="M_{3L} [GeV]", LegendCutoff=1e-5, Logy, YMin=0.01, YMax=5000.
 m3lmet_l : m3Lmet : 50, 0, 2500; XTitle="M_{WZ} [GeV]", LegendCutoff=1e-5, Logy, YMin=0.01, YMax=5000.
 
 nLepTight    : nLepTight : 8,-0.5,7.5; XTitle="Number of tight leptons", LegendCutoff=1e-5
@@ -69,12 +69,15 @@ dz2:  abs(LepSel2_dz) : 30, 0.0, 0.12; XTitle="Lep2 dz", LegendCutoff=1e-5 , Log
 dz3:  abs(LepSel3_dz) : 30, 0.0, 0.12; XTitle="Lep3 dz", LegendCutoff=1e-5 , Logy
 
 relIso1:  LepSel1_relIso : 30, 0.0, 1.5; XTitle="Lep1 relIso", LegendCutoff=1e-5 , Logy
-relIso2:  LepSel1_relIso : 30, 0.0, 1.5; XTitle="Lep2 relIso", LegendCutoff=1e-5 , Logy
-relIso3:  LepSel1_relIso : 30, 0.0, 1.5; XTitle="Lep3 relIso", LegendCutoff=1e-5 , Logy
+relIso2:  LepSel2_relIso : 30, 0.0, 1.5; XTitle="Lep2 relIso", LegendCutoff=1e-5 , Logy
+relIso3:  LepSel3_relIso : 30, 0.0, 1.5; XTitle="Lep3 relIso", LegendCutoff=1e-5 , Logy
 
 miniRelIso1:  LepSel1_miniRelIso : 40, 0.0, 0.4; XTitle="Lep1 miniRelIso", LegendCutoff=1e-5  , Logy
 miniRelIso2:  LepSel2_miniRelIso : 40, 0.0, 0.4; XTitle="Lep2 miniRelIso", LegendCutoff=1e-5  , Logy
 miniRelIso3:  LepSel3_miniRelIso : 40, 0.0, 0.4; XTitle="Lep3 miniRelIso", LegendCutoff=1e-5 , Logy
+
+philepWmet       : if3(abs(met_phi-LepW_phi)>3.14159265,2*3.14159265-abs(met_phi-LepW_phi),abs(met_phi-LepW_phi))     : 16, 0.0, 3.2; XTitle="|#Delta#phi(lepW\,MET)| [rad]", LegendCutoff=1e-5, Legend='TL'
+cosphilepWmet    : cos(met_phi-LepW_phi)    : 20, -1.0, 1.0; XTitle="cos(#Delta#phi(lepW\,MET))", LegendCutoff=1e-5
 
 #### JET-RELATED VARIABLES 
 nJet40 	   : nJet40               : 5,-0.5,4.5  ; XTitle='N(jet\, p_{T} > 40)', LegendCutoff=1e-5, XNDiv=005, Legend='TR', xBinLabels="0\,1\,2\,3\,#geq4"
