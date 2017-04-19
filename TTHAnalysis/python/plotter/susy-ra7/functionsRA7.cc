@@ -493,10 +493,9 @@ float puw_nInt_Moriond(float nInt, int var=0, int evt = 0) {
 }
 
 //Old material for WZ exercise
-TFile* puw36p4fb   = new TFile("/nfs/fanae/user/nachos/ForECO/puw_nTrueInt_Moriond2017_36p4fb.root", "read");
-TH1F* _puw2016_nInt_36p4fb    = (TH1F*) puw36p4fb  ->Get("puw");
 float OLDpuw_nInt_Moriond(float nInt, int var = 0) { 
-    TH1F* hist = _puw2016_nInt_36p4fb;
+    TFile* puw36p4fb   = new TFile("/nfs/fanae/user/nachos/ForECO/puw_nTrueInt_Moriond2017_36p4fb.root", "read");
+    TH1F* hist    = (TH1F*) puw36p4fb  ->Get("puw");
     return hist -> GetBinContent(hist -> FindBin(nInt));
 }
 
