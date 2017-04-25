@@ -30,7 +30,10 @@ bTagEventWeightFullSim2L = lambda : bTagWeightAnalyzer(btagsf_payload_fullsim, b
 bTagEventWeightFastSim2L = lambda : bTagWeightAnalyzer(btagsf_payload_fastsim, btag_efficiency_fastsim, recllabel='Recl', isFastSim=True)
 MODULES.append( ('bTagEventWeightFullSim2L', bTagEventWeightFullSim2L ))
 MODULES.append( ('bTagEventWeightFastSim2L', bTagEventWeightFastSim2L ))
-
+bTagEventWeightFullSimWZ = lambda : bTagWeightAnalyzer(btagsf_payload_fullsim, btag_efficiency_fullsim, recllabel='Recl')
+bTagEventWeightFastSimWZ = lambda : bTagWeightAnalyzer(btagsf_payload_fastsim, btag_efficiency_fastsim, recllabel='Recl', isFastSim=True)
+MODULES.append( ('bTagEventWeightFullSimWZ', bTagEventWeightFullSimWZ ))
+MODULES.append( ('bTagEventWeightFastSimWZ', bTagEventWeightFastSimWZ ))
 
 ## PU uncertainty instances
 from CMGTools.TTHAnalysis.tools.fastSimPUW import FastSimPUWProducer
@@ -200,8 +203,8 @@ MODULES.append( ('leptonJetReCleanerWZSM', lambda : LeptonJetReCleaner("Recl",
                    cleanTau = lambda lep,tau,dr: dr<0.4,
                    looseTau = lambda tau: _susyEWK_tauId_CBloose(tau), # used in cleaning
                    tightTau = lambda tau: _susyEWK_tauId_CBtight(tau), # on top of loose
-                   cleanJetsWithTaus = None,
-                   cleanTausWithLoose = None,
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
                    doVetoZ = False,
                    doVetoLMf = False,
                    doVetoLMt = True,

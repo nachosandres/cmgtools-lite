@@ -89,13 +89,13 @@ class bTagWeightAnalyzer():
         
             flavor = getattr(jet, self.branchflavor) if hasattr(jet, self.branchflavor) else jet.mcFlavour
 
-            if(abs(jet.eta) > 2.5): continue
-            if(abs(jet.pt)  < 20 ): continue
+            if(abs(jet.eta) > 2.4): continue
+            if(abs(jet.pt)  < 25 ): continue
 
             eff = self.getEff(jet.pt, jet.eta, flavor)
             SF  = self.getSF (jet.pt, jet.eta, flavor)
 
-            istag = getattr(jet, self.branchbtag) > self.cutVal and abs(jet.eta) < 2.5 and jet.pt > 20
+            istag = getattr(jet, self.branchbtag) > self.cutVal and abs(jet.eta) < 2.4 and jet.pt > 25
 
             if(istag):
                  mcTag   *= eff
@@ -149,14 +149,11 @@ class bTagWeightAnalyzer():
     def getSF(self, pt, eta, mcFlavor):
         	
        flavor     = self.pogFlavor(mcFlavor) 
-       pt_cutoff  = max(30. , min(669., pt))
-       eta_cutoff = min(2.39, abs(eta))
-
-       theReader   = [self.reader_b, self.reader_c, self.reader_l][flavor]
+       theReader  = [self.reader_b, self.reader_c, self.reader_l][flavor]
     
-       SF     = theReader.eval_auto_bounds("central", flavor, eta_cutoff, pt_cutoff)  
-       SFup   = theReader.eval_auto_bounds("up"  , flavor, eta_cutoff, pt_cutoff)  
-       SFdn   = theReader.eval_auto_bounds("down", flavor, eta_cutoff, pt_cutoff)  
+       SF     = theReader.eval_auto_bounds("central", flavor, eta, pt)  
+       SFup   = theReader.eval_auto_bounds("up"     , flavor, eta, pt)  
+       SFdn   = theReader.eval_auto_bounds("down"   , flavor, eta, pt)  
 
        return [SF, SFup, SFdn]
 
