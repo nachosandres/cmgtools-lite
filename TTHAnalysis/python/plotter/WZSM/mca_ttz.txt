@@ -53,11 +53,11 @@ prompt_WZ               : WZTo3LNu                        : xsec : ((LepSel_mcUC
 prompt_ttZ     : TTZToLLNuNu                 : xsec : ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1)) ; FillColor=ROOT.kSpring+7, Label="ttZ", NormSystematic=0.25
 prompt_ttZ     : TTLLJets_m1to10             : 0.0493 : ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1)) ; FillColor=ROOT.kSpring+7, Label="ttZ", NormSystematic=0.25
 
+prompt_tZq     : tZq_ll                      : xsec : ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1)) ; FillColor=ROOT.kCyan+1, Label="tZq", NormSystematic=0.5
 
 prompt_ttX    : TTWToLNu_ext1+TTWToLNu_ext2_part1+TTWToLNu_ext2_part2                    : xsec : ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1)) ; FillColor=ROOT.kGreen+2, Label="t(t)X", NormSystematic=0.25
 prompt_ttX     : TTHnobb_pow                 : xsec : ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1)) ; FillColor=ROOT.kGreen+2, Label="t(t)X", NormSystematic=0.25
 prompt_ttX     : tZW_ll                      : xsec : ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1)) ; FillColor=ROOT.kGreen+2, Label="t(t)X", NormSystematic=0.25
-prompt_ttX     : tZq_ll                      : xsec : ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1)) ; FillColor=ROOT.kGreen+2, Label="t(t)X", NormSystematic=0.5
 prompt_ttX  : TTGJets  : xsec : ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1 || LepSel_mcUCSX[0]==4) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1 || LepSel_mcUCSX[1]==4) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1 || LepSel_mcUCSX[2]==4)) ; FillColor=ROOT.kGreen+2, Label="t(t)X", NormSystematic=0.25
 prompt_ttX  : TGJets   : xsec : ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1 || LepSel_mcUCSX[0]==4) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1 || LepSel_mcUCSX[1]==4) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1 || LepSel_mcUCSX[2]==4)) ; FillColor=ROOT.kGreen+2, Label="t(t)X", NormSystematic=0.25
 
