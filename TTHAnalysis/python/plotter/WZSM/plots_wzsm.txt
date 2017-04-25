@@ -89,6 +89,9 @@ nJet30_log 	   : nJet30               : 11,-0.5,10.5  ; XTitle='N_{jet}', Legend
 nBJet25    : nBJetMedium25        : 6,-0.5,5.5   ; XTitle='N(b-jet\, p_{T} > 25\, CSVM)', LegendCutoff=1e-5, XNDiv=006
 nBJet25_log    : nBJetMedium25        : 6,-0.5,5.5   ; XTitle='N(b-jet\, p_{T} > 25\, CSVM)', LegendCutoff=1e-5, Logy, XNDiv=006
 
+nBJet30    : nBJetMedium30        : 6,-0.5,5.5   ; XTitle='N(b-jet\, p_{T} > 30\, CSVM)', LegendCutoff=1e-5, XNDiv=006
+nBJet30_log    : nBJetMedium30        : 6,-0.5,5.5   ; XTitle='N(b-jet\, p_{T} > 30\, CSVM)', LegendCutoff=1e-5, Logy, XNDiv=006
+
 htJet40j:   htJet40j: 40,0,400    ; XTitle="H_{T}(jet p_{T} > 40)  [GeV]"
 htJet40j_log:   htJet40j: 40,0,400    ; XTitle="H_{T}(jet p_{T} > 40)  [GeV]", Logy
 
@@ -110,7 +113,7 @@ MET        : met_pt               : 23,20,250    ; XTitle="E_{T}^{miss} [GeV]", 
 MET_log    : met_pt               : 20,0,200    ; XTitle="E_{T}^{miss} [GeV]", LegendCutoff=1e-5, Logy
 MET_JetRatio:      met_pt/Jet1_pt : 20,0,10; XTitle="E_{T}^{miss} / jet p_{T}  [GeV]"
 MET_JetRatio_log:  met_pt/Jet1_pt : 20,0,10; XTitle="E_{T}^{miss} / jet p_{T}  [GeV]", Logy
-
+METlow        : met_pt            : 20,0,100    ; XTitle="E_{T}^{miss} [GeV]", LegendCutoff=1e-5
 
 
 ##### WZ control region
