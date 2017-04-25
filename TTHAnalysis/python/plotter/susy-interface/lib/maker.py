@@ -32,6 +32,8 @@ def addMakerOptions(parser):
 	parser.add_option("--sigs"   , dest="sigs"    , type="string" , action="append", default=[], help="Overwrite the sigs from the region")
 	parser.add_option("--sys"    , dest="sysfile" , type="string" , default=None, help="Overwrite the syst file from the config");
 	parser.add_option("--tree"   , dest="treename", type="string", default=None, help="Overwrite the treename from the config")
+	parser.add_option("--sfriends" , dest="sfriends" , action="append", default=[], help="Overwriting (!) the sfriends variable from the config");
+	parser.add_option("--srfriends" , dest="srfriends" , action="append", default=[], help="Overwriting (!) the srfriends variable from the config");
 	parser.add_option("--sfsfriends" , dest="sfsfriends" , action="append", default=[], help="Overwriting (!) the sfsfriends variable from the config");
 	parser.add_option("--srfsfriends", dest="srfsfriends", action="append", default=[], help="Overwriting (!) the srfsfriends variable from the config");
 	return parser
@@ -181,8 +183,8 @@ class Maker():
 		return getCut(getattr(self.config, "firstCut", "alwaystrue"), self.getVariable("expr"), self.getVariable("bins"))
 	def getFriends(self,isFastSim=False):
 		friends = []
-		friends += ["-F sf/t {P}/"+f+"/evVarFriend_{cname}.root"     for f in getattr(self.config,"sfriends"   ,[])]
-		friends += ["-F sf/t {RP}/"+f+"/evVarFriend_{cname}.root"    for f in getattr(self.config,"srfriends"  ,[])]
+		friends += ["-F sf/t {P}/"+f+"/evVarFriend_{cname}.root"     for f in getattr(self.options, "sfriends", [])] if len(self.options.sfriends)>0 else ["-F sf/t {P}/"+f+"/evVarFriend_{cname}.root"     for f in getattr(self.config,"sfriends"   ,[])]
+		friends += ["-F sf/t {RP}/"+f+"/evVarFriend_{cname}.root"    for f in getattr(self.options, "srfriends", [])] if len(self.options.srfriends)>0 else ["-F sf/t {RP}/"+f+"/evVarFriend_{cname}.root"     for f in getattr(self.config,"srfriends"  ,[])]
 		friends += getattr(self.config, "friends" , [])
 		friends += ["--FD sf/t {P}/"+f+"/evVarFriend_{cname}.root"   for f in getattr(self.config,"sdfriends"  ,[])]
 		friends += ["--FD sf/t {RP}/"+f+"/evVarFriend_{cname}.root"  for f in getattr(self.config,"srdfriends" ,[])]

@@ -532,7 +532,7 @@ def doRatioHists(pspec,pmap,total,totalSyst,maxRange,fixRange=False,fitRatio=Non
     line.SetLineColor(58);
     line.Draw("L")
     for ratio in ratios:
-        ratio.Draw("E SAME" if ratio.ClassName() != "TGraphAsymmErrors" else "PZ SAME");
+        ratio.Draw("E SAME" if ratio.ClassName() != "TGraphAsymmErrors" else "P0Z SAME");
     leg0 = ROOT.TLegend(0.12 if doWide else 0.2, 0.8, 0.25 if doWide else 0.45, 0.9)
     leg0.SetFillColor(0)
     leg0.SetShadowColor(0)
@@ -694,13 +694,27 @@ class PlotMaker:
                 if len(options.addHistos)>0:
                     for theFile in options.addHistos:
                         if not os.path.exists(theFile[0]): continue
+                        print theFile[0]
                         tf = ROOT.TFile.Open(theFile[0], "read")
                         for proc in pmap.keys():
+                            #theDir = ""
                             theDir = theFile[1]+"/" if len(theFile)>0 and theFile[1] else ""
-                            toAdd  = tf.Get(theDir+pspec.name+"_"+proc)
-                            print theDir+pspec.name+"_"+proc
+                            toAdd  = tf.Get(theDir+proc)
+                            print theDir+proc
                             print toAdd
-                            if toAdd: pmap[proc].Add(toAdd)
+                            if proc=="data":
+                                pmap[proc].Reset()
+                                for point in range(toAdd.GetN()):
+                                    pmap[proc].SetBinContent(pmap[proc].GetXaxis().FindBin(toAdd.GetX()[point]), toAdd.GetY()[point])
+                                    pmap[proc].SetBinError  (pmap[proc].GetXaxis().FindBin(toAdd.GetX()[point]), max(toAdd.GetErrorYlow(point), toAdd.GetErrorYhigh(point)))
+                                #for point in range(pmap[proc].GetN()):
+                                #    pmap[proc].RemovePoint(point)
+                                #for point in range(toAdd.GetN()):
+                                #    pmap[proc].SetPoint     (point, toAdd.GetX()[point], toAdd.GetY()[point])
+                                #    pmap[proc].SetPointError(point, toAdd.GetErrorXlow(point), toAdd.GetErrorXhigh(point), toAdd.GetErrorYlow(point), toAdd.GetErrorYhigh(point))
+                            elif toAdd: 
+                                pmap[proc].Reset()
+                                pmap[proc].Add(toAdd)
                             if not toAdd and proc=="fakes_appldata":
                                 toAdd = tf.Get(pspec.name+"_fakes_data")
                                 if toAdd: pmap["fakes_appldata"].Add(toAdd)
@@ -871,6 +885,8 @@ class PlotMaker:
 
                 stack.Draw("GOFF")
                 ytitle = "Events" if not self._options.printBinning else "Events / %s" %(self._options.printBinning)
+                if "GeV" in pspec.getOption('XTitle',outputName): 
+                    ytitle = "Events / %sGeV"%(str(round((total.GetXaxis().GetXmax()-total.GetXaxis().GetXmin())/total.GetNbinsX(),1)))
                 total.GetXaxis().SetTitleFont(42)
                 total.GetXaxis().SetTitleSize(0.05)
                 total.GetXaxis().SetTitleOffset(0.9)
@@ -947,7 +963,7 @@ class PlotMaker:
                 if plotmode == "closure":
                     if options.poisson and not is2D:
                         pdatalike = getDataPoissonErrors(pmap[options.numerator], False, True)
-                        pdatalike.Draw("PZ SAME")
+                        pdatalike.Draw("P0Z SAME")
                         pmap[options.numerator].poissonGraph = pdatalike ## attach it so it doesn't get deleted
                     else:
                         pmap[options.numerator].Draw("E SAME")
@@ -955,7 +971,7 @@ class PlotMaker:
                 if 'data' in pmap: 
                     if options.poisson and not is2D:
                         pdata = getDataPoissonErrors(pmap['data'], False, True)
-                        pdata.Draw("PZ SAME")
+                        pdata.Draw("P0Z SAME")
                         pmap['data'].poissonGraph = pdata ## attach it so it doesn't get deleted
                     else:
                         pmap['data'].Draw("E SAME")

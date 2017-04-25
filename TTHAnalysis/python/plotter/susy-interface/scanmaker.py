@@ -3,6 +3,13 @@ from optparse import OptionParser
 from lib import maker
 from lib import functions as func
 
+def deformat(line):
+	line = line.replace("+", "_")
+	line = line.replace("#", "_")
+	line = line.replace(":", "_")
+	line = line.replace("*", "_")
+	return line
+
 def getXS(xs, mass, factor):
 	themass = [p[0] for p in xs]
 	thexs   = [p[1] for p in xs]
@@ -81,7 +88,6 @@ baseSig = "python makeShapeCardsSusy.py [[[MCA]]] [[[CUTS]]] \\\"{EXPR}\\\" \\\"
 (options, args) = parser.parse_args()
 options         = maker.splitLists(options)
 options.models  = func.splitList(options.models)
-print options.sfsfriends, options.srfsfriends
 mm              = maker.Maker("scanmaker", baseBkg, args, options, parser.defaults)
 mm.loadModels()
 
@@ -114,23 +120,26 @@ if not options.sigOnly:
 		mccs     = mm.collectMCCs  ()
 		macros   = mm.collectMacros()	
 		flags    = mm.collectFlags (["flagsScans"], True, True, False, True)
-	
+
 		## looping over binnings
-		binnings = [mm.getVariable("bins","")] if not options.perBin else getAllBins(mm.getVariable("bins",""))
+		binnings = [mm.getVariable("bins","")] if not options.perBin else func.getAllBins(mm.getVariable("bins",""))
 		for ib,b in enumerate(binnings):
+			theSc  = scenario
+			theBin = mm.getVariable("bins","")
 			
 			## change scenario if looping over all bins
 			if options.perBin: 
-				min, max = getMinMax(b)
-				scenario += "_" + min.replace(".","p")
-		
+				min, max = func.getMinMax(b)
+				theSc    = scenario + "_" + min.replace(".","p")
+				theBin   = b		
+
 			## background first
-			output = mm.outdir +"/scan/"+ scenario +"/"+ sl +"fb"
+			output = mm.outdir +"/scan/"+ theSc +"/"+ sl +"fb"
 			bkgDir = output +"/bkg"
 			if not options.redoBkg and os.path.exists(bkgDir+"/common/SR.input.root"): continue
 			func.mkdir(bkgDir)
 		
-			mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("expr",""), mm.getVariable("bins",""), scenario.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), bkgDir, friends, flags, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins",""))],scenario.replace("/", "_")+"_bkg",False)
+			mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("expr",""), theBin, theSc.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), bkgDir, friends, flags, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), theBin)], theSc.replace("/", "_")+"_bkg",False)
 	mm.runJobs()
 	mm.clearJobs()
 		
@@ -157,16 +166,19 @@ if not options.bkgOnly:
 		flagsSys = mm.collectFlags (["flagsScans", "flagsSysts"], True, True, True, True)
 	
 		## looping over binnings
-		binnings = [mm.getVariable("bins","")] if not options.perBin else getAllBins(mm.getVariable("bins",""))
+		binnings = [mm.getVariable("bins","")] if not options.perBin else func.getAllBins(mm.getVariable("bins",""))
 		for ib,b in enumerate(binnings):
+			theSc = scenario
+			theBin = mm.getVariable("bins","")
 			
 			## change scenario if looping over all bins
 			if options.perBin: 
-				min, max = getMinMax(b)
-				scenario += "_" + min.replace(".","p")
+				min, max = func.getMinMax(b)
+				theSc    = scenario + "_" + min.replace(".","p")
+				theBin   = b		
 		
 			## background first
-			output = mm.outdir +"/scan/"+ scenario +"/"+ sl +"fb" 
+			output = mm.outdir +"/scan/"+ theSc +"/"+ sl +"fb" 
 	
 			## looping over models
 			mm.resetModel()
@@ -185,29 +197,29 @@ if not options.bkgOnly:
 				mps    = [l.rstrip("\n").split(":") for l in open(mm.model.masspoints, "r").readlines()]
 				mps    = [[m[0].strip(), m[1].strip(), m[2].strip()] for m in mps]
 				if options.mass1:
-					mps = [mp for mp in mps if int(mp[1])==options.mass1]
+					mps = [mp for mp in mps if int(mp[0])==options.mass1]
 				if options.mass2:
-					mps = [mp for mp in mps if int(mp[2])==options.mass2]
+					mps = [mp for mp in mps if int(mp[1])==options.mass2]
 
 				## looping over masspoints
 				for iiii,mp in enumerate(mps):
-					thebasesig = mm.makeCmd([mm.getVariable("expr",""), b, scenario.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flagsSig, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins","")), ""])
-					thebasesys = mm.makeCmd([mm.getVariable("expr",""), b, scenario.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flagsSys, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins","")), options.postfix])
-					thecmd, cardpath = prepareJob(mm, scenario.replace("/", "_")+"_mp_"+mp[2], mp, thebasesig, thebasesys, b, bkgDir, myDir, xslist, options)
-					mm.registerCmd(thecmd, scenario.replace("/", "_")+"_mp_"+mp[2],False,5)
+					thebasesig = mm.makeCmd([mm.getVariable("expr",""), b, theSc.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flagsSig, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), theBin), ""])
+					thebasesys = mm.makeCmd([mm.getVariable("expr",""), b, theSc.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flagsSys, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), theBin), options.postfix])
+					thecmd, cardpath = prepareJob(mm, theSc.replace("/", "_")+"_mp_"+deformat(mp[2]), mp, thebasesig, thebasesys, b, bkgDir, myDir, xslist, options)
+					mm.registerCmd(thecmd, theSc.replace("/", "_")+"_mp_"+deformat(mp[2]),False,5)
 					cards.append(cardpath)
-					break
+					#break
 	mm.runJobs()
 	mm.clearJobs()
 
 
 ## do the HTML systematics check page
-if options.doCheck and os.path.isdir(combinePath) and os.path.exists(combinePath+"/HiggsAnalysis/CombinedLimit/test/systematicsAnalyzer.py"):
-	for card in cards:
-		func.mkdir(card[0]+"/html")
-		mm.registerCmd("python "+combinePath+"/HiggsAnalysis/CombinedLimit/test/systematicsAnalyzer.py "+card[0]+"/"+card[1]+" --all -f html > "+card[0]+"/html/SR.card.html", "sysCheck", False, 9999999999, work = combinePath, src = combinePath)
-	mm.runJobs()
-	mm.clearJobs()
+#if options.doCheck and os.path.isdir(combinePath) and os.path.exists(combinePath+"/HiggsAnalysis/CombinedLimit/test/systematicsAnalyzer.py"):
+#	for card in cards:
+#		func.mkdir(card[0]+"/html")
+#		mm.registerCmd("python "+combinePath+"/HiggsAnalysis/CombinedLimit/test/systematicsAnalyzer.py "+card[0]+"/"+card[1]+" --all -f html > "+card[0]+"/html/SR.card.html", "sysCheck", False, 9999999999, work = combinePath, src = combinePath)
+#	mm.runJobs()
+#	mm.clearJobs()
 
 
 

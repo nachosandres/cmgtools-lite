@@ -1,5 +1,14 @@
 import os, copy, ROOT
 
+def deformatFile(rawFile):
+	if "#" in rawFile:
+		theList = []
+		for line in rawFile.split("#"):
+			sl = line.split("*")
+			theList.append((sl[1],float(sl[0])))
+		return theList
+	return [(rawFile,1.0)]
+
 ## DO NOT TOUCH: THIS IS GOING TO BE CHANGED BY THE BATCH SUBMISSION
 name     = "THENAME"
 sig      = "THESIGNAL"
@@ -8,7 +17,7 @@ mass2    = "THEMASS2"
 offset   = int("THEOFFSET")
 treedir  = "THETREEDIR"
 treename = "THETREENAME"
-file     = "THEFILE"
+filelist = deformatFile("THEFILE")
 xs       = THEXS
 #q2file   = "THEQ2FILE"
 #q2syntax = "THEQ2SYNTAX"
@@ -91,36 +100,39 @@ def openTree(theFile):
 	return f,t
 
 def openSkimReports():
-	global file, treedir, treename
+	global filelist, treedir, treename
 	tote=0; evts = []
-	for theFile in file.split("+"):
-		for base in treedir.split(";"):
-			if not os.path.exists(base+"/"+theFile+"/skimAnalyzerCount/SkimReport.txt"): continue
-			f = open(base+"/"+theFile+"/skimAnalyzerCount/SkimReport.txt","r")
-			for line in f.readlines():
-				sl = line.split()
-				if "All Events" in line:
-					evts.append(float(sl[2]))
-					tote+=evts[-1]
-					break
-			f.close()
-			break
+	for file in filelist:
+		for theFile in file[0].split("+"):
+			for base in treedir.split(";"):
+				if not os.path.exists(base+"/"+theFile+"/skimAnalyzerCount/SkimReport.txt"): continue
+				f = open(base+"/"+theFile+"/skimAnalyzerCount/SkimReport.txt","r")
+				for line in f.readlines():
+					sl = line.split()
+					if "All Events" in line:
+						evts.append(file[1]*float(sl[2]))
+						tote+=evts[-1]
+						break
+				f.close()
+				break
 	return [e/tote for e in evts]	
 
 def getWsum(cutvalue=20):
+	global filelist
 	print "retrieving wsums"
 	evts  = openSkimReports()
 	wsums = [0,0,0,0,0]
-	for iff,ff in enumerate(file.split("+")):
-		f,t = openTree(ff)
-		if not t: continue
-		wsums[0] += evts[iff]*t.GetEntries()
-		wsums[1] += evts[iff]*t.GetEntries("nVert>="+str(cutvalue))
-		wsums[2] += evts[iff]*t.GetEntries("nVert<" +str(cutvalue))
-		for evt in t:
-			wsums[3] += evts[iff]*evt.LHEweight_wgt[4]/evt.LHEweight_wgt[0]
-			wsums[4] += evts[iff]*evt.LHEweight_wgt[8]/evt.LHEweight_wgt[0]
-		f.Close()
+	for file in filelist:
+		for iff,ff in enumerate(file[0].split("+")):
+			f,t = openTree(ff)
+			if not t: continue
+			wsums[0] += file[1]*evts[iff]*t.GetEntries()
+			wsums[1] += file[1]*evts[iff]*t.GetEntries("nVert>="+str(cutvalue))
+			wsums[2] += file[1]*evts[iff]*t.GetEntries("nVert<" +str(cutvalue))
+			for evt in t:
+				wsums[3] += file[1]*evts[iff]*evt.LHEweight_wgt[4]/evt.LHEweight_wgt[0]
+				wsums[4] += file[1]*evts[iff]*evt.LHEweight_wgt[8]/evt.LHEweight_wgt[0]
+			f.Close()
 	return wsums
 	#return [total, upP, dnP, upW, dnW]
 
@@ -248,7 +260,7 @@ cmdbase = cmdbase.replace("[[[","{").replace("]]]","}")
 sysbase = sysbase.replace("{","[[").replace("}","]]")
 sysbase = sysbase.replace("[[[","{").replace("]]]","}")
 #cmdbase = "python {sc} {{MCA}} {FIRST} {{SYSTS}} --od {{OUTDIR}} ".format(sc=script, FIRST=first)
-mcabase = "sig_{{name}} : {file} : {xs} : {{ws}} ; Label=\"{{name}}\", isFastSim{{FRfiles}}".format(file=file, xs=xs)
+mcabase = "\n".join("sig_{{name}} : {file} : {xs} : {{ws}} ; Label=\"{{name}}\", isFastSim{{FRfiles}}".format(file=theFile[0], xs="%s*%f"%(xs,theFile[1])) for theFile in filelist)
 
 short = mass1 + "_" + mass2
 #puwdir = outdir + "/puw/" + short
@@ -319,17 +331,17 @@ cp(themca, mcadir + "/mca_full_"+name+".txt")
 f = open(mcadir + "/mca_full_"+name+".txt", "a")
 f.write(mcabase.format(name=sig+"+"              , ws=wstr, FRfiles=makeFakeRate(frfiles, frjec, 0)) + "\n")
 if len(frjec)==3:
-	f.write(mcabase.format(name=sig+"_"+thejec+"_Up+", ws=wstr, FRfiles=makeFakeRate(frfiles, frjec, 1)) + ",SkipMe=True\n")
-	f.write(mcabase.format(name=sig+"_"+thejec+"_Dn+", ws=wstr, FRfiles=makeFakeRate(frfiles, frjec, 2)) + ",SkipMe=True\n")
+	f.write(mcabase.format(name=sig+"_"+thejec+"_Up+", ws=wstr, FRfiles=makeFakeRate(frfiles, frjec, 1)).replace("\n", ",SkipMe=True\n") + ", SkipMe=True\n")
+	f.write(mcabase.format(name=sig+"_"+thejec+"_Dn+", ws=wstr, FRfiles=makeFakeRate(frfiles, frjec, 2)).replace("\n", ",SkipMe=True\n") + ", SkipMe=True\n")
 if len(frmet)==2:
-	f.write(mcabase.format(name=sig+"_"+themet+"_Up+", ws=wstr, FRfiles=makeFakeRate(frfiles, frmet, 0)) + ",SkipMe=True\n")
-	f.write(mcabase.format(name=sig+"_"+themet+"_Dn+", ws=wstr, FRfiles=makeFakeRate(frfiles, frmet, 0)) + ",SkipMe=True\n")
+	f.write(mcabase.format(name=sig+"_"+themet+"_Up+", ws=wstr, FRfiles=makeFakeRate(frfiles, frmet, 0)).replace("\n", ",SkipMe=True\n") + ", SkipMe=True\n")
+	f.write(mcabase.format(name=sig+"_"+themet+"_Dn+", ws=wstr, FRfiles=makeFakeRate(frfiles, frmet, 0)).replace("\n", ",SkipMe=True\n") + ", SkipMe=True\n")
 for k,vals in wVars.iteritems():
-	f.write(mcabase.format(name=sig+"_"+k+"_Up+", ws=makeWeight(wstr,vals[0]), FRfiles=makeFakeRate(frfiles)) + ",SkipMe=True\n")
-	f.write(mcabase.format(name=sig+"_"+k+"_Dn+", ws=makeWeight(wstr,vals[1]), FRfiles=makeFakeRate(frfiles)) + ",SkipMe=True\n")
+	f.write(mcabase.format(name=sig+"_"+k+"_Up+", ws=makeWeight(wstr,vals[0]), FRfiles=makeFakeRate(frfiles)).replace("\n", ",SkipMe=True\n") + ", SkipMe=True\n")
+	f.write(mcabase.format(name=sig+"_"+k+"_Dn+", ws=makeWeight(wstr,vals[1]), FRfiles=makeFakeRate(frfiles)).replace("\n", ",SkipMe=True\n") + ", SkipMe=True\n")
 if len(q2vars)>0:
-	f.write(mcabase.format(name=sig+"_"+q2acc+"_Up+", ws=wstr, FRfiles=makeFakeRate(frfiles)) + ",SkipMe=True\n")
-	f.write(mcabase.format(name=sig+"_"+q2acc+"_Dn+", ws=wstr, FRfiles=makeFakeRate(frfiles)) + ",SkipMe=True\n")
+	f.write(mcabase.format(name=sig+"_"+q2acc+"_Up+", ws=wstr, FRfiles=makeFakeRate(frfiles)).replace("\n", ",SkipMe=True\n") + ", SkipMe=True\n")
+	f.write(mcabase.format(name=sig+"_"+q2acc+"_Dn+", ws=wstr, FRfiles=makeFakeRate(frfiles)).replace("\n", ",SkipMe=True\n") + ", SkipMe=True\n")
 #if len(puwvars)>0:
 #	f.write(mcabase.format(name=sig+"_"+puw  +"_Up+", ws=wstr, FRfiles=makeFakeRate(frfiles)) + ",SkipMe=True\n")
 #	f.write(mcabase.format(name=sig+"_"+puw  +"_Dn+", ws=wstr, FRfiles=makeFakeRate(frfiles)) + ",SkipMe=True\n")

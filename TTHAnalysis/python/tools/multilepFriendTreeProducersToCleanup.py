@@ -118,6 +118,7 @@ MODULES.append( ('leptonJetReCleanerSusyEWK3L', lambda : LeptonJetReCleaner("Min
                    jetPt = 30,
                    bJetPt = 25,
                    coneptdef = lambda lep: conept_EWK(lep, 2),
+                   storeJetVariables = True
                  ) ))
 
 # All jets, needed for tau fakes study
