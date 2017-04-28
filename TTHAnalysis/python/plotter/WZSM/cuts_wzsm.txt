@@ -24,7 +24,7 @@ MVAVT: LepSel1_isTight && LepSel2_isTight && LepSel3_isTight
 pt252020: LepSel1_pt>25 && LepSel2_pt>20 && LepSel3_pt>20; Disable=True
 ptWZ: LepZ1_conePt>25 && LepZ2_conePt>10 && LepW_conePt>25
 lowMll: minMllAFAS > 4
-DYCR: met_pt < 20; Disable=True
+DYCR: met_pt < 30; Disable=True
 TTCR: nBJetMedium30 > 0 && if3(nOSSF>0, abs(91.1876-mll_3l)>5, 1); Disable=True
 onZ: nOSSF>0 && abs(91.1876-mll_3l)<15
 met30: met_pt > 30
