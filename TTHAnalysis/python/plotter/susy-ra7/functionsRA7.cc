@@ -347,48 +347,51 @@ float OLDleptonSF_ra7(int pdgid, float pt, float eta, int var=0){
 // LEPTON SCALE FACTORS FASTSIM
 // -------------------------------------------------------------
 
+
 // electrons
-TFile* f_elSF_FS_MIM = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fastsim/electrons/sf_el_multiMedium.root", "read");
-TFile* f_elSF_FS_Tid = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fastsim/electrons/sf_el_tightMVA_IDISOEmu_mutliT_tight2DIP_tight3DIP_vtxC_hitseq0_charge.root"   , "read");
-TH2F* h_elSF_FS_MIM  = (TH2F*) f_elSF_FS_MIM->Get("histo2D");
-TH2F* h_elSF_FS_Tid  = (TH2F*) f_elSF_FS_Tid->Get("histo2D");
+TFile* f_elFSSF_cvhit = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fastsim/electrons/sf_el_inhit_eq0.root"      , "read");
+TFile* f_elFSSF_mIso  = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fastsim/electrons/sf_el_multiMedium.root"    , "read");
+TFile* f_elFSSF_mva   = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fastsim/electrons/sf_el_tight2d3dIDEmu.root" , "read");
+TFile* f_elFSSF_trk   = new TFile(DATA_RA7+"/leptonSF/electronSF_trkEff_EWKino_fullsim_M17_36p5fb.root"      , "read");
+TH2F* h_elFSSF_cvhit  = (TH2F*) f_elFSSF_cvhit ->Get("histo2D");
+TH2F* h_elFSSF_mIso   = (TH2F*) f_elFSSF_mIso  ->Get("histo2D");
+TH2F* h_elFSSF_mva    = (TH2F*) f_elFSSF_mva   ->Get("histo2D");
+TH2F* h_elFSSF_trk    = (TH2F*) f_elFSSF_trk   ->Get("EGamma_SF2D");
 
 // muons
-TFile* f_muSF_FS_MIL = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fastsim/muons/sf_mu_mediumID_multiL.root", "read");
-TFile* f_muSF_FS_Mid = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fastsim/muons/sf_mu_medium.root"   , "read");
-TH2F* h_muSF_FS_MIL  = (TH2F*) f_muSF_FS_MIL->Get("histo2D");
-TH2F* h_muSF_FS_Mid  = (TH2F*) f_muSF_FS_Mid->Get("histo2D");
+TFile* f_muFSSF_mIso  = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fastsim/muons/sf_mu_mediumID_multiL.root" , "read");
+TFile* f_muFSSF_id    = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fastsim/muons/sf_mu_mediumID.root"        , "read");
+TFile* f_muFSSF_trk   = new TFile(DATA_RA7+"/leptonSF/muonSF_trk_EWKino_fullsim_M17_36p5fb.root"          , "read"); 
+TH2F* h_muFSSF_mIso   = (TH2F*) f_muFSSF_mIso ->Get("histo2D" );
+TH2F* h_muFSSF_id     = (TH2F*) f_muFSSF_id   ->Get("histo2D" );
+TGraphAsymmErrors* h_muFSSF_trk = (TGraphAsymmErrors*) f_muFSSF_trk->Get("ratio_eff_eta3_dr030e030_corr");
 
-
-float getElectronSFFS(float pt, float eta){
-    return getSF(h_elSF_FS_MIM, pt, abs(eta))*getSF(h_elSF_FS_Tid, pt, abs(eta));
+float getElectronFSSF(float pt, float eta){
+    return getSF(h_elFSSF_cvhit, pt, abs(eta))*getSF(h_elFSSF_mIso, pt, abs(eta))*getSF(h_elFSSF_mva, pt, abs(eta))*getSF(h_elFSSF_trk, eta, pt);
 }
 
-float getElectronUncFS(int var = 0){
-	return var*0.02;
+float getElectronFSSFUnc(float pt, float eta, int var = 0){
+    float error1 = getUnc(h_elFSSF_cvhit, pt , abs(eta));
+    float error2 = getUnc(h_elFSSF_mIso , pt , abs(eta));
+    float error3 = getUnc(h_elFSSF_mva  , pt , abs(eta));
+    float error4 = getUnc(h_elFSSF_trk  , eta, pt);
+    return var*TMath::Sqrt(error1*error1 + error2*error2 + error3*error3 + error4*error4);
 }
 
-float getMuonSFFS(float pt, float eta){
-    return getSF(h_muSF_FS_MIL, pt, abs(eta))*getSF(h_muSF_FS_Mid, pt, abs(eta)); 
-}
-
-float getMuonUncFS(float pt, int var = 0) {
-	return var*0.02;
+float getMuonFSSF(float pt, float eta){
+    return h_muFSSF_trk->Eval(eta)*getSF(h_muFSSF_mIso, pt, abs(eta))*getSF(h_muFSSF_id, pt, abs(eta)); 
 }
 
 
-
-float getLepSFFS(float pt, float eta, int pdgId, int isTight, int wp = 0, int var = 0){
+float getLepFSSF(float pt, float eta, int pdgId, int isTight, int wp = 0, int var = 0){
     if(!isTight) return 1.0;
-    if(abs(pdgId) == 13) return (var==0)?getMuonSFFS    (pt, eta):(1+getMuonUncFS(var));
-    if(abs(pdgId) == 11) return (var==0)?getElectronSFFS(pt, eta):(1+getElectronUncFS(var));
-    return 1.0;
+    float sf  = 1.0; 
+    float err = 0.0;
+    if(abs(pdgId) == 11) { sf = getElectronFSSF(pt, eta); err = getElectronFSSFUnc(pt, eta, var); }
+    if(abs(pdgId) == 13) { sf = getMuonFSSF    (pt, eta); err = sf*getMuonUnc (pt, var);          } // only relative error
+    if(abs(pdgId) == 15) { sf = 0.95                    ; err = 0.05;                             }
+    return (var==0)?sf:(sf+var*err)/sf;
 }
-
-float leptonSFFS(float lepSF1, float lepSF2, float lepSF3 = 1.0, float lepSF4 = 1.0){
-    return lepSF1*lepSF2*lepSF3*lepSF4;
-}
-
 
 
 
@@ -492,14 +495,26 @@ float puw_nInt_Moriond(float nInt, int var=0, int evt = 0) {
   return 0;
 }
 
-//Old material for WZ exercise
-TFile* puw36p4fb   = new TFile("/nfs/fanae/user/nachos/ForECO/puw_nTrueInt_Moriond2017_36p4fb.root", "read");
-TH1F* _puw2016_nInt_36p4fb    = (TH1F*) puw36p4fb  ->Get("puw");
-float OLDpuw_nInt_Moriond(float nInt, int var = 0) { 
-    TH1F* hist = _puw2016_nInt_36p4fb;
-    return hist -> GetBinContent(hist -> FindBin(nInt));
+
+
+float nISRcorr(float nISR) {
+  float c = 0;
+  if (nISR==0) c = 1.;
+  else if (nISR==1) c = 0.920;
+  else if (nISR==2) c = 0.821;
+  else if (nISR==3) c = 0.715;
+  else if (nISR==4) c = 0.662;
+  else if (nISR==5) c = 0.561;
+  else if (nISR>=6) c = 0.511;
+  return c;
 }
 
+float D_ISR(int model) {
+  float D = 0;
+  if (model==1) D = 1.225; //T1tttt (1500,200)
+  else if (model==2) D = 1.212; //T5qqqqWZ (1200,400)
+  return D;
+}
 
 
 void functionsRA7() {}
