@@ -26,6 +26,8 @@ bTagEventWeightFullSim   = lambda : bTagWeightAnalyzer(btagsf_payload_fullsim, b
 bTagEventWeightFastSim   = lambda : bTagWeightAnalyzer(btagsf_payload_fastsim, btag_efficiency_fastsim, recllabel='Mini', isFastSim=True)
 MODULES.append( ('bTagEventWeightFullSim3L'  , bTagEventWeightFullSim ))
 MODULES.append( ('bTagEventWeightFastSim3L'  , bTagEventWeightFastSim ))
+MODULES.append( ('bTagEventWeightFullSimRA7' , bTagEventWeightFullSim ))
+MODULES.append( ('bTagEventWeightFastSimRA7' , bTagEventWeightFastSim ))
 bTagEventWeightFullSim2L = lambda : bTagWeightAnalyzer(btagsf_payload_fullsim, btag_efficiency_fullsim, recllabel='Recl')
 bTagEventWeightFastSim2L = lambda : bTagWeightAnalyzer(btagsf_payload_fastsim, btag_efficiency_fastsim, recllabel='Recl', isFastSim=True)
 MODULES.append( ('bTagEventWeightFullSim2L', bTagEventWeightFullSim2L ))
