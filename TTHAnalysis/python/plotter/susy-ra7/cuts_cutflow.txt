@@ -1,0 +1,9 @@
+alwaystrue: 1
+3lep:  nLepSel>=3 && abs(LepSel1_pdgId)<14 && abs(LepSel2_pdgId)<14 && abs(LepSel3_pdgId)<14 && LepSel1_isTight && LepSel2_isTight && LepSel3_isTight && LepSel1_conePt>10 && LepSel2_conePt>10 && LepSel3_conePt>10 && LepSel1_pt>10 && LepSel2_pt>10 && LepSel3_pt>10 && (minMllSFOS == -1 || minMllSFOS > 12)
+ptcuts: LepSel1_conePt>(10+5*(abs(LepSel1_pdgId)==11)) && (htJet30j > 400 || (LepSel1_conePt>(20+5*(abs(LepSel1_pdgId)==11)))) && LepSel2_conePt>(10+5*(abs(LepSel2_pdgId)==11)) && LepSel3_conePt>10 && ( !(abs(LepSel1_pdgId)==13 && abs(LepSel2_pdgId)==11 && abs(LepSel3_pdgId)==11) || (LepSel1_conePt>25 || htJet30j > 400) )
+twoormorejet: nJet30>=2 && htJet30j>60
+metbase: met_pt > 50
+inBR: BR >=0 && SR > 0
+
+offZ:  BR==0; Disable=True
+onZ:   BR==1; Disable=True
