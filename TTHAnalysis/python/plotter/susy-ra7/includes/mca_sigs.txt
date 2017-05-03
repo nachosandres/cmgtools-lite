@@ -9,6 +9,9 @@ sig_M17_T5qqqqWZ_1000_750+    : T5qqqqVV_1000_750    : 20*4/9*0.325388  : 1/(puw
 sig_M17_T5qqqqWZ_1200_400+     : T5qqqqVV_1200_400     : 20*4/9*0.0856418    : 1/(puw_nInt_Moriond(nTrueInt))*((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1))*(GenSusyMNeutralino2>0 && GenSusyMChargino>0)             ; FillColor=ROOT.kRed+1, Label="T5qqqqWZ(1200\,400)x20"
 
 
-sig_table_T1tttt_1500_200      : T1tttt_1500_200      : 0.0340187 : ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1))*D_ISR(1)             ; FillColor=ROOT.kOrange+10, Label="T1tttt(1500\,200)", isFastSim
+sig_table_T1tttt_1500_200      : T1tttt_1500_200      : 0.0141903 : ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1))*D_ISR(1)             ; FillColor=ROOT.kOrange+10, Label="T1tttt(1500\,200)", isFastSim
 sig_table_T5qqqqWZ_1200_400    : T5qqqqVV_1200_400    : 4/9*0.0856418 : ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1))*(GenSusyMNeutralino2>0 && GenSusyMChargino>0)*D_ISR(2)             ; FillColor=ROOT.kOrange+4, Label="T5qqqqWZ(1200\,400)", isFastSim
+sig_table_T5qqqqVV_1200_400    : T5qqqqVV_1200_400    : 0.0856418 : ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1))*D_ISR(2)             ; FillColor=ROOT.kOrange+4, Label="T5qqqqWZ(1200\,400)", isFastSim
 
+sigUW_table_T1tttt_1500_200      : T1tttt_1500_200      : 0.0141903 : 1             ; FillColor=ROOT.kOrange+10, Label="T1tttt(1500\,200)", isFastSim
+sigUW_table_T5qqqqWZ_1200_400    : T5qqqqVV_1200_400    : 4/9*0.0856418 : (GenSusyMNeutralino2>0 && GenSusyMChargino>0)             ; FillColor=ROOT.kOrange+4, Label="T5qqqqWZ(1200\,400)", isFastSim
