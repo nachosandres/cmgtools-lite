@@ -1,7 +1,9 @@
-## Few signals (sig_ICHEP_.* , sig_M17_.*, sig_heavyH_.*, sig_heavyA_.* )
+## Few signals (sig_ICHEP_.* , sig_M17_.*, sig_heavyH_.*, sig_heavyA_.*, sig_stop2_.*)
 ## -----------------------------------------------------------
-incl_sigs  : + ; IncludeMca="susy-ra7/includes/mca_sigs.txt"
-incl_heavy : + ; IncludeMca="susy-ra7/includes/mca_heavy.txt"
+incl_sigs      : + ; IncludeMca="susy-ra7/includes/mca_sigs.txt"
+incl_sys_sig   : + ; IncludeMca="susy-ra7/includes/mca_sigs_vars.txt"
+incl_heavy     : + ; IncludeMca="susy-ra7/includes/mca_heavy.txt"
+incl_sys_heavy : + ; IncludeMca="susy-ra7/includes/mca_heavy_sys.txt"
 incl_Plotheavy : + ; IncludeMca="susy-ra7/includes/mca_Plot_heavy.txt"
 
 ## Base (data, fakes, prompt)
@@ -22,4 +24,4 @@ incl_sys_lepSF          : + ; IncludeMca="susy-ra7/includes/mca_sys_lepSF.txt"
 incl_sys_bTagHF         : + ; IncludeMca="susy-ra7/includes/mca_sys_bTagHF.txt"
 incl_sys_bTagLF         : + ; IncludeMca="susy-ra7/includes/mca_sys_bTagLF.txt"
 
-incl_sys_heavy          : + ; IncludeMca="susy-ra7/includes/mca_heavy_sys.txt"
+

@@ -1,8 +1,8 @@
 
 ## flat uncertainties
 
-lumi       : sig_heavy.*|prompt_Rares|prompt_ttX   : .*                : 1.026
-trigeff    : sig_heavy.*|prompt_Rares|prompt_ttX   : .*                : 1.03
+lumi       : sig_.*|prompt_Rares|prompt_ttX   : .*                : 1.026
+trigeff    : sig_.*|prompt_Rares|prompt_ttX   : .*                : 1.03
 
 fakes      : fakes_.*                          : .*                : 1.3
 
@@ -26,18 +26,19 @@ extrapTTZ  : prompt_ttZ                        : .*                : 1.15
 ## shape uncertainties
 ewksub        : fakes_.*                         : .* : ewk        : templates
 
-JES           : sig_heavy.*|prompt_Rares|prompt_ttX   : .* : jec        : templates
+JES           : sig_.*|prompt_Rares|prompt_ttX   : .* : jec        : templates
 
-PUreweighting : sig_heavy.*|prompt_Rares|prompt_ttX   : .* : puw        : templates
+PUreweighting : prompt_Rares|prompt_ttX          : .* : puw        : templates
 
-lepton_idiso  : sig_heavy.*|prompt_Rares|prompt_ttX   : .* : lepSF      : templates
+lepton_SF     : sig_.*|prompt_Rares|prompt_ttX   : .* : lepSF      : templates
+lepton_FSSF   : sig_.*                           : .* : lepFSSF    : templates
 
-btag_HF       : sig_heavy.*|prompt_Rares|prompt_ttX   : .* : bTagHF     : templates
-btag_LF       : sig_heavy.*|prompt_Rares|prompt_ttX   : .* : bTagLF     : templates
+btag_HF       : sig_.*|prompt_Rares|prompt_ttX   : .* : bTagHF     : templates
+btag_LF       : sig_.*|prompt_Rares|prompt_ttX   : .* : bTagLF     : templates
 
 ## statistical uncertainties
 
-statsig   : sig_heavy.*     : .* : 1.0 : stat_foreach_shape_bins : .*
+statsig   : sig_.*          : .* : 1.0 : stat_foreach_shape_bins : .*
 statWZ    : prompt_WZ       : .* : 1.0 : stat_foreach_shape_bins : .*
 statttZ   : prompt_ttZ      : .* : 1.0 : stat_foreach_shape_bins : .*
 statttX   : prompt_ttX      : .* : 1.0 : stat_foreach_shape_bins : .*
